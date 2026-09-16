@@ -1,0 +1,11 @@
+# PLACEHOLDER — not wired to a real cluster/Helm release yet. This platform has
+# not been registered with the mfe-platform HUB (see README "Roadmap"). Fill in
+# from cyber-helm's real chart values before any deploy.
+services:
+  frontend:
+    image: "<DEV_ARTIFACT_REGISTRY_HOST>/<DEV_ARTIFACT_REPOSITORY>/cyber-soc-frontend:<TAG>"
+  api:
+    image: "<DEV_ARTIFACT_REGISTRY_HOST>/<DEV_ARTIFACT_REPOSITORY>/cyber-soc-api:<TAG>"
+    env:
+      DATABASE_URL: "<SECRET>"
+      JWT_SECRET: "<SECRET>"

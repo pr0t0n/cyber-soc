@@ -1,0 +1,2282 @@
+[
+ {
+  "id": "941100",
+  "msg": "XSS Attack Detected via libinjection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941110",
+  "msg": "XSS Filter - Category 1: Script Tag Vector",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941120",
+  "msg": "XSS Filter - Category 2: Event Handler Vector",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941130",
+  "msg": "XSS Filter - Category 3: Attribute Vector",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941140",
+  "msg": "XSS Filter - Category 4: Javascript URI Vector",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941160",
+  "msg": "NoScript XSS InjectionChecker: HTML Injection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941170",
+  "msg": "NoScript XSS InjectionChecker: Attribute Injection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941180",
+  "msg": "Node-Validator Deny List Keywords",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-nodejs",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941190",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941200",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941210",
+  "msg": "Javascript Word Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941220",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941230",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941240",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941250",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941260",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941270",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941280",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941290",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941300",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941310",
+  "msg": "US-ASCII Malformed Encoding XSS Filter - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-tomcat",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941350",
+  "msg": "UTF-7 Encoding IE XSS - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-internet-explorer",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941360",
+  "msg": "JSFuck / Hieroglyphy obfuscation detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242/63"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941370",
+  "msg": "JavaScript global variable found",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242/63"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941390",
+  "msg": "Javascript method detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-nodejs",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941400",
+  "msg": "XSS JavaScript function without parentheses",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941101",
+  "msg": "XSS Attack Detected via libinjection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941150",
+  "msg": "XSS Filter - Category 5: Disallowed HTML Attributes",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941181",
+  "msg": "Node-Validator Deny List Keywords",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941320",
+  "msg": "Possible XSS Attack Detected - HTML Tag Handler",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242/63"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941330",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941340",
+  "msg": "IE XSS Filters - Attack Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "941380",
+  "msg": "AngularJS client side template injection detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "attack-xss",
+   "xss-perf-disable",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-XSS",
+   "capec/1000/152/242/63"
+  ],
+  "severity": "CRITICAL",
+  "category": "xss"
+ },
+ {
+  "id": "942100",
+  "msg": "SQL Injection Attack Detected via libinjection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942140",
+  "msg": "SQL Injection Attack: Common DB Names Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942151",
+  "msg": "SQL Injection Attack: SQL function name detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942160",
+  "msg": "Detects blind sqli tests using sleep() or benchmark()",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942170",
+  "msg": "Detects SQL benchmark and sleep injection attempts including conditional queries",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942190",
+  "msg": "Detects SQL code execution and information gathering attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942220",
+  "msg": "Looking for integer overflow attacks, these are taken from skipfish, except 2.2.2250738585072011e-308 is the \\\"magic number\\\" crash",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942230",
+  "msg": "Detects conditional SQL injection attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942240",
+  "msg": "Detects MySQL charset switch and MSSQL DoS attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942250",
+  "msg": "Detects MATCH AGAINST, MERGE and EXECUTE IMMEDIATE injections",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942270",
+  "msg": "Looking for basic sql injection. Common attack string for mysql, oracle and others",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942280",
+  "msg": "Detects Postgres pg_sleep injection, waitfor delay attacks and database shutdown attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942290",
+  "msg": "Finds basic MongoDB SQL injection attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942320",
+  "msg": "Detects MySQL and PostgreSQL stored procedure/function injections",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942350",
+  "msg": "Detects MySQL UDF injection and other data/structure manipulation attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942360",
+  "msg": "Detects concatenated basic SQL injection and SQLLFI attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942500",
+  "msg": "MySQL in-line comment detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942540",
+  "msg": "SQL Authentication bypass (split query)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "paranoia-level/1",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942560",
+  "msg": "MySQL Scientific Notation payload detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942550",
+  "msg": "JSON-Based SQL Injection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942120",
+  "msg": "SQL Injection Attack: SQL Operator Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942130",
+  "msg": "SQL Injection Attack: SQL Boolean-based attack detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942131",
+  "msg": "SQL Injection Attack: SQL Boolean-based attack detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942150",
+  "msg": "SQL Injection Attack: SQL function name detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942180",
+  "msg": "Detects basic SQL authentication bypass attempts 1/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942200",
+  "msg": "Detects MySQL comment-/space-obfuscated injections and backtick termination",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942210",
+  "msg": "Detects chained SQL injection attempts 1/2",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942260",
+  "msg": "Detects basic SQL authentication bypass attempts 2/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942300",
+  "msg": "Detects MySQL comments, conditions and ch(a)r injections",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942310",
+  "msg": "Detects chained SQL injection attempts 2/2",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942330",
+  "msg": "Detects classic SQL injection probings 1/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942340",
+  "msg": "Detects basic SQL authentication bypass attempts 3/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942361",
+  "msg": "Detects basic SQL injection based on keyword alter or union",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942362",
+  "msg": "Detects concatenated basic SQL injection and SQLLFI attempts",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942370",
+  "msg": "Detects classic SQL injection probings 2/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942380",
+  "msg": "SQL Injection Attack",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942390",
+  "msg": "SQL Injection Attack using (X)OR",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942400",
+  "msg": "SQL Injection Attack",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942410",
+  "msg": "SQL Injection Attack",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942470",
+  "msg": "SQL Injection Attack",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942480",
+  "msg": "SQL Injection Attack",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942430",
+  "msg": "Restricted SQL Character Anomaly Detection (args): # of special characters exceeded (12)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "942440",
+  "msg": "SQL Comment Sequence Detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942450",
+  "msg": "SQL Bin or Hex Encoding Identified",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942510",
+  "msg": "SQLi bypass attempt by ticks or backticks detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942520",
+  "msg": "Detects basic SQL authentication bypass attempts 4.0/4",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942521",
+  "msg": "Detects basic SQL authentication bypass attempts 4.1/4",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942522",
+  "msg": "Detects basic SQL authentication bypass attempts 4.1/4",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942101",
+  "msg": "SQL Injection Attack Detected via libinjection",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942152",
+  "msg": "SQL Injection Attack: SQL function name detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942321",
+  "msg": "Detects MySQL and PostgreSQL stored procedure/function injections",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942251",
+  "msg": "Detects HAVING injections",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942490",
+  "msg": "Detects classic SQL injection probings 3/3",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942420",
+  "msg": "Restricted SQL Character Anomaly Detection (cookies): # of special characters exceeded (8)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "942431",
+  "msg": "Restricted SQL Character Anomaly Detection (args): # of special characters exceeded (6)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "942460",
+  "msg": "Meta-Character Anomaly Detection Alert - Repetitive Non-Word Characters",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "942511",
+  "msg": "SQLi bypass attempt by ticks detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942530",
+  "msg": "SQLi query termination detected",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "CRITICAL",
+  "category": "sqli"
+ },
+ {
+  "id": "942421",
+  "msg": "Restricted SQL Character Anomaly Detection (cookies): # of special characters exceeded (3)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/4",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "942432",
+  "msg": "Restricted SQL Character Anomaly Detection (args): # of special characters exceeded (2)",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-sqli",
+   "paranoia-level/4",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-SQLI",
+   "capec/1000/152/248/66"
+  ],
+  "severity": "WARNING",
+  "category": "sqli"
+ },
+ {
+  "id": "932230",
+  "msg": "Remote Command Execution: Unix Command Injection (2-3 chars)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932235",
+  "msg": "Remote Command Execution: Unix Command Injection (command without evasion)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932120",
+  "msg": "Remote Command Execution: Windows PowerShell Command Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "language-powershell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932125",
+  "msg": "Remote Command Execution: Windows Powershell Alias Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932130",
+  "msg": "Remote Command Execution: Unix Shell Expression Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932140",
+  "msg": "Remote Command Execution: Windows FOR/IF Command Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932270",
+  "msg": "Remote Command Execution: Unix Shell Expression Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932280",
+  "msg": "Remote Command Execution: Brace Expansion Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932250",
+  "msg": "Remote Command Execution: Direct Unix Command Execution",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932260",
+  "msg": "Remote Command Execution: Direct Unix Command Execution",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932340",
+  "msg": "Remote Command Execution: Direct Unix Command Execution (No Arguments)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932330",
+  "msg": "Remote Command Execution: Unix shell history invocation",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932160",
+  "msg": "Remote Command Execution: Unix Shell Code Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932170",
+  "msg": "Remote Command Execution: Shellshock (CVE-2014-6271)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932171",
+  "msg": "Remote Command Execution: Shellshock (CVE-2014-6271)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932175",
+  "msg": "Remote Command Execution: Unix shell alias invocation",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932180",
+  "msg": "Restricted File Upload Attempt",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932370",
+  "msg": "Remote Command Execution: Windows Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932380",
+  "msg": "Remote Command Execution: Windows Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/1",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932371",
+  "msg": "Remote Command Execution: Windows Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-windows",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932231",
+  "msg": "Remote Command Execution: Unix Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932131",
+  "msg": "Remote Command Execution: Unix Shell Expression Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932200",
+  "msg": "RCE Bypass Technique",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932205",
+  "msg": "RCE Bypass Technique",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932206",
+  "msg": "RCE Bypass Technique",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932207",
+  "msg": "RCE Bypass Technique",
+  "tags": [
+   "application-multi",
+   "language-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932220",
+  "msg": "Remote Command Execution: Unix Command Injection with pipe",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932240",
+  "msg": "Remote Command Execution: Unix Command Injection evasion attempt detected",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932281",
+  "msg": "Remote Command Execution: Brace Expansion Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932210",
+  "msg": "Remote Command Execution: SQLite System Command Execution",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932271",
+  "msg": "Remote Command Execution: Unix Shell Expression Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932300",
+  "msg": "Remote Command Execution: SMTP Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932310",
+  "msg": "Remote Command Execution: IMAP Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932320",
+  "msg": "Remote Command Execution: POP3 Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932236",
+  "msg": "Remote Command Execution: Unix Command Injection (command without evasion)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932239",
+  "msg": "Remote Command Execution: Unix Command Injection found in user-agent or referer header",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932161",
+  "msg": "Remote Command Execution: Unix Shell Code Found in REQUEST_HEADERS",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932390",
+  "msg": "Remote Command Execution: Shell Fork Bomb",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/2",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932232",
+  "msg": "Remote Command Execution: Unix Command Injection",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932237",
+  "msg": "Remote Command Execution: Unix Shell Code Found in REQUEST_HEADERS",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932238",
+  "msg": "Remote Command Execution: Unix Shell Code Found in REQUEST_HEADERS",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932290",
+  "msg": "Remote Command Execution: Quote evasion Found",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932190",
+  "msg": "Remote Command Execution: Wildcard bypass technique attempt",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932350",
+  "msg": "Remote Command Execution: Direct Unix Command Execution (No Arguments)",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932301",
+  "msg": "Remote Command Execution: SMTP Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932311",
+  "msg": "Remote Command Execution: IMAP Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932321",
+  "msg": "Remote Command Execution: POP3 Command Execution",
+  "tags": [
+   "application-multi",
+   "platform-multi",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/137/134"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ },
+ {
+  "id": "932331",
+  "msg": "Remote Command Execution: Unix shell history invocation",
+  "tags": [
+   "application-multi",
+   "language-shell",
+   "platform-unix",
+   "attack-rce",
+   "paranoia-level/3",
+   "OWASP_CRS",
+   "OWASP_CRS/ATTACK-RCE",
+   "capec/1000/152/248/88"
+  ],
+  "severity": "CRITICAL",
+  "category": "rce"
+ }
+]

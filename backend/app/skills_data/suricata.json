@@ -1,0 +1,5276 @@
+[
+ {
+  "sid": "2010371",
+  "msg": "ET SCAN Amap TCP Service Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010372",
+  "msg": "ET SCAN Amap UDP Service Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008414",
+  "msg": "ET SCAN Cisco Torch TFTP Scan",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:69"
+ },
+ {
+  "sid": "2010642",
+  "msg": "ET SCAN Multiple FTP Root Login Attempts from Single Source - Possible Brute Force Attempt",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:21"
+ },
+ {
+  "sid": "2010643",
+  "msg": "ET SCAN Multiple FTP Administrator Login Attempts from Single Source - Possible Brute Force Attempt",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:21"
+ },
+ {
+  "sid": "2000575",
+  "msg": "ET SCAN ICMP PING IPTools",
+  "classtype": "misc-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008560",
+  "msg": "ET SCAN NNG MS02-039 Exploit False Positive Generator - May Conceal A Genuine Attack",
+  "classtype": "misc-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:1434"
+ },
+ {
+  "sid": "2008578",
+  "msg": "ET SCAN Sipvicious Scan",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2011766",
+  "msg": "ET SCAN Modified Sipvicious User-Agent Detected (sundayddr)",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008598",
+  "msg": "ET SCAN Sipsak SIP scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008609",
+  "msg": "ET SCAN Sivus VOIP Vulnerability Scanner SIP Scan",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008610",
+  "msg": "ET SCAN Sivus VOIP Vulnerability Scanner SIP Components Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008094",
+  "msg": "ET SCAN External to Internal UPnP Request udp port 1900",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:1900"
+ },
+ {
+  "sid": "2008526",
+  "msg": "ET SCAN Smap VOIP Device Scan",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008568",
+  "msg": "ET SCAN Voiper Toolkit Torturer Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008577",
+  "msg": "ET SCAN Voiper Fuzzing Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008640",
+  "msg": "ET SCAN SIP erase_registrations/add registrations attempt",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2009832",
+  "msg": "ET SCAN DCERPC rpcmgmt ifids Unauthenticated BIND",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:[135,139,445,1024:2048]"
+ },
+ {
+  "sid": "2011975",
+  "msg": "ET SCAN RatProxy in-use",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2008579",
+  "msg": "ET SCAN Sipp SIP Stress Test Detected",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2008641",
+  "msg": "ET SCAN sipscan probe",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2101918",
+  "msg": "GPL SCAN SolarWinds IP scan attempt",
+  "classtype": "network-scan",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100465",
+  "msg": "GPL SCAN ISS Pinger",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100483",
+  "msg": "GPL SCAN PING CyberKit 2.2 Windows",
+  "classtype": "misc-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100372",
+  "msg": "GPL SCAN PING Delphi-Piette Windows",
+  "classtype": "misc-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100484",
+  "msg": "GPL SCAN PING Sniffer Pro/NetXRay network scan",
+  "classtype": "misc-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100474",
+  "msg": "GPL SCAN superscan echo",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2100476",
+  "msg": "GPL SCAN webtrends scanner",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008606",
+  "msg": "ET SCAN Enumiax Inter-Asterisk Exchange Protocol Username Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:4569"
+ },
+ {
+  "sid": "2009298",
+  "msg": "ET SCAN Port Unreachable Response to Xprobe2 OS Fingerprint Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2015552",
+  "msg": "ET SCAN HTExploit Method",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:$HTTP_PORTS"
+ },
+ {
+  "sid": "2011716",
+  "msg": "ET SCAN Sipvicious User-Agent Detected (friendly-scanner)",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2018317",
+  "msg": "ET SCAN NMAP SIP Version Detect OPTIONS Scan",
+  "classtype": "attempted-recon",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2018318",
+  "msg": "ET SCAN NMAP SIP Version Detection Script Activity",
+  "classtype": "attempted-recon",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060:5061"
+ },
+ {
+  "sid": "2011088",
+  "msg": "ET SCAN Possible DavTest WebDav Vulnerability Scanner Initial Check Detected",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:$HTTP_PORTS"
+ },
+ {
+  "sid": "2020853",
+  "msg": "ET SCAN H.323 Scanning device",
+  "classtype": "network-scan",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:1720"
+ },
+ {
+  "sid": "2010686",
+  "msg": "ET SCAN ICMP =XXXXXXXX Likely Precursor to Scan",
+  "classtype": "network-scan",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2006546",
+  "msg": "ET SCAN LibSSH Based Frequent SSH Connections Likely BruteForce Attack",
+  "classtype": "attempted-admin",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "ssh",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:22"
+ },
+ {
+  "sid": "2001219",
+  "msg": "ET SCAN Potential SSH Scan",
+  "classtype": "attempted-recon",
+  "rev": "20",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:22"
+ },
+ {
+  "sid": "2002910",
+  "msg": "ET SCAN Potential VNC Scan 5800-5820",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5800:5820"
+ },
+ {
+  "sid": "2002992",
+  "msg": "ET SCAN Rapid POP3 Connections - Possible Brute Force Attack",
+  "classtype": "misc-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:110"
+ },
+ {
+  "sid": "2002993",
+  "msg": "ET SCAN Rapid POP3S Connections - Possible Brute Force Attack",
+  "classtype": "misc-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:995"
+ },
+ {
+  "sid": "2002994",
+  "msg": "ET SCAN Rapid IMAP Connections - Possible Brute Force Attack",
+  "classtype": "misc-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:143"
+ },
+ {
+  "sid": "2002995",
+  "msg": "ET SCAN Rapid IMAPS Connections - Possible Brute Force Attack",
+  "classtype": "misc-activity",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:993"
+ },
+ {
+  "sid": "2003068",
+  "msg": "ET SCAN Potential SSH Scan OUTBOUND",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:22"
+ },
+ {
+  "sid": "2022581",
+  "msg": "ET SCAN MySQL Malicious Scanning 3",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2010681",
+  "msg": "ET SCAN ICMP Delphi Likely Precursor to Scan",
+  "classtype": "misc-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2001580",
+  "msg": "ET SCAN Behavioral Unusual Port 137 traffic Potential Scan or Infection",
+  "classtype": "misc-activity",
+  "rev": "15",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> any:137"
+ },
+ {
+  "sid": "2001581",
+  "msg": "ET SCAN Behavioral Unusual Port 135 traffic Potential Scan or Infection",
+  "classtype": "misc-activity",
+  "rev": "15",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> any:135"
+ },
+ {
+  "sid": "2001582",
+  "msg": "ET SCAN Behavioral Unusual Port 1434 traffic Potential Scan or Infection",
+  "classtype": "misc-activity",
+  "rev": "15",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> any:1434"
+ },
+ {
+  "sid": "2001583",
+  "msg": "ET SCAN Behavioral Unusual Port 1433 traffic Potential Scan or Infection",
+  "classtype": "misc-activity",
+  "rev": "16",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> any:1433"
+ },
+ {
+  "sid": "2010641",
+  "msg": "ET SCAN ICMP @hello request Likely Precursor to Scan",
+  "classtype": "misc-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2013479",
+  "msg": "ET SCAN Behavioral Unusually fast Terminal Server Traffic Potential Scan or Infection (Outbound)",
+  "classtype": "misc-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:3389"
+ },
+ {
+  "sid": "2019876",
+  "msg": "ET SCAN SSH BruteForce Tool with fake PUTTY version",
+  "classtype": "network-scan",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "ssh",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010939",
+  "msg": "ET SCAN Suspicious inbound to PostgreSQL port 5432",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5432"
+ },
+ {
+  "sid": "2010937",
+  "msg": "ET SCAN Suspicious inbound to mySQL port 3306",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2010936",
+  "msg": "ET SCAN Suspicious inbound to Oracle SQL port 1521",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:1521"
+ },
+ {
+  "sid": "2010935",
+  "msg": "ET SCAN Suspicious inbound to MSSQL port 1433",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:1433"
+ },
+ {
+  "sid": "2025822",
+  "msg": "ET SCAN HID VertX and Edge door controllers discover",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> $HOME_NET:4070"
+ },
+ {
+  "sid": "2026463",
+  "msg": "ET SCAN StarDotStar HELO, suspected AUTH LOGIN botnet",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008092",
+  "msg": "ET SCAN Internal to Internal UPnP Request tcp port 2555",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $HOME_NET:2555"
+ },
+ {
+  "sid": "2008093",
+  "msg": "ET SCAN External to Internal UPnP Request tcp port 2555",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:2555"
+ },
+ {
+  "sid": "2015754",
+  "msg": "ET SCAN Nessus Netbios Scanning",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:[137,138,139,445]"
+ },
+ {
+  "sid": "2017161",
+  "msg": "ET SCAN SipCLI VOIP Scan - TCP",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2017162",
+  "msg": "ET SCAN SipCLI VOIP Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2018489",
+  "msg": "ET SCAN NMAP OS Detection Probe",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:10000: -> $HOME_NET:10000:"
+ },
+ {
+  "sid": "2022579",
+  "msg": "ET SCAN MySQL Malicious Scanning 1",
+  "classtype": "bad-unknown",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2022580",
+  "msg": "ET SCAN MySQL Malicious Scanning 2",
+  "classtype": "bad-unknown",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2008311",
+  "msg": "ET SCAN Watchfire AppScan Web App Vulnerability Scanner",
+  "classtype": "attempted-recon",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2012754",
+  "msg": "ET SCAN Possible SQLMAP Scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2013778",
+  "msg": "ET SCAN NMAP SQL Spider Scan",
+  "classtype": "web-application-attack",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008654",
+  "msg": "ET SCAN SQLix SQL Injection Vector Scan",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2013249",
+  "msg": "ET SCAN Vega Web Application Scan",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2015702",
+  "msg": "ET SCAN Brutus Scan Outbound",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2016222",
+  "msg": "ET SCAN GET with HTML tag in start of URI seen with PHPMyAdmin scanning",
+  "classtype": "web-application-attack",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008529",
+  "msg": "ET SCAN Core-Project Scanning Bot UA Detected",
+  "classtype": "web-application-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008416",
+  "msg": "ET SCAN Httprint Web Server Fingerprint Scan",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2003171",
+  "msg": "ET SCAN IBM NSA User Agent",
+  "classtype": "attempted-recon",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2018782",
+  "msg": "ET SCAN Internet Scanning Project HTTP scan",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009827",
+  "msg": "ET SCAN Pavuk User Agent Detected - Website Mirroring Tool for Off-line Analysis",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009882",
+  "msg": "ET SCAN Default Mysqloit User Agent Detected - Mysql Injection Takover Tool",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009883",
+  "msg": "ET SCAN Possible Mysqloit Operating System Fingerprint/SQL Injection Test Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010954",
+  "msg": "ET SCAN crimscanner User-Agent detected",
+  "classtype": "network-scan",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011389",
+  "msg": "ET SCAN w3af Scan Remote File Include Retrieval",
+  "classtype": "web-application-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HTTP_SERVERS:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2011720",
+  "msg": "ET SCAN Possible WafWoof Web Application Firewall Detection Scan",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2012937",
+  "msg": "ET SCAN Internal Dummy Connection User-Agent Inbound",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2014869",
+  "msg": "ET SCAN Arachni Scanner Web Scan",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010087",
+  "msg": "ET SCAN Suspicious User-Agent Containing SQL Inject/ion Likely SQL Injection Scanner",
+  "classtype": "attempted-recon",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010088",
+  "msg": "ET SCAN Suspicious User-Agent Containing Web Scan/er Likely Web Scanner",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010089",
+  "msg": "ET SCAN Suspicious User-Agent Containing Security Scan/ner Likely Scan",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2012726",
+  "msg": "ET SCAN OpenVAS User-Agent Inbound",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2026008",
+  "msg": "ET SCAN Geutebrueck re_porter 7.8.974.20 Information Disclosure",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2026015",
+  "msg": "ET SCAN Hikvision IP Camera 5.4.0 Information Disclosure",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2026464",
+  "msg": "ET SCAN Hello Peppa! Scan Activity",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011914",
+  "msg": "ET SCAN DirBuster Scan in Progress",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011915",
+  "msg": "ET SCAN DotDotPwn User-Agent",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011808",
+  "msg": "ET SCAN Inspathx Path Disclosure Scanner User-Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2011809",
+  "msg": "ET SCAN Inspathx Path Disclosure Scan",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010953",
+  "msg": "ET SCAN Skipfish Web Application Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008362",
+  "msg": "ET SCAN bsqlbf Brute Force SQL Injection",
+  "classtype": "web-application-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2015484",
+  "msg": "ET SCAN w3af User-Agent 2",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2018343",
+  "msg": "ET SCAN Hikvision DVR attempted Synology Recon Scan",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> any:5000"
+ },
+ {
+  "sid": "2018754",
+  "msg": "ET SCAN Possible WordPress xmlrpc.php wp.getUsersBlogs Flowbit Set",
+  "classtype": "attempted-admin",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030909",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029015",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029016",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029017",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029018",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029020",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029021",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029024",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029023",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029026",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029208",
+  "msg": "ET SCAN Dark Nexus IoT Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029022",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029025",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2031505",
+  "msg": "ET SCAN WordPress Scanner Performing Multiple Requests to Windows Live Writer XML",
+  "classtype": "network-scan",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2034508",
+  "msg": "ET SCAN Laravel Debug Mode Information Disclosure Probe Inbound",
+  "classtype": "attempted-recon",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> [$HOME_NET,$HTTP_SERVERS]:any"
+ },
+ {
+  "sid": "2021023",
+  "msg": "ET SCAN Nmap NSE Heartbleed Request",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2036252",
+  "msg": "ET SCAN RDP Connection Attempt from Nmap",
+  "classtype": "network-scan",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:3389"
+ },
+ {
+  "sid": "2032978",
+  "msg": "ET SCAN Google Webcrawler User-Agent (Mediapartners-Google)",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2032979",
+  "msg": "ET SCAN Yandex Webcrawler User-Agent (YandexBot)",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2032980",
+  "msg": "ET SCAN DuckDuckGo Webcrawler User-Agent (DuckDuckBot)",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2032981",
+  "msg": "ET SCAN Bing Webcrawler User-Agent (BingBot)",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2032982",
+  "msg": "ET SCAN Naver Webcrawler User-Agent (Naver.me)",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2037838",
+  "msg": "ET SCAN Web Scanner - Fuzz Faster U Fool (Inbound)",
+  "classtype": "web-application-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2026758",
+  "msg": "ET SCAN External Host Probing for ChromeCast Devices",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2001972",
+  "msg": "ET SCAN Behavioral Unusually fast Terminal Server Traffic Potential Scan or Infection (Inbound)",
+  "classtype": "network-scan",
+  "rev": "21",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3389"
+ },
+ {
+  "sid": "2049255",
+  "msg": "ET SCAN LeakIX Inbound User-Agent",
+  "classtype": "misc-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2001906",
+  "msg": "ET SCAN MYSQL 4.0 brute force root login attempt",
+  "classtype": "protocol-command-decode",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $SQL_SERVERS:3306"
+ },
+ {
+  "sid": "2002383",
+  "msg": "ET SCAN Potential FTP Brute-Force attempt response",
+  "classtype": "unsuccessful-user",
+  "rev": "13",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:21 -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2002677",
+  "msg": "ET SCAN Nikto Web App Scan in Progress",
+  "classtype": "web-application-attack",
+  "rev": "15",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2002842",
+  "msg": "ET SCAN MYSQL 4.1 brute force root login attempt",
+  "classtype": "protocol-command-decode",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $SQL_SERVERS:3306"
+ },
+ {
+  "sid": "2007802",
+  "msg": "ET SCAN Grim's Ping ftp scanning tool",
+  "classtype": "network-scan",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:21"
+ },
+ {
+  "sid": "2008179",
+  "msg": "ET SCAN PRO Search Crawler Probe",
+  "classtype": "not-suspicious",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:21"
+ },
+ {
+  "sid": "2008187",
+  "msg": "ET SCAN Paros Proxy Scanner Detected",
+  "classtype": "attempted-recon",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008415",
+  "msg": "ET SCAN Cisco Torch IOS HTTP Scan",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008571",
+  "msg": "ET SCAN Acunetix Version 6 Crawl/Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008605",
+  "msg": "ET SCAN Stompy Web Application Session Scan",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008617",
+  "msg": "ET SCAN Wikto Scan",
+  "classtype": "attempted-recon",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008627",
+  "msg": "ET SCAN Httprecon Web Server Fingerprint Scan",
+  "classtype": "attempted-recon",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008629",
+  "msg": "ET SCAN Wikto Backend Data Miner Scan",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009038",
+  "msg": "ET SCAN SQLNinja MSSQL Version Scan",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:$HTTP_PORTS"
+ },
+ {
+  "sid": "2009039",
+  "msg": "ET SCAN SQLNinja MSSQL XPCmdShell Scan",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009040",
+  "msg": "ET SCAN SQLNinja MSSQL User Scan",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009041",
+  "msg": "ET SCAN SQLNinja MSSQL Database User Rights Scan",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009042",
+  "msg": "ET SCAN SQLNinja MSSQL Authentication Mode Scan",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009043",
+  "msg": "ET SCAN SQLNinja Attempt To Recreate xp_cmdshell Using sp_configure",
+  "classtype": "attempted-admin",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009044",
+  "msg": "ET SCAN SQLNinja Attempt To Create xp_cmdshell Session",
+  "classtype": "attempted-admin",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009158",
+  "msg": "ET SCAN WebShag Web Application Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009220",
+  "msg": "ET SCAN Tomcat upload from external source",
+  "classtype": "successful-admin",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009359",
+  "msg": "ET SCAN Nmap Scripting Engine User-Agent Detected (Nmap NSE)",
+  "classtype": "web-application-attack",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009477",
+  "msg": "ET SCAN SQLBrute SQL Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009479",
+  "msg": "ET SCAN Asp-Audit Web Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "13",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009481",
+  "msg": "ET SCAN Grendel-Scan Web Application Security Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009646",
+  "msg": "ET SCAN Acunetix Version 6 (Free Edition) Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:$HTTP_PORTS"
+ },
+ {
+  "sid": "2010215",
+  "msg": "ET SCAN SQL Injection Attempt (Agent uil2pn)",
+  "classtype": "web-application-attack",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010493",
+  "msg": "ET SCAN Non-Allowed Host Tried to Connect to MySQL Server",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:3306 -> any:any"
+ },
+ {
+  "sid": "2010494",
+  "msg": "ET SCAN Multiple MySQL Login Failures Possible Brute Force Attempt",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:3306 -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2010508",
+  "msg": "ET SCAN Springenwerk XSS Scanner User-Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2011029",
+  "msg": "ET SCAN Netsparker Default User-Agent",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2011030",
+  "msg": "ET SCAN Netsparker Scan in Progress",
+  "classtype": "attempted-recon",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2013263",
+  "msg": "ET SCAN Nessus FTP Scan detected (ftp_anonymous.nasl)",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "ftp",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2013264",
+  "msg": "ET SCAN Nessus FTP Scan detected (ftp_writeable_directories.nasl)",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "ftp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2013779",
+  "msg": "ET SCAN Positive Technologies XSpider Security Scanner User-Agent (PTX)",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2014541",
+  "msg": "ET SCAN FHScan core User-Agent Detect",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2015940",
+  "msg": "ET SCAN SFTP/FTP Password Exposure via sftp-config.json",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2015986",
+  "msg": "ET SCAN MYSQL MySQL Remote FAST Account Password Cracking",
+  "classtype": "protocol-command-decode",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $SQL_SERVERS:3306"
+ },
+ {
+  "sid": "2021024",
+  "msg": "ET SCAN Nmap NSE Heartbleed Response",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> any:any"
+ },
+ {
+  "sid": "2021058",
+  "msg": "ET SCAN Xenu Link Sleuth Scanner Outbound",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2023510",
+  "msg": "ET SCAN Redis SSH Key Overwrite Probing",
+  "classtype": "misc-attack",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:6379"
+ },
+ {
+  "sid": "2023753",
+  "msg": "ET SCAN MS Terminal Server Traffic on Non-standard Port",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:!3389"
+ },
+ {
+  "sid": "2024364",
+  "msg": "ET SCAN Possible Nmap User-Agent Observed",
+  "classtype": "web-application-attack",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> any:any"
+ },
+ {
+  "sid": "2031602",
+  "msg": "ET SCAN Generic IDBTE4M Exploit Scanner (Outbound)",
+  "classtype": "bad-unknown",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2031603",
+  "msg": "ET SCAN Generic IDBTE4M Exploit Scanner (Inbound)",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2034253",
+  "msg": "ET SCAN FTPSync Settings Disclosure Attempt",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2100353",
+  "msg": "GPL SCAN adm scan",
+  "classtype": "suspicious-login",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:21"
+ },
+ {
+  "sid": "2100617",
+  "msg": "GPL SCAN ssh-research-scanner",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:22"
+ },
+ {
+  "sid": "2101102",
+  "msg": "GPL SCAN nessus 1.X 404 probe",
+  "classtype": "web-application-attack",
+  "rev": "13",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2101638",
+  "msg": "GPL SCAN SSH Version map attempt",
+  "classtype": "network-scan",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:22"
+ },
+ {
+  "sid": "2102585",
+  "msg": "GPL SCAN nessus 2.x 404 probe",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2029473",
+  "msg": "ET SCAN ELF/Mirai User-Agent Observed (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029577",
+  "msg": "ET SCAN Polaris Botnet User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029645",
+  "msg": "ET SCAN Polaris Botnet User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029759",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029763",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029769",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029792",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029790",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029808",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029929",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2011497",
+  "msg": "ET SCAN Hydra User-Agent",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2013492",
+  "msg": "ET SCAN McAfee/Foundstone Scanner Web Scan",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2012936",
+  "msg": "ET SCAN ZmEu Scanner User-Agent Inbound",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009555",
+  "msg": "ET SCAN Absinthe SQL Injection Tool HTTP Header Detected",
+  "classtype": "attempted-recon",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030048",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030198",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030273",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030373",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030375",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030470",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030583",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030676",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030692",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2003924",
+  "msg": "ET SCAN WebHack Control Center User-Agent Inbound (WHCC/)",
+  "classtype": "trojan-activity",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008228",
+  "msg": "ET SCAN Suspicious User-Agent inbound (bot)",
+  "classtype": "trojan-activity",
+  "rev": "13",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009833",
+  "msg": "ET SCAN WITOOL SQL Injection Scan",
+  "classtype": "attempted-recon",
+  "rev": "14",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2018755",
+  "msg": "ET SCAN Possible WordPress xmlrpc.php BruteForce in Progress - Response",
+  "classtype": "attempted-admin",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HTTP_SERVERS:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2002664",
+  "msg": "ET SCAN Nessus User Agent",
+  "classtype": "attempted-recon",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011887",
+  "msg": "ET SCAN Medusa User-Agent",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2023688",
+  "msg": "ET SCAN Acunetix scan in progress acunetix variable in http_uri",
+  "classtype": "web-application-attack",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2023687",
+  "msg": "ET SCAN Acunetix scan in progress acunetix_wvs_security_test in http_uri",
+  "classtype": "web-application-attack",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2033166",
+  "msg": "ET SCAN AOL Webcrawler User-Agent",
+  "classtype": "not-suspicious",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2033165",
+  "msg": "ET SCAN Exabot Webcrawler User Agent",
+  "classtype": "not-suspicious",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011390",
+  "msg": "ET SCAN Nikto Scan Remote File Include Retrieval",
+  "classtype": "web-application-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2030271",
+  "msg": "ET SCAN Observed Suspicious UA (Callstranger Vulnerability Checker)",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2029019",
+  "msg": "ET SCAN Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2016033",
+  "msg": "ET SCAN Simple Slowloris Flooder",
+  "classtype": "web-application-attack",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2012606",
+  "msg": "ET SCAN Havij SQL Injection Tool User-Agent Inbound",
+  "classtype": "web-application-attack",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011974",
+  "msg": "ET SCAN Metasploit WMAP GET len 0 and type",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011924",
+  "msg": "ET SCAN Havij SQL Injection Tool User-Agent Outbound",
+  "classtype": "web-application-attack",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2011721",
+  "msg": "ET SCAN Possible Fast-Track Tool Spidering User-Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2011027",
+  "msg": "ET SCAN w3af Scan In Progress ARGENTINA Req Method",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010960",
+  "msg": "ET SCAN WhatWeb Web Application Fingerprint Scanner Default User-Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008537",
+  "msg": "ET SCAN Hmap Webserver Fingerprint Scan",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008417",
+  "msg": "ET SCAN Wapiti Web Server Vulnerability Scan",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2003869",
+  "msg": "ET SCAN ProxyReconBot CONNECT method to Mail",
+  "classtype": "misc-attack",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010715",
+  "msg": "ET SCAN ZmEu exploit scanner",
+  "classtype": "web-application-attack",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2017615",
+  "msg": "ET SCAN NETWORK Outgoing Masscan detected",
+  "classtype": "network-scan",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> any:any"
+ },
+ {
+  "sid": "2017616",
+  "msg": "ET SCAN NETWORK Incoming Masscan detected",
+  "classtype": "network-scan",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2018800",
+  "msg": "ET SCAN Chroot-apache0day Unknown Web Scanner User Agent",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030093",
+  "msg": "ET SCAN JAWS Webserver Unauthenticated Shell Command Execution",
+  "classtype": "web-application-attack",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2022240",
+  "msg": "ET SCAN Possible Scanning for Vulnerable JBoss",
+  "classtype": "web-application-attack",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2024843",
+  "msg": "ET SCAN struts-pwn User-Agent",
+  "classtype": "attempted-user",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2025461",
+  "msg": "ET SCAN NYU Internet Census UA Inbound",
+  "classtype": "network-scan",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2003466",
+  "msg": "ET SCAN PHP Attack Tool Morfeus F Scanner",
+  "classtype": "web-application-attack",
+  "rev": "17",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030964",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030995",
+  "msg": "ET SCAN ELF/Mirai Variant User-Agent (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2013171",
+  "msg": "ET SCAN DominoHunter Security Scan in Progress",
+  "classtype": "web-application-attack",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009154",
+  "msg": "ET SCAN Automated Injection Tool User-Agent (AutoGetColumn)",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2016032",
+  "msg": "ET SCAN JCE Joomla Scanner",
+  "classtype": "web-application-attack",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2011089",
+  "msg": "ET SCAN DavTest WebDav Vulnerability Scanner Default User Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010768",
+  "msg": "ET SCAN Open-Proxy ScannerBot (webcollage-UA)",
+  "classtype": "bad-unknown",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2029054",
+  "msg": "ET SCAN Zmap User-Agent (Inbound)",
+  "classtype": "network-scan",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2013791",
+  "msg": "ET SCAN Apache mod_proxy Reverse Proxy Exposure 1",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2013792",
+  "msg": "ET SCAN Apache mod_proxy Reverse Proxy Exposure 2",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008186",
+  "msg": "ET SCAN DirBuster Web App Scan in Progress",
+  "classtype": "web-application-attack",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008538",
+  "msg": "ET SCAN Sqlmap SQL Injection Scan",
+  "classtype": "attempted-recon",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008628",
+  "msg": "ET SCAN WSFuzzer Web Application Fuzzing",
+  "classtype": "attempted-recon",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008729",
+  "msg": "ET SCAN Mini MySqlatOr SQL Injection Scanner",
+  "classtype": "attempted-recon",
+  "rev": "10",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009159",
+  "msg": "ET SCAN Toata Scanner User-Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009358",
+  "msg": "ET SCAN Nmap Scripting Engine User-Agent Detected (Nmap Scripting Engine)",
+  "classtype": "web-application-attack",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009480",
+  "msg": "ET SCAN Grendel Web Scan - Default User Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009483",
+  "msg": "ET SCAN Grabber.py Web Scan Detected",
+  "classtype": "attempted-recon",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2009769",
+  "msg": "ET SCAN SQL Power Injector SQL Injection User Agent Detected",
+  "classtype": "attempted-recon",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2007757",
+  "msg": "ET SCAN w3af User Agent",
+  "classtype": "attempted-recon",
+  "rev": "15",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2021949",
+  "msg": "ET SCAN abdullkarem Wordpress PHP Scanner",
+  "classtype": "web-application-attack",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2013416",
+  "msg": "ET SCAN libwww-perl GET to // with specific HTTP header ordering without libwww-perl User-Agent",
+  "classtype": "attempted-recon",
+  "rev": "14",
+  "action": "alert",
+  "protocol": "http1",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2019963",
+  "msg": "ET SCAN Acunetix Accept HTTP Header detected scan in progress",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2032091",
+  "msg": "ET SCAN DNS Query for allports.exposed",
+  "classtype": "network-scan",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "dns",
+  "direction": "any:any -> any:any"
+ },
+ {
+  "sid": "2013472",
+  "msg": "ET SCAN Kingcope KillApache.pl Apache mod_deflate DoS attempt",
+  "classtype": "attempted-dos",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030272",
+  "msg": "ET SCAN UPnP SUBSCRIBE Inbound - Possible CallStranger Scan (CVE-2020-12695)",
+  "classtype": "attempted-recon",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2012077",
+  "msg": "ET SCAN Goatzapszu Header from unknown Scanning Tool",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2025760",
+  "msg": "ET SCAN HP Enterprise VAN SDN Controller",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2017950",
+  "msg": "ET SCAN FOCA uri",
+  "classtype": "attempted-recon",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2011028",
+  "msg": "ET SCAN HZZP Scan in Progress calc in Headers",
+  "classtype": "attempted-recon",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2022243",
+  "msg": "ET SCAN COMMIX Command injection scan attempt",
+  "classtype": "web-application-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2029317",
+  "msg": "ET SCAN Tomato Router Default Credentials (admin:admin)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2029318",
+  "msg": "ET SCAN Tomato Router Default Credentials (root:admin)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2010956",
+  "msg": "ET SCAN Skipfish Web Application Scan Detected (2)",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2010019",
+  "msg": "ET SCAN Tomcat Web Application Manager scanning",
+  "classtype": "attempted-recon",
+  "rev": "14",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009218",
+  "msg": "ET SCAN Tomcat admin-blank login credentials",
+  "classtype": "attempted-admin",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2009217",
+  "msg": "ET SCAN Tomcat admin-admin login credentials",
+  "classtype": "attempted-admin",
+  "rev": "13",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2008455",
+  "msg": "ET SCAN Tomcat Auth Brute Force attempt (manager)",
+  "classtype": "web-application-attack",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008454",
+  "msg": "ET SCAN Tomcat Auth Brute Force attempt (tomcat)",
+  "classtype": "web-application-attack",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008453",
+  "msg": "ET SCAN Tomcat Auth Brute Force attempt (admin)",
+  "classtype": "web-application-attack",
+  "rev": "12",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2008312",
+  "msg": "ET SCAN DEBUG Method Request with Command",
+  "classtype": "attempted-recon",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2033101",
+  "msg": "ET SCAN OpenVASVT RCE Test String in HTTP Request Inbound",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2033102",
+  "msg": "ET SCAN OpenVASVT RCE Test String in HTTP Request Outbound",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2052821",
+  "msg": "ET SCAN OpenVASVT RCE Test String in HTTP Request Inbound M2",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2052822",
+  "msg": "ET SCAN OpenVASVT RCE Test String in HTTP Request Inbound M3",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2025780",
+  "msg": "ET SCAN ntop-ng Authentication Bypass via Session ID Guessing",
+  "classtype": "attempted-recon",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2012204",
+  "msg": "ET SCAN Modified Sipvicious Sundayddr Scanner (sipsscuser)",
+  "classtype": "attempted-recon",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:5060"
+ },
+ {
+  "sid": "2058707",
+  "msg": "ET SCAN ELF/Mirai Variant UDP (Inbound) M1",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2058708",
+  "msg": "ET SCAN ELF/Mirai Variant UDP (Inbound) M2",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2071249",
+  "msg": "ET SCAN Zimbra Collaboration Global Address List Bulk Enumeration",
+  "classtype": "attempted-recon",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> [$HOME_NET,$SMTP_SERVERS]:any"
+ },
+ {
+  "sid": "2002979",
+  "msg": "ET MALWARE SC-KeyLog Keylogger Installed - Sending Initial Email Report",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2008348",
+  "msg": "ET MALWARE SC-KeyLog Keylogger Installed - Sending Log Email Report",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2007922",
+  "msg": "ET MALWARE Backdoor.Win32.VB.brg C&C Checkin",
+  "classtype": "command-and-control",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2009862",
+  "msg": "ET MALWARE Banker Trojan CnC AddNew Command",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008310",
+  "msg": "ET MALWARE Codesoft PW Stealer Email Report Outbound",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2009201",
+  "msg": "ET MALWARE Conficker.b Shellcode",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:445"
+ },
+ {
+  "sid": "2008726",
+  "msg": "ET MALWARE Gimmiv Infection Ping Outbound",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2009130",
+  "msg": "ET MALWARE Overtoolbar.net Backdoor ICMP Checkin Request",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2009131",
+  "msg": "ET MALWARE Overtoolbar.net Backdoor ICMP Checkin Response",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2007973",
+  "msg": "ET MALWARE Perfect Keylogger FTP Initial Install Log Upload",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008327",
+  "msg": "ET MALWARE Perfect Keylogger FTP Initial Install Log Upload (Null obfuscated)",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008021",
+  "msg": "ET MALWARE Turkojan C&C Initial Checkin (ams)",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008026",
+  "msg": "ET MALWARE Turkojan C&C Keepalive (BAGLANTI)",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2002977",
+  "msg": "ET MALWARE Banload Downloader Infection - Sending initial email to owner",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2002976",
+  "msg": "ET MALWARE Banker.Delf Infection - Sending Initial Email to Owner",
+  "classtype": "trojan-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2002981",
+  "msg": "ET MALWARE Banker.Delf Infection variant 4 - Sending Initial Email to Owner",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2008005",
+  "msg": "ET MALWARE Backdoor.Win32.VB.cfi (related) System Info Upload via FTP",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008039",
+  "msg": "ET MALWARE Egspy Infection Report Email",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2007611",
+  "msg": "ET MALWARE Possible Infection Report Mail - Indy Mail lib and No Message Body - Priority 1",
+  "classtype": "trojan-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2007612",
+  "msg": "ET MALWARE Possible Infection Report Mail - Indy Mail lib and No Message Body - Priority 3",
+  "classtype": "trojan-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2012237",
+  "msg": "ET MALWARE x0Proto Client Info",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2012238",
+  "msg": "ET MALWARE x0Proto Pong",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2011926",
+  "msg": "ET MALWARE X-Tag Zeus Mitmo user agent",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2013246",
+  "msg": "ET MALWARE Ruskill/Palevo CnC PONG",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:1024: -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2008123",
+  "msg": "ET MALWARE Likely Bot Username in IRC (XP-..)",
+  "classtype": "trojan-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008124",
+  "msg": "ET MALWARE Likely Bot Nick in IRC (USA +..)",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008644",
+  "msg": "ET MALWARE Spy-Net Trojan Connection",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014047",
+  "msg": "ET MALWARE Double HTTP/1.1 Header Inbound - Likely Hostile Traffic",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$HTTP_PORTS"
+ },
+ {
+  "sid": "2014166",
+  "msg": "ET MALWARE W32/Mentory CnC Server Providing Update Details",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:$HTTP_PORTS -> $HOME_NET:any"
+ },
+ {
+  "sid": "2012882",
+  "msg": "ET MALWARE Backdoor.Win32.Poison.AU checkin",
+  "classtype": "command-and-control",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014343",
+  "msg": "ET MALWARE SMTP Subject Line Contains C Path and EXE Possible Trojan Reporting Execution Path/Binary Name",
+  "classtype": "bad-unknown",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2013451",
+  "msg": "ET MALWARE NgrBot IRC CnC Channel Join",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2013543",
+  "msg": "ET MALWARE W32/iGrabber Info Stealer FTP Upload",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "ftp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014239",
+  "msg": "ET MALWARE W32.Duptwux/Ganelp FTP Username - onthelinux",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "ftp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2013911",
+  "msg": "ET MALWARE P2P Zeus or ZeroAccess Request To CnC",
+  "classtype": "command-and-control",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014762",
+  "msg": "ET MALWARE W32/SpyBanker Infection Confirmation Email 2",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014887",
+  "msg": "ET MALWARE W32/Bakcorox.A ProxyBot CnC Server Connection",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:443"
+ },
+ {
+  "sid": "2015474",
+  "msg": "ET MALWARE ZeroAccess udp traffic detected",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:53"
+ },
+ {
+  "sid": "2015510",
+  "msg": "ET MALWARE ProxyBox - ProxyBotCommand - I_AM",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008023",
+  "msg": "ET MALWARE Turkojan C&C Info Command Response (MINFO)",
+  "classtype": "command-and-control",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:81:"
+ },
+ {
+  "sid": "2016441",
+  "msg": "ET MALWARE SEASALT Client Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2016443",
+  "msg": "ET MALWARE STARSYPOUND Client Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:443"
+ },
+ {
+  "sid": "2016685",
+  "msg": "ET MALWARE Win32/Delfinject Check-in",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017315",
+  "msg": "ET MALWARE DDoS.Win32.Agent.bay Covert Channel (VERSONEX and Mr.Black)",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "ip",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008212",
+  "msg": "ET MALWARE Optix Pro Trojan/Keylogger Reporting Installation via Email",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2016292",
+  "msg": "ET MALWARE Mashigoom/Tranwos/RevProxy ClickFraud - hello",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2015482",
+  "msg": "ET MALWARE ZeroAccess Outbound udp traffic detected",
+  "classtype": "trojan-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017525",
+  "msg": "ET MALWARE OSX/Leverage.A Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017716",
+  "msg": "ET MALWARE Athena Bot Nick in IRC",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017724",
+  "msg": "ET MALWARE PWS Win32/Lmir.BMQ checkin",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "any:any -> any:any"
+ },
+ {
+  "sid": "2017727",
+  "msg": "ET MALWARE Possible SSH Linux.Fokirtor backchannel command",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> any:22"
+ },
+ {
+  "sid": "2007862",
+  "msg": "ET MALWARE LDPinch Checkin (3)",
+  "classtype": "command-and-control",
+  "rev": "11",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017983",
+  "msg": "ET MALWARE Java/Jacksbot Check-in",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018133",
+  "msg": "ET MALWARE Win32/Tapazom.A",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1431"
+ },
+ {
+  "sid": "2018134",
+  "msg": "ET MALWARE Win32/Tapazom.A 2",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1431"
+ },
+ {
+  "sid": "2018165",
+  "msg": "ET MALWARE Gh0st Trojan CnC 3",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008908",
+  "msg": "ET MALWARE Trojan.Delf-5496 New Infection Report",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2018275",
+  "msg": "ET MALWARE Linux/Onimiki DNS trojan activity long format (Outbound)",
+  "classtype": "trojan-activity",
+  "rev": "8",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:any -> any:53"
+ },
+ {
+  "sid": "2018276",
+  "msg": "ET MALWARE Linux/Onimiki DNS trojan activity long format (Inbound)",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:53"
+ },
+ {
+  "sid": "2018320",
+  "msg": "ET MALWARE Win32/Sisproc",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018325",
+  "msg": "ET MALWARE Bozok.RAT checkin",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:80"
+ },
+ {
+  "sid": "2018129",
+  "msg": "ET MALWARE W32/Trojan-Gypikon Sending Data",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2014270",
+  "msg": "ET MALWARE Backdoor.Win32.RShot Ping Outbound",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$HOME_NET:any -> any:any"
+ },
+ {
+  "sid": "2018467",
+  "msg": "ET MALWARE PandoraRat/Refroso.bsp Activity",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018468",
+  "msg": "ET MALWARE PandoraRat/Refroso.bsp Directory Listing Sent To Server",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018482",
+  "msg": "ET MALWARE Possible Zendran ELF IRCBot Joining Channel",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018555",
+  "msg": "ET MALWARE Putter Panda 3PARA RAT initial beacon",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018666",
+  "msg": "ET MALWARE Possible Zeus P2P Variant DGA NXDOMAIN Responses July 11 2014",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2018885",
+  "msg": "ET MALWARE Windows Command Prompt OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017314",
+  "msg": "ET MALWARE PRISM Backdoor",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2008411",
+  "msg": "ET MALWARE LDPinch SMTP Password Report with mail client The Bat!",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2018980",
+  "msg": "ET MALWARE Machete FTP activity",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "ftp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019002",
+  "msg": "ET MALWARE Windows systeminfo Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019080",
+  "msg": "ET MALWARE Windows arp -a Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019081",
+  "msg": "ET MALWARE Windows set Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019084",
+  "msg": "ET MALWARE Syrian Malware Checkin",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019171",
+  "msg": "ET MALWARE DoS.Linux/Elknot.E Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017505",
+  "msg": "ET MALWARE Gh0st Trojan CnC 2",
+  "classtype": "command-and-control",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:!25"
+ },
+ {
+  "sid": "2016474",
+  "msg": "ET MALWARE CommentCrew UGX Backdoor initial connection",
+  "classtype": "targeted-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2016476",
+  "msg": "ET MALWARE CommentCrew Possible APT c2 communications get system",
+  "classtype": "targeted-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:80 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2016477",
+  "msg": "ET MALWARE CommentCrew Possible APT c2 communications html return 1",
+  "classtype": "targeted-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:80 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2018982",
+  "msg": "ET MALWARE Probable OneLouder downloader (Zeus P2P) exe download",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019207",
+  "msg": "ET MALWARE Linux/BillGates Checkin",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019177",
+  "msg": "ET MALWARE Linux/AES.DDoS Sending Real/Fake CPU&BW Info",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019229",
+  "msg": "ET MALWARE Linux/Yangji.A Checkin",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019294",
+  "msg": "ET MALWARE Linux/ShellshockCampaign.DDOSBot Reporting IP",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019326",
+  "msg": "ET MALWARE Likely Bot Nick in IRC (Country Code ISO 3166-1 alpha-2)",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019327",
+  "msg": "ET MALWARE Likely Bot Nick in IRC (Country Code ISO 3166-1 alpha-3)",
+  "classtype": "trojan-activity",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2003603",
+  "msg": "ET MALWARE W32.Virut.A joining an IRC Channel",
+  "classtype": "trojan-activity",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019471",
+  "msg": "ET MALWARE Possible IRCBot.DDOS Common Commands",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019486",
+  "msg": "ET MALWARE Possible IRC Bot Common PRIVMSG Commands",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019609",
+  "msg": "ET MALWARE Possible Tinba DGA NXDOMAIN Responses (2)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019692",
+  "msg": "ET MALWARE Possible Emotet DGA NXDOMAIN Responses",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019809",
+  "msg": "ET MALWARE W32/DoubleTap.APT Downloader Socks5 Setup Request",
+  "classtype": "targeted-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1913"
+ },
+ {
+  "sid": "2019298",
+  "msg": "ET MALWARE Linux/ShellshockCampaign.DDOSBot Execute Shell Command CnC Server Message",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019304",
+  "msg": "ET MALWARE Linux/ShellshockCampaign.DDOSBot Terminate Process CnC Server Message",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019300",
+  "msg": "ET MALWARE Linux/ShellshockCampaign.DDOSBot UDP Flood CnC Server Message",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2016772",
+  "msg": "ET MALWARE Win32/Enchanim C2 Client Check-in",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019740",
+  "msg": "ET MALWARE OSX/AlienSpy RAT Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019808",
+  "msg": "ET MALWARE W32/DoubleTap.APT Downloader CnC Beacon",
+  "classtype": "targeted-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:81"
+ },
+ {
+  "sid": "2014354",
+  "msg": "ET MALWARE W32/SCKeyLog.InfoStealer Installation Confirmation Via SMTP",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:25"
+ },
+ {
+  "sid": "2019882",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.cc)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019884",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.to)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019885",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.in)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019886",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.hk)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019888",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.tk)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019889",
+  "msg": "ET MALWARE Possible Dyre DGA NXDOMAIN Responses (.so)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019926",
+  "msg": "ET MALWARE HawkEye Keylogger Report SMTP",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[25,587]"
+ },
+ {
+  "sid": "2019928",
+  "msg": "ET MALWARE Probable Keylogger Report SMTP",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[25,587]"
+ },
+ {
+  "sid": "2019929",
+  "msg": "ET MALWARE Possible Net Crawler SMB Share Access unicode (Operation Cleaver)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:[139,445]"
+ },
+ {
+  "sid": "2019930",
+  "msg": "ET MALWARE Possible Net Crawler SMB Share Access ascii (Operation Cleaver)",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:[139,445]"
+ },
+ {
+  "sid": "2019932",
+  "msg": "ET MALWARE Trojan/Win32.Espy Report via SMTP",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[25,587]"
+ },
+ {
+  "sid": "2019994",
+  "msg": "ET MALWARE US-CERT TA14-353A Wiper 2",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:any"
+ },
+ {
+  "sid": "2020018",
+  "msg": "ET MALWARE US-CERT TA14-353A Proxy Tool 2",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:any"
+ },
+ {
+  "sid": "2020026",
+  "msg": "ET MALWARE Win32/Spy.Agent.OHT - AnunakAPT TCP Keep-Alive",
+  "classtype": "targeted-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020167",
+  "msg": "ET MALWARE Linux/DDoS.M Admin console status",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:1024:"
+ },
+ {
+  "sid": "2020169",
+  "msg": "ET MALWARE Hong Kong SWC Attack PcClient CnC Beacon",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[80,443]"
+ },
+ {
+  "sid": "2020188",
+  "msg": "ET MALWARE Linux/ChinaZ DDoS Bot Checkin",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020209",
+  "msg": "ET MALWARE Win32.ChinaZ.DDoSClient Checkin",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:65535"
+ },
+ {
+  "sid": "2020382",
+  "msg": "ET MALWARE Skeleton Key Filename in SMB2 Traffic",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $HOME_NET:[139,445]"
+ },
+ {
+  "sid": "2020383",
+  "msg": "ET MALWARE Skeleton Key Filename in SMB2 Traffic",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $HOME_NET:[139,445]"
+ },
+ {
+  "sid": "2020384",
+  "msg": "ET MALWARE Skeleton Key Filename in SMB2 Traffic",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $HOME_NET:[139,445]"
+ },
+ {
+  "sid": "2020411",
+  "msg": "ET MALWARE MSIL/Golroted.B Keylogger FTP",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:21"
+ },
+ {
+  "sid": "2020412",
+  "msg": "ET MALWARE Predator Pain Keylogger FTP",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:21"
+ },
+ {
+  "sid": "2020456",
+  "msg": "ET MALWARE Carbanak APT CnC Beacon 2",
+  "classtype": "targeted-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020455",
+  "msg": "ET MALWARE Carbanak APT CnC Beacon 1",
+  "classtype": "targeted-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019172",
+  "msg": "ET MALWARE Linux.DDoS Checkin",
+  "classtype": "command-and-control",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020741",
+  "msg": "ET MALWARE Win32.Hyteod.acox Domain Generation Algorithm (DGA) Lookup NXDOMAIN Response",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2020742",
+  "msg": "ET MALWARE Win32.Hyteod.acox Domain Generation Algorithm (DGA) Lookup NXDOMAIN Response",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2020809",
+  "msg": "ET MALWARE Volatile Cedar Win32.Explosive CnC Beacon 3",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2016771",
+  "msg": "ET MALWARE Win32/Enchanim C2 Injection Download",
+  "classtype": "command-and-control",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2020884",
+  "msg": "ET MALWARE Kriptovor SMTP Traffic",
+  "classtype": "trojan-activity",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[25,465,587]"
+ },
+ {
+  "sid": "2020957",
+  "msg": "ET MALWARE Windows nbtstat -s Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020954",
+  "msg": "ET MALWARE Windows nbtstat -a Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020955",
+  "msg": "ET MALWARE Windows nbtstat -n Microsoft Windows DOS prompt command exit OUTBOUND",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2007950",
+  "msg": "ET MALWARE Possible Infection Report Mail - Indy Mail lib and Nome do Computador in Body",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[25,587]"
+ },
+ {
+  "sid": "2021006",
+  "msg": "ET MALWARE Email Contains InternetOpen WinInet API Call - Potentially Dridex MalDoc 1",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021007",
+  "msg": "ET MALWARE Email Contains InternetOpen WinInet API Call - Potentially Dridex MalDoc 2",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021008",
+  "msg": "ET MALWARE Email Contains InternetOpen WinInet API Call - Potentially Dridex MalDoc 3",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021009",
+  "msg": "ET MALWARE Email Contains wininet.dll Call - Potentially Dridex MalDoc 1",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021010",
+  "msg": "ET MALWARE Email Contains wininet.dll Call - Potentially Dridex MalDoc 2",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021011",
+  "msg": "ET MALWARE Email Contains wininet.dll Call - Potentially Dridex MalDoc 3",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2021149",
+  "msg": "ET MALWARE Possible Linux/Moose Telnet CnC Beacon",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021316",
+  "msg": "ET MALWARE Linux/ChinaZ DDoS Bot Checkin 2",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021385",
+  "msg": "ET MALWARE Win32/Denisca.A CnC Beacon",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021389",
+  "msg": "ET MALWARE Win32/Denisca.A CnC Beacon 2",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021437",
+  "msg": "ET MALWARE Tsyrval Panda CnC Beacon",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:1024:"
+ },
+ {
+  "sid": "2021503",
+  "msg": "ET MALWARE Java/QRat Checkin",
+  "classtype": "command-and-control",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021585",
+  "msg": "ET MALWARE APT Lurker GET CnC Beacon",
+  "classtype": "targeted-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:443"
+ },
+ {
+  "sid": "2021748",
+  "msg": "ET MALWARE Win32/Boaxxe.BR CnC Beacon",
+  "classtype": "command-and-control",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2010375",
+  "msg": "ET EXPLOIT Possible Oracle Database Text Component ctxsys.drvxtabc.create_tables Remote SQL Injection Attempt",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:$ORACLE_PORTS"
+ },
+ {
+  "sid": "2101894",
+  "msg": "GPL EXPLOIT kadmind buffer overflow attempt",
+  "classtype": "shellcode-detect",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:749"
+ },
+ {
+  "sid": "2101895",
+  "msg": "GPL EXPLOIT kadmind buffer overflow attempt",
+  "classtype": "shellcode-detect",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:751"
+ },
+ {
+  "sid": "2101896",
+  "msg": "GPL EXPLOIT kadmind buffer overflow attempt",
+  "classtype": "shellcode-detect",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:749"
+ },
+ {
+  "sid": "2101897",
+  "msg": "GPL EXPLOIT kadmind buffer overflow attempt",
+  "classtype": "shellcode-detect",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:751"
+ },
+ {
+  "sid": "2102123",
+  "msg": "GPL EXPLOIT Microsoft cmd.exe banner",
+  "classtype": "successful-admin",
+  "rev": "7",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:!21:23 -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017094",
+  "msg": "ET EXPLOIT IPMI Cipher 0 Authentication mode set",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> $HOME_NET:[623,664]"
+ },
+ {
+  "sid": "2017205",
+  "msg": "ET EXPLOIT Wscript Shell Run Attempt - Likely Hostile",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2017923",
+  "msg": "ET EXPLOIT MMCS service (Little Endian)",
+  "classtype": "web-application-attack",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:32764"
+ },
+ {
+  "sid": "2017924",
+  "msg": "ET EXPLOIT MMCS service (Big Endian)",
+  "classtype": "web-application-attack",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:32764"
+ },
+ {
+  "sid": "2019491",
+  "msg": "ET EXPLOIT Possible Malicious NAT-PMP Response Successful TCP Map to External Network",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:5351 -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2019492",
+  "msg": "ET EXPLOIT Possible Malicious NAT-PMP Response Successful UDP Map to External Network",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:5351 -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2021572",
+  "msg": "ET EXPLOIT Possible BIND9 DoS CVE-2015-5477 M1",
+  "classtype": "attempted-dos",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:53"
+ },
+ {
+  "sid": "2021574",
+  "msg": "ET EXPLOIT Possible BIND9 DoS CVE-2015-5477 M3",
+  "classtype": "attempted-dos",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:53"
+ },
+ {
+  "sid": "2021575",
+  "msg": "ET EXPLOIT Possible BIND9 DoS CVE-2015-5477 M4",
+  "classtype": "attempted-dos",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:53"
+ },
+ {
+  "sid": "2021573",
+  "msg": "ET EXPLOIT Possible BIND9 DoS CVE-2015-5477 M2",
+  "classtype": "attempted-dos",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:53"
+ },
+ {
+  "sid": "2022291",
+  "msg": "ET EXPLOIT Juniper ScreenOS telnet Backdoor Default Password Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:23"
+ },
+ {
+  "sid": "2022369",
+  "msg": "ET EXPLOIT Possible CVE-2016-0777 Server Advertises Suspicious Roaming Support",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "ssh",
+  "direction": "any:$SSH_PORTS -> any:any"
+ },
+ {
+  "sid": "2022370",
+  "msg": "ET EXPLOIT Possible CVE-2016-0777 Client Sent Roaming Resume Request",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:$SSH_PORTS"
+ },
+ {
+  "sid": "2022542",
+  "msg": "ET EXPLOIT Possible 2015-7547 PoC Server Response",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2022543",
+  "msg": "ET EXPLOIT Possible CVE-2015-7547 Long Response to A lookup",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2022544",
+  "msg": "ET EXPLOIT Possible CVE-2015-7547 Long Response to AAAA lookup",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2022545",
+  "msg": "ET EXPLOIT Possible CVE-2015-7547 Malformed Server Response A/AAAA",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2022699",
+  "msg": "ET EXPLOIT Quanta LTE Router UDP Backdoor Activation Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:39889"
+ },
+ {
+  "sid": "2022712",
+  "msg": "ET EXPLOIT Dameware DMRC Buffer Overflow Attempt (CVE-2016-2345)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:6129"
+ },
+ {
+  "sid": "2022820",
+  "msg": "ET EXPLOIT CVE-2016-1287 Public Exploit ShellCode",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:500"
+ },
+ {
+  "sid": "2023070",
+  "msg": "ET EXPLOIT Equation Group ExtraBacon Cisco ASA PMCHECK Disable",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:161"
+ },
+ {
+  "sid": "2023071",
+  "msg": "ET EXPLOIT Equation Group ExtraBacon Cisco ASA AAAADMINAUTH Disable",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> any:161"
+ },
+ {
+  "sid": "2023086",
+  "msg": "ET EXPLOIT CISCO FIREWALL SNMP Buffer Overflow Extrabacon (CVE-2016-6366)",
+  "classtype": "misc-attack",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:161"
+ },
+ {
+  "sid": "2023201",
+  "msg": "ET EXPLOIT Possible MySQL CVE-2016-6662 Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2023311",
+  "msg": "ET EXPLOIT Possible Cisco IKEv1 Information Disclosure Vulnerability CVE-2016-6415",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:500"
+ },
+ {
+  "sid": "2023511",
+  "msg": "ET EXPLOIT REDIS Attemted SSH Authorized Key Writing Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:6379"
+ },
+ {
+  "sid": "2023512",
+  "msg": "ET EXPLOIT REDIS Attempted SSH Key Upload",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:6379"
+ },
+ {
+  "sid": "2019490",
+  "msg": "ET EXPLOIT Possible Malicious NAT-PMP Response to External Network",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$HOME_NET:5351 -> [!224.0.0.1,$EXTERNAL_NET]:any"
+ },
+ {
+  "sid": "2023755",
+  "msg": "ET EXPLOIT Possible Microsoft RDP Client for Mac RCE",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2022506",
+  "msg": "ET EXPLOIT Possible CVE-2016-1287 Invalid Fragment Size Inbound",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:500"
+ },
+ {
+  "sid": "2022515",
+  "msg": "ET EXPLOIT Possible CVE-2016-1287 Invalid Fragment Size Inbound 2",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:500"
+ },
+ {
+  "sid": "2022516",
+  "msg": "ET EXPLOIT Possible CVE-2016-1287 Invalid Fragment Size Inbound 3",
+  "classtype": "trojan-activity",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:500"
+ },
+ {
+  "sid": "2024308",
+  "msg": "ET EXPLOIT NB8-01 - Unauthed RCE via bprd",
+  "classtype": "web-application-attack",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:1556"
+ },
+ {
+  "sid": "2024309",
+  "msg": "ET EXPLOIT NB8-02 - Possible Unauthed RCE via nbbsdtar",
+  "classtype": "web-application-attack",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:1556"
+ },
+ {
+  "sid": "2024310",
+  "msg": "ET EXPLOIT NB8-04 - Possible Unauthed RCE via whitelist bypass",
+  "classtype": "web-application-attack",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:1556"
+ },
+ {
+  "sid": "2024297",
+  "msg": "ET EXPLOIT ETERNALBLUE Exploit M2 MS17-010",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:445"
+ },
+ {
+  "sid": "2025063",
+  "msg": "ET EXPLOIT Exim4 UAF Attempt (BDAT with non-printable chars)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "any:any -> $SMTP_SERVERS:any"
+ },
+ {
+  "sid": "2024980",
+  "msg": "ET EXPLOIT Actiontec C1000A backdoor account M2",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:[23,2323]"
+ },
+ {
+  "sid": "2025472",
+  "msg": "ET EXPLOIT Possible CVE-2018-0171 Exploit (PoC based)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:4786"
+ },
+ {
+  "sid": "2025520",
+  "msg": "ET EXPLOIT Cisco Smart Install Exploitation Tool - Update Ios and Execute",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:4786"
+ },
+ {
+  "sid": "2025521",
+  "msg": "ET EXPLOIT Cisco Smart Install Exploitation Tool - ChangeConfig",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:4786"
+ },
+ {
+  "sid": "2025522",
+  "msg": "ET EXPLOIT Cisco Smart Install Exploitation Tool - GetConfig",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:4786"
+ },
+ {
+  "sid": "2025765",
+  "msg": "ET EXPLOIT DynoRoot DHCP - Client Command Injection",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:67 -> any:68"
+ },
+ {
+  "sid": "2025766",
+  "msg": "ET EXPLOIT CloudMe Sync Buffer Overflow",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:8888"
+ },
+ {
+  "sid": "2025788",
+  "msg": "ET EXPLOIT Oracle Weblogic Server Deserialization Remote Command Execution",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:1024:"
+ },
+ {
+  "sid": "2025793",
+  "msg": "ET EXPLOIT Exim Internet Mailer Remote Code Execution",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2025794",
+  "msg": "ET EXPLOIT xdebug OS Command Execution",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:9000"
+ },
+ {
+  "sid": "2025806",
+  "msg": "ET EXPLOIT bin bash base64 encoded Remote Code Execution 3",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025809",
+  "msg": "ET EXPLOIT php script base64 encoded Remote Code Execution 3",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025812",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 3",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025795",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 1",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025796",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 2",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025797",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 3",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025798",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 4",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025799",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 5",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025800",
+  "msg": "ET EXPLOIT Generic system shell command to php base64 encoded Remote Code Execution 6",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025801",
+  "msg": "ET EXPLOIT file_put_contents php base64 encoded Remote Code Execution 1",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025802",
+  "msg": "ET EXPLOIT file_put_contents php base64 encoded Remote Code Execution 2",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025803",
+  "msg": "ET EXPLOIT file_put_contents php base64 encoded Remote Code Execution 3",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025804",
+  "msg": "ET EXPLOIT bin bash base64 encoded Remote Code Execution 1",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025805",
+  "msg": "ET EXPLOIT bin bash base64 encoded Remote Code Execution 2",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025807",
+  "msg": "ET EXPLOIT php script base64 encoded Remote Code Execution 1",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025808",
+  "msg": "ET EXPLOIT php script base64 encoded Remote Code Execution 2",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025810",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 1",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025811",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 2",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025813",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 4",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025814",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 5",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025815",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 6",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025816",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 7",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025817",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 8",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025818",
+  "msg": "ET EXPLOIT php script double base64 encoded Remote Code Execution 9",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2025821",
+  "msg": "ET EXPLOIT HID VertX and Edge door controllers command_blink_on Remote Command Execution",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> $HOME_NET:4070"
+ },
+ {
+  "sid": "2025861",
+  "msg": "ET EXPLOIT Nanopool Claymore Dual Miner Remote Code Execution Linux",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3333"
+ },
+ {
+  "sid": "2025862",
+  "msg": "ET EXPLOIT Nanopool Claymore Dual Miner Remote Code Execution Windows",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:3333"
+ },
+ {
+  "sid": "2025972",
+  "msg": "ET EXPLOIT Mikrotik Winbox RCE Attempt (CVE-2018-14847)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2026567",
+  "msg": "ET EXPLOIT Possible CVE-2018-4407 - Apple ICMP DoS PoC",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$HOME_NET:any -> any:any"
+ },
+ {
+  "sid": "2018388",
+  "msg": "ET EXPLOIT Possible TLS HeartBleed Unencrypted Request Method 4 (Inbound to Common SSL Port)",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:[443,636,989,990,992,993,994,995,5061,25]"
+ },
+ {
+  "sid": "2018389",
+  "msg": "ET EXPLOIT Possible TLS HeartBleed Unencrypted Request Method 3 (Inbound to Common SSL Port)",
+  "classtype": "bad-unknown",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:[443,636,989,990,992,993,994,995,5061,25]"
+ },
+ {
+  "sid": "2018382",
+  "msg": "ET EXPLOIT Possible OpenSSL HeartBleed Large HeartBeat Response from Common SSL Port (Outbound from Server)",
+  "classtype": "bad-unknown",
+  "rev": "9",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:[21,25,110,143,443,465,587,636,989:995,5061,5222] -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2027973",
+  "msg": "ET EXPLOIT HiSilicon DVR - Default Telnet Root Password Inbound",
+  "classtype": "default-login-attempt",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:23"
+ },
+ {
+  "sid": "2027974",
+  "msg": "ET EXPLOIT HiSilicon DVR - Default Application Backdoor Password",
+  "classtype": "default-login-attempt",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:[554,9527]"
+ },
+ {
+  "sid": "2027959",
+  "msg": "ET EXPLOIT Possible EXIM RCE Inbound (CVE-2019-15846)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "any:any -> $SMTP_SERVERS:any"
+ },
+ {
+  "sid": "2028636",
+  "msg": "ET EXPLOIT Possible EXIM DoS (CVE-2019-16928)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "any:any -> $SMTP_SERVERS:any"
+ },
+ {
+  "sid": "2017061",
+  "msg": "ET EXPLOIT SolusVM 1.13.03 Access to solusvmc-node setuid bin",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2019237",
+  "msg": "ET EXPLOIT Possible CVE-2014-6271 exploit attempt via malicious DHCP ACK",
+  "classtype": "attempted-admin",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:67 -> any:68"
+ },
+ {
+  "sid": "2019289",
+  "msg": "ET EXPLOIT Possible CVE-2014-6271 Attempt Against SIP Proxy",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> $HOME_NET:[5060,5061]"
+ },
+ {
+  "sid": "2019322",
+  "msg": "ET EXPLOIT Possible OpenVPN CVE-2014-6271 attempt",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "any:any -> $HOME_NET:1194"
+ },
+ {
+  "sid": "2019402",
+  "msg": "ET EXPLOIT Possible CVE-2014-6271 malicious DNS response",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2019403",
+  "msg": "ET EXPLOIT Possible CVE-2014-6271 exploit attempt via malicious DNS",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:53 -> $HOME_NET:any"
+ },
+ {
+  "sid": "2023202",
+  "msg": "ET EXPLOIT Possible MySQL cnf overwrite CVE-2016-6662 Attempt",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> $HOME_NET:3306"
+ },
+ {
+  "sid": "2024434",
+  "msg": "ET EXPLOIT Suspicious FTP RETR to .hta file possible exploit (CVE-2017-0199)",
+  "classtype": "bad-unknown",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:21"
+ },
+ {
+  "sid": "2028928",
+  "msg": "ET EXPLOIT VMware VeloCloud Authorization Bypass (CVE-2019-5533)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029806",
+  "msg": "ET EXPLOIT Multiple DrayTek Products Pre-authentication Remote RCE Outbound (CVE-2020-8515) M2",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2029807",
+  "msg": "ET EXPLOIT Multiple DrayTek Products Pre-authentication Remote RCE Inbound (CVE-2020-8515) M2",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029976",
+  "msg": "ET EXPLOIT Netlink GPON Remote Code Execution Attempt (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2029985",
+  "msg": "ET EXPLOIT IBM Data Risk Manager Remote Code Execution via NMAP Scan",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2103193",
+  "msg": "GPL EXPLOIT .cmd executable file parsing attack",
+  "classtype": "web-application-attack",
+  "rev": "6",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030009",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030010",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030011",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030012",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030013",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2016410",
+  "msg": "ET EXPLOIT Adobe PDF Zero Day Trojan.666 Payload libarext32.dll Second Stage Download POST",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2016409",
+  "msg": "ET EXPLOIT Adobe PDF Zero Day Trojan.666 Payload libarhlp32.dll Second Stage Download POST",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017730",
+  "msg": "ET EXPLOIT JavaX Toolkit Posting Plugin-Detect Data",
+  "classtype": "attempted-user",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017798",
+  "msg": "ET EXPLOIT Zollard PHP Exploit UA",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2017896",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 1",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017897",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 2",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2017898",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 3",
+  "classtype": "trojan-activity",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2018588",
+  "msg": "ET EXPLOIT Supermicro BMC Password Disclosure 4",
+  "classtype": "attempted-admin",
+  "rev": "5",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:49152"
+ },
+ {
+  "sid": "2030071",
+  "msg": "ET EXPLOIT Possible Saltstack Authentication Bypass CVE-2020-11651 M1",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:4506"
+ },
+ {
+  "sid": "2030072",
+  "msg": "ET EXPLOIT Possible SaltStack Authentication Bypass CVE-2020-11651 M2",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:4506"
+ },
+ {
+  "sid": "2030006",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030008",
+  "msg": "ET EXPLOIT Possible iOS MobileMail OOB Write/Heap Overflow Exploit Email (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030102",
+  "msg": "ET EXPLOIT NEC SL2100 - Session Enumeration Attempt",
+  "classtype": "attempted-recon",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030103",
+  "msg": "ET EXPLOIT Image Manager 5.2.4 - RCE Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030106",
+  "msg": "ET EXPLOIT BlogEngine 3.3 - syndication.axd XXE Injection Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030115",
+  "msg": "ET EXPLOIT Possible MPC Sharj 3.11.1 - Arbitrary File Download Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030120",
+  "msg": "ET EXPLOIT Attempted D-Link ShareCenter (DNS-320/325) RCE (Inbound)",
+  "classtype": "web-application-attack",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030128",
+  "msg": "ET EXPLOIT Possible Oracle WebLogic CVE-2020-2551 Scanning",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2020752",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 5",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020753",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 6",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2020754",
+  "msg": "ET EXPLOIT Metasploit Plugin-Detect Posting Data 7",
+  "classtype": "trojan-activity",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:any"
+ },
+ {
+  "sid": "2030201",
+  "msg": "ET EXPLOIT QNAP PhotoStation Privilege Escalation Attempt M1 (encrypted token)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030202",
+  "msg": "ET EXPLOIT QNAP PhotoStation Pre-Auth Local File Disclosure Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030203",
+  "msg": "ET EXPLOIT QNAP PhotoStation Privilege Escalation Attempt M2 (plaintext token)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030204",
+  "msg": "ET EXPLOIT QNAP PhotoStation Authenticated Session Tampering Attempt",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2021756",
+  "msg": "ET EXPLOIT FireEye Appliance Unauthorized File Disclosure",
+  "classtype": "trojan-activity",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030237",
+  "msg": "ET EXPLOIT Authenticated QuickBox CE 2.5.5/Pro 2.1.8 RCE Attempt Inbound M1 (CVE-2020-13448)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030238",
+  "msg": "ET EXPLOIT Authenticated QuickBox CE 2.5.5/Pro 2.1.8 RCE Attempt Inbound M2 (CVE-2020-13448)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030239",
+  "msg": "ET EXPLOIT Possible WordPress Plugin BBPress 2.5 - Unauthenticated Priv Esc Attempt (CVE-2020-13693)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030242",
+  "msg": "ET EXPLOIT Possible Zephyr RTOS ICMPv4 Stack Buffer Overflow",
+  "classtype": "bad-unknown",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "icmp",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2029181",
+  "msg": "ET EXPLOIT TP-LINK Archer C5 v4 (CVE-2019-7405)",
+  "classtype": "attempted-admin",
+  "rev": "3",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030280",
+  "msg": "ET EXPLOIT Cisco AnyConnect Path Traversal Priv Esc (CVE-2020-3153)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:62522"
+ },
+ {
+  "sid": "2030335",
+  "msg": "ET EXPLOIT Possible D-Link Command Injection Attempt Inbound (CVE-2020-13782)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2030338",
+  "msg": "ET EXPLOIT Centreon 20.04 Authenticated RCE (CVE-2020-12688)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HTTP_SERVERS:any"
+ },
+ {
+  "sid": "2030348",
+  "msg": "ET EXPLOIT AnyDesk UDP Discovery Format String (CVE-2020-13160)",
+  "classtype": "attempted-user",
+  "rev": "2",
+  "action": "alert",
+  "protocol": "udp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:50001"
+ },
+ {
+  "sid": "2030487",
+  "msg": "ET EXPLOIT Attempted HiSilicon DVR/NVR/IPCam RCE (Inbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:[9530,9527,23]"
+ },
+ {
+  "sid": "2030488",
+  "msg": "ET EXPLOIT Attempted HiSilicon DVR/NVR/IPCam RCE (Outbound)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "$HOME_NET:any -> $EXTERNAL_NET:[9530,9527,23]"
+ },
+ {
+  "sid": "2030502",
+  "msg": "ET EXPLOIT Possible Authenticated Command Injection Inbound - Comtrend VR-3033 (CVE-2020-10173)",
+  "classtype": "attempted-admin",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> any:any"
+ },
+ {
+  "sid": "2030532",
+  "msg": "ET EXPLOIT Possible Windows DNS Integer Overflow Attempt M2 (CVE-2020-1350)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "tcp",
+  "direction": "any:any -> any:53"
+ },
+ {
+  "sid": "2030585",
+  "msg": "ET EXPLOIT Cisco ASA/Firepower Unauthenticated File Read  (CVE-2020-3452) M3",
+  "classtype": "attempted-user",
+  "rev": "1",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "any:any -> [$HOME_NET,$HTTP_SERVERS]:any"
+ },
+ {
+  "sid": "2018232",
+  "msg": "ET EXPLOIT Possible ZyXELs ZynOS Configuration Download Attempt (Contains Passwords)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "http",
+  "direction": "$EXTERNAL_NET:any -> $HOME_NET:any"
+ },
+ {
+  "sid": "2027442",
+  "msg": "ET EXPLOIT Possible Exim 4.87-4.91 RCE Attempt Inbound (CVE-2019-10149)",
+  "classtype": "attempted-admin",
+  "rev": "4",
+  "action": "alert",
+  "protocol": "smtp",
+  "direction": "any:any -> $SMTP_SERVERS:any"
+ }
+]

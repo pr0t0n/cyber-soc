@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0e1a;
+  --surface: #10162a;
+  --surface-2: #161d35;
+  --border: #232b47;
+  --text: #e7ebf5;
+  --text-muted: #8b93ad;
+  --accent: #22d3ee;
+  --accent-2: #6366f1;
+
+  --sev-critica: #f43f5e;
+  --sev-alta: #fb923c;
+  --sev-media: #facc15;
+  --sev-baixa: #38bdf8;
+  --sev-info: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+
+.glass-card {
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+  border: 1px solid var(--border);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+#world-map path {
+  fill: #1c2540;
+  stroke: #2c3760;
+  stroke-width: 0.6;
+  transition: fill 0.2s;
+}

@@ -1,0 +1,95 @@
+# microservices.toml — PLACEHOLDER SKELETON, NOT READY TO DEPLOY.
+# Every <...> marker requires a real value from Cyber platform infra (GCP project,
+# cluster, Artifact Registry, Helm release name, service accounts). Do not invent
+# these — see cyber-specs/02-processo/pipeline.md before filling this in.
+# Topology mirrors cyber-sdo: SPA+Caddy (primary, installs Helm) + API (companion).
+
+[[projects]]
+id = 1
+name = "cyber-soc-frontend"
+build_image = "<PIPELINE_BUILD_IMAGE>"
+sonar_image = "<PIPELINE_SONAR_IMAGE>"
+tests_image = "<PIPELINE_TEST_IMAGE>"
+
+docker_build_args = ["CONTAINER_ENV"]
+tests_commands = ["bun run typecheck"]
+sonar_commands = ["<SONAR_COMMANDS_USING_RESOLVED_SONAR_VARIABLES>"]
+
+build_context_path = "."
+container_name = "cyber-soc-frontend"
+language = "docker"
+framework = "dockerfile"
+dockerfile = "docker/Dockerfile.frontend"
+docker_build = true
+version_control = "commit_build"
+build_strategy = "per_environment"
+gke = true
+cloud_run = false
+
+[projects.gke_config.dev]
+cluster = "<DEV_CLUSTER>"
+namespace = "<DEV_NAMESPACE>"
+location = "<DEV_ZONE_OR_REGION>"
+template_helm = "<BITBUCKET_WORKSPACE>/<HELM_REPOSITORY>"
+template_helm_branch = "<HELM_BRANCH>"
+helm_chart = "webapp"
+release_name = "<HELM_RELEASE_DEV>"
+helm_section = "services.frontend"
+
+[[projects.gke_config.dev.deploy_components]]
+name = "services.api"
+container_name = "cyber-soc-api"
+
+[projects.gcp_project]
+dev = "<DEV_GCP_PROJECT>"
+hml = "<HML_GCP_PROJECT>"
+prd = "<PRD_GCP_PROJECT>"
+
+[projects.gcp_registry]
+dev = "<DEV_ARTIFACT_REGISTRY_HOST>"
+hml = "<HML_ARTIFACT_REGISTRY_HOST>"
+prd = "<PRD_ARTIFACT_REGISTRY_HOST>"
+
+[projects.gcp_registry_docker_container]
+dev = "<DEV_ARTIFACT_REPOSITORY>"
+hml = "<HML_ARTIFACT_REPOSITORY>"
+prd = "<PRD_ARTIFACT_REPOSITORY>"
+
+[projects.gcp_region]
+dev = "<DEV_REGION>"
+hml = "<HML_REGION>"
+prd = "<PRD_REGION>"
+
+[projects.service_accounts]
+base_images = "GCR_JSON_KEY_SHARED_SERVICE"
+docker_pull = "GCR_JSON_KEY_SHARED_SERVICE"
+docker_push = "GCR_JSON_KEY_SHARED_SERVICE"
+gke_connect = "GCR_JSON_KEY_SHARED_SERVICE"
+
+[[projects]]
+id = 2
+name = "cyber-soc-api"
+build_image = "<PIPELINE_BUILD_IMAGE>"
+sonar_image = "<PIPELINE_SONAR_IMAGE>"
+tests_image = "<PIPELINE_TEST_IMAGE>"
+
+docker_build_args = ["CONTAINER_ENV"]
+tests_commands = ["uv run pytest -q"]
+sonar_commands = ["<SONAR_COMMANDS_USING_RESOLVED_SONAR_VARIABLES>"]
+
+build_context_path = "."
+container_name = "cyber-soc-api"
+language = "docker"
+framework = "dockerfile"
+dockerfile = "docker/Dockerfile.api"
+docker_build = true
+version_control = "commit_build"
+build_strategy = "per_environment"
+gke = false
+cloud_run = false
+
+[projects.service_accounts]
+base_images = "GCR_JSON_KEY_SHARED_SERVICE"
+docker_pull = "GCR_JSON_KEY_SHARED_SERVICE"
+docker_push = "GCR_JSON_KEY_SHARED_SERVICE"
+gke_connect = "GCR_JSON_KEY_SHARED_SERVICE"

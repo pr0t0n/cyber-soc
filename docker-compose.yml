@@ -1,0 +1,66 @@
+# Local development only. Not used in a production deploy (see k8s/values-*.yaml
+# once this platform is registered with the Cyber HUB).
+name: cyber-soc
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: cyber_soc
+      POSTGRES_USER: soc
+      POSTGRES_PASSWORD: soc
+    ports:
+      - "5435:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soc -d cyber_soc"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11437:11434"
+
+  api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+      target: final
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://soc:soc@postgres:5432/cyber_soc
+      LLM_BASE_URL: http://ollama:11434/v1
+    ports:
+      - "8020:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+      target: test
+    profiles: ["test"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    restart: unless-stopped
+    ports:
+      - "4300:80"
+    depends_on:
+      - api
+
+volumes:
+  pg_data:
+  ollama_data:

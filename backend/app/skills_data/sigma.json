@@ -1,0 +1,6132 @@
+[
+ {
+  "id": "195e1b9d-bfc2-4ffa-ab4e-35aef69815f8",
+  "title": "Bitbucket Full Data Export Triggered",
+  "description": "Detects when full data export is attempted.",
+  "level": "alta",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1213.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "aac6c4f4-87c7-4961-96ac-c3fd3a42c310",
+  "title": "Bitbucket Global Permission Changed",
+  "description": "Detects global permissions change activity.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1098"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e16cf0f0-ee88-4901-bd0b-4c8d13d9ee05",
+  "title": "Bitbucket Global Secret Scanning Rule Deleted",
+  "description": "Detects Bitbucket global secret scanning rule deletion activity.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "16ab6143-510a-44e2-a615-bdb80b8317fc",
+  "title": "Bitbucket Global SSH Settings Changed",
+  "description": "Detects Bitbucket global SSH access configuration changes.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1021.004",
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6aa12161-235a-4dfb-9c74-fe08df8d8da1",
+  "title": "Bitbucket Audit Log Configuration Updated",
+  "description": "Detects changes to the bitbucket audit log configuration.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "42ccce6d-7bd3-4930-95cd-e4d83fa94a30",
+  "title": "Bitbucket Project Secret Scanning Allowlist Added",
+  "description": "Detects when a secret scanning allowlist rule is added for projects.",
+  "level": "baixa",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b91e8d5e-0033-44fe-973f-b730316f23a1",
+  "title": "Bitbucket Secret Scanning Exempt Repository Added",
+  "description": "Detects when a repository is exempted from secret scanning feature.",
+  "level": "alta",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ff91e3f0-ad15-459f-9a85-1556390c138d",
+  "title": "Bitbucket Secret Scanning Rule Deleted",
+  "description": "Detects when secret scanning rule is deleted for the project or repository.",
+  "level": "baixa",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7215374a-de4f-4b33-8ba5-70804c9251d3",
+  "title": "Bitbucket Unauthorized Access To A Resource",
+  "description": "Detects unauthorized access attempts to a resource.",
+  "level": "critica",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1586"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "34d81081-03c9-4a7f-91c9-5e46af625cde",
+  "title": "Bitbucket Unauthorized Full Data Export Triggered",
+  "description": "Detects when full data export is attempted an unauthorized user.",
+  "level": "critica",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1213.003",
+   "T1586"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5259cbf2-0a75-48bf-b57a-c54d6fabaef3",
+  "title": "Bitbucket User Details Export Attempt Detected",
+  "description": "Detects user data export activity.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1082",
+   "T1213",
+   "T1591.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "70ed1d26-0050-4b38-a599-92c53d57d45a",
+  "title": "Bitbucket User Login Failure",
+  "description": "Detects user authentication failure events. Please note that this rule can be noisy and it is recommended to use with correlation based on \"author.name\" field.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1078.004",
+   "T1110"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d3f90469-fb05-42ce-b67d-0fded91bbef3",
+  "title": "Bitbucket User Login Failure Via SSH",
+  "description": "Detects SSH user login access failures. Please note that this rule can be noisy and is recommended to use with correlation based on \"author.name\" field.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1021.004",
+   "T1110"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "87cc6698-3e07-4ba2-9b43-a85a73e151e2",
+  "title": "Bitbucket User Permissions Export Attempt",
+  "description": "Detects user permission data export attempt.",
+  "level": "media",
+  "logsource": {
+   "product": "bitbucket",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1082",
+   "T1213",
+   "T1591.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fd435618-981e-4a7c-81f8-f78ce480d616",
+  "title": "Django Framework Exceptions",
+  "description": "Detects suspicious Django web application framework exceptions that could indicate exploitation attempts",
+  "level": "media",
+  "logsource": {
+   "category": "application",
+   "product": "django"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "16a71777-0b2e-4db7-9888-9d59cb75200b",
+  "title": "Github Delete Action Invoked",
+  "description": "Detects delete action in the Github audit logs for codespaces, environment, project and repo.",
+  "level": "media",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1213.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8622c92d-c00e-463c-b09d-fd06166f6794",
+  "title": "Github High Risk Configuration Disabled",
+  "description": "Detects when a user disables a critical security feature for an organization.",
+  "level": "alta",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1556"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "34e1c7d4-0cd5-419d-9f1b-1dad3f61018d",
+  "title": "Outdated Dependency Or Vulnerability Alert Disabled",
+  "description": "Dependabot performs a scan to detect insecure dependencies, and sends Dependabot alerts. This rule detects when an organization owner disables Dependabot alerts private repositories or Dependabot security updates for all repositories.",
+  "level": "alta",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1195.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "69b3bd1e-b38a-462f-9a23-fbdbf63d2294",
+  "title": "Github Fork Private Repositories Setting Enabled/Cleared",
+  "description": "Detects when the policy allowing forks of private and internal repositories is changed (enabled or cleared).",
+  "level": "media",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1020",
+   "T1537"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3908d64a-3c06-4091-b503-b3a94424533b",
+  "title": "New Github Organization Member Added",
+  "description": "Detects when a new member is added or invited to a github organization.",
+  "level": "info",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1136.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f9405037-bc97-4eb7-baba-167dad399b83",
+  "title": "Github New Secret Created",
+  "description": "Detects when a user creates action secret for the organization, environment, codespaces or repository.",
+  "level": "baixa",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eaa9ac35-1730-441f-9587-25767bde99d7",
+  "title": "Github Outside Collaborator Detected",
+  "description": "Detects when an organization member or an outside collaborator is added to or removed from a project board or has their permission level changed or when an owner removes an outside collaborator from an organization or when two-factor authentication is required in an organization and an outside collaborator does not use 2FA or disables 2FA.",
+  "level": "media",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1098.001",
+   "T1098.003",
+   "T1213.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0c46d4f4-a2bf-4104-9597-8d653fc2bb55",
+  "title": "GitHub Repository Pages Site Changed to Public",
+  "description": "Detects when a GitHub Pages site of a repository is made public. This usually is part of a publishing process but could indicate or lead to potential unauthorized exposure of sensitive information or code.",
+  "level": "baixa",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1567.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "02cf536a-cf21-4876-8842-4159c8aee3cc",
+  "title": "Github Push Protection Bypass Detected",
+  "description": "Detects when a user bypasses the push protection on a secret detected by secret scanning.",
+  "level": "baixa",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ccd55945-badd-4bae-936b-823a735d37dd",
+  "title": "Github Push Protection Disabled",
+  "description": "Detects if the push protection feature is disabled for an organization, enterprise, repositories or custom pattern rules.",
+  "level": "alta",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "04ad83ef-1a37-4c10-b57a-81092164bf33",
+  "title": "Github Repository/Organization Transferred",
+  "description": "Detects when a repository or an organization is being transferred to another location.",
+  "level": "media",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1020",
+   "T1537"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "dca8991c-cb16-4128-abf8-6b11e5cd156f",
+  "title": "GitHub Repository Archive Status Changed",
+  "description": "Detects when a GitHub repository is archived or unarchived, which may indicate unauthorized changes to repository status.",
+  "level": "baixa",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3883d9a0-fd0f-440f-afbb-445a2a799bb8",
+  "title": "Github Secret Scanning Feature Disabled",
+  "description": "Detects if the secret scanning feature is disabled for an enterprise or repository.",
+  "level": "alta",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f8ed0e8f-7438-4b79-85eb-f358ef2fbebd",
+  "title": "Github Self Hosted Runner Changes Detected",
+  "description": "A self-hosted runner is a system that you deploy and manage to execute jobs from GitHub Actions on GitHub.com. This rule detects changes to self-hosted runners configurations in the environment. The self-hosted runner configuration changes once detected, it should be validated from GitHub UI because the log entry may not provide full context.",
+  "level": "baixa",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1078.004",
+   "T1213.003",
+   "T1526"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2f575940-d85e-4ddc-af13-17dad6f1a0ef",
+  "title": "Github SSH Certificate Configuration Changed",
+  "description": "Detects when changes are made to the SSH certificate configuration of the organization.",
+  "level": "media",
+  "logsource": {
+   "product": "github",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bb0e9cec-d4da-46f5-997f-22efc59f3dca",
+  "title": "Potential JNDI Injection Exploitation In JVM Based Application",
+  "description": "Detects potential JNDI Injection exploitation. Often coupled with Log4Shell exploitation.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "jvm"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e032f5bc-4563-4096-ae3b-064bab588685",
+  "title": "Potential Local File Read Vulnerability In JVM Based Application",
+  "description": "Detects potential local file read vulnerability in JVM based apps. If the exceptions are caused due to user input and contain path traversal payloads then it's a red flag.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "jvm"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4d0af518-828e-4a04-a751-a7d03f3046ad",
+  "title": "Potential OGNL Injection Exploitation In JVM Based Application",
+  "description": "Detects potential OGNL Injection exploitation, which may lead to RCE. OGNL is an expression language that is supported in many JVM based systems. OGNL Injection is the reason for some high profile RCE's such as Apache Struts (CVE-2017-5638) and Confluence (CVE-2022-26134)",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "jvm"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d65f37da-a26a-48f8-8159-3dde96680ad2",
+  "title": "Process Execution Error In JVM Based Application",
+  "description": "Detects process execution related exceptions in JVM based apps, often relates to RCE",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "jvm"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c4e06896-e27c-4583-95ac-91ce2279345d",
+  "title": "Potential XXE Exploitation Attempt In JVM Based Application",
+  "description": "Detects XML parsing issues, if the application expects to work with XML make sure that the parser is initialized safely.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "jvm"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eed82177-38f5-4299-8a76-098d50d225ab",
+  "title": "Kubernetes Admission Controller Modification",
+  "description": "Detects when a modification (create, update or replace) action is taken that affects mutating or validating webhook configurations, as they can be used by an adversary to achieve persistence or exfiltrate access credentials.",
+  "level": "media",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1078",
+   "T1552",
+   "T1552.007"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0c9b3bda-41a6-4442-9345-356ae86343dc",
+  "title": "Kubernetes CronJob/Job Modification",
+  "description": "Detects when a Kubernetes CronJob or Job is created or modified. A Kubernetes Job creates one or more pods to accomplish a specific task, and a CronJob creates Jobs on a recurring schedule. An adversary can take advantage of this Kubernetes object to schedule Jobs to run containers that execute malicious code within a cluster, allowing them to achieve persistence.",
+  "level": "media",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "40967487-139b-4811-81d9-c9767a92aa5a",
+  "title": "Deployment Deleted From Kubernetes Cluster",
+  "description": "Detects the removal of a deployment from a Kubernetes cluster. This could indicate disruptive activity aiming to impact business operations.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1498"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3132570d-cab2-4561-9ea6-1743644b2290",
+  "title": "Kubernetes Events Deleted",
+  "description": "Detects when events are deleted in Kubernetes. An adversary may delete Kubernetes events in an attempt to evade detection.",
+  "level": "media",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1070"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a1b0ca4e-7835-413e-8471-3ff2b8a66be6",
+  "title": "Potential Remote Command Execution In Pod Container",
+  "description": "Detects attempts to execute remote commands, within a Pod's container using e.g. the \"kubectl exec\" command.",
+  "level": "media",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1609"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "402b955c-8fe0-4a8c-b635-622b4ac5f902",
+  "title": "Container With A hostPath Mount Created",
+  "description": "Detects creation of a container with a hostPath mount. A hostPath volume mounts a directory or a file from the node to the container. Attackers who have permissions to create a new pod in the cluster may create one with a writable hostPath volume and chroot to escape to the underlying node.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1611"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a80d927d-ac6e-443f-a867-e8d6e3897318",
+  "title": "Creation Of Pod In System Namespace",
+  "description": "Detects deployments of pods within the kube-system namespace, which could be intended to imitate system pods. System pods, created by controllers such as Deployments or DaemonSets have random suffixes in their names. Attackers can use this fact and name their backdoor pods as if they were created by these controllers to avoid detection. Deployment of such a backdoor container e.g. named kube-proxy-bv61v, could be attempted in the kube-system namespace alongside the other administrative container",
+  "level": "media",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1036.005"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "597a7e84-187d-458b-9e4f-2f5a0e676711",
+  "title": "Kubernetes Potential Enumeration Activity",
+  "description": "Detects potential Kubernetes enumeration or attack activity via the audit log. This includes the execution of common shells, utilities, or specialized tools like 'Rakkess' (access_matrix) and 'TruffleHog' via Kubernetes API requests. Attackers use these methods to perform reconnaissance (enumeration), secret harvesting, or execute code (exec) within a cluster.",
+  "level": "media",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1609",
+   "T1613"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c5cd1b20-36bb-488d-8c05-486be3d0cb97",
+  "title": "Privileged Container Deployed",
+  "description": "Detects the creation of a \"privileged\" container, an action which could be indicative of a threat actor mounting a container breakout attacks. A privileged container is a container that can access the host with all of the root capabilities of the host machine. This allows it to view, interact and modify processes, network operations, IPC calls, the file system, mount points, SELinux configurations etc. as the root user on the host. Various versions of \"privileged\" containers can be specified, e.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1611"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "84b777bd-c946-4d17-aa2e-c39f5a454325",
+  "title": "RBAC Permission Enumeration Attempt",
+  "description": "Detects identities attempting to enumerate their Kubernetes RBAC permissions. In the early stages of a breach, attackers will aim to list the permissions they have within the compromised environment. In a Kubernetes cluster, this can be achieved by interacting with the API server, and querying the SelfSubjectAccessReview API via e.g. a \"kubectl auth can-i --list\" command. This will enumerate the Role-Based Access Controls (RBAC) rules defining the compromised user's authorization.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1069.003",
+   "T1087.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "10b97915-ec8d-455f-a815-9a78926585f6",
+  "title": "Kubernetes Rolebinding Modification",
+  "description": "Detects when a Kubernetes Rolebinding is created or modified.",
+  "level": "media",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eeb3e9e1-b685-44e4-9232-6bb701f925b5",
+  "title": "Kubernetes Secrets Enumeration",
+  "description": "Detects enumeration of Kubernetes secrets.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1552.007"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "58d31a75-a4f8-4c40-985b-373d58162ca2",
+  "title": "Kubernetes Secrets Modified or Deleted",
+  "description": "Detects when Kubernetes Secrets are Modified or Deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e31bae15-83ed-473e-bf31-faf4f8a17d36",
+  "title": "New Kubernetes Service Account Created",
+  "description": "Detects creation of new Kubernetes service account, which could indicate an attacker's attempt to persist within a cluster.",
+  "level": "baixa",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1136"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ad9012a6-e518-4432-9890-f3b82b8fc71f",
+  "title": "Potential Sidecar Injection Into Running Deployment",
+  "description": "Detects attempts to inject a sidecar container into a running deployment. A sidecar container is an additional container within a pod, that resides alongside the main container. One way to add containers to running resources like Deployments/DeamonSets/StatefulSets, is via a \"kubectl patch\" operation. By injecting a new container within a legitimate pod, an attacker can run their code and hide their activity, instead of running their own separated pod in the cluster.",
+  "level": "media",
+  "logsource": {
+   "category": "application",
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [
+   "T1609"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0d933542-1f1f-420d-97d4-21b2c3c492d9",
+  "title": "Kubernetes Unauthorized or Unauthenticated Access",
+  "description": "Detects when a request to the Kubernetes API is rejected due to lack of authorization or due to an expired authentication token being used. This may indicate an attacker attempting to leverage credentials they have obtained.",
+  "level": "baixa",
+  "logsource": {
+   "product": "kubernetes",
+   "service": "audit"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "97661d9d-2beb-4630-b423-68985291a8af",
+  "title": "Potential RCE Exploitation Attempt In NodeJS",
+  "description": "Detects process execution related errors in NodeJS. If the exceptions are caused due to user input then they may suggest an RCE vulnerability.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "nodejs"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6991bc2b-ae2e-447f-bc55-3a1ba04c14e5",
+  "title": "OpenCanary - FTP Login Attempt",
+  "description": "Detects instances where an FTP service on an OpenCanary node has had a login attempt.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1021",
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4fe17521-aef3-4e6a-9d6b-4a7c8de155a8",
+  "title": "OpenCanary - GIT Clone Request",
+  "description": "Detects instances where a GIT service on an OpenCanary node has had Git Clone request.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1213"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "af6c3078-84cd-4c68-8842-08b76bd81b13",
+  "title": "OpenCanary - HTTP GET Request",
+  "description": "Detects instances where an HTTP service on an OpenCanary node has received a GET request.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "af1ac430-df6b-4b38-b976-0b52f07a0252",
+  "title": "OpenCanary - HTTP POST Login Attempt",
+  "description": "Detects instances where an HTTP service on an OpenCanary node has had login attempt via Form POST.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5498fc09-adc6-4804-b9d9-5cca1f0b8760",
+  "title": "OpenCanary - HTTPPROXY Login Attempt",
+  "description": "Detects instances where an HTTPPROXY service on an OpenCanary node has had an attempt to proxy another page.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1090"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3ec9a16d-0b4f-4967-9542-ebf38ceac7dd",
+  "title": "OpenCanary - MSSQL Login Attempt Via SQLAuth",
+  "description": "Detects instances where an MSSQL service on an OpenCanary node has had a login attempt using SQLAuth.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1003",
+   "T1213"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6e78f90f-0043-4a01-ac41-f97681613a66",
+  "title": "OpenCanary - MSSQL Login Attempt Via Windows Authentication",
+  "description": "Detects instances where an MSSQL service on an OpenCanary node has had a login attempt using Windows Authentication.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1003",
+   "T1213"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e7d79a1b-25ed-4956-bd56-bd344fa8fd06",
+  "title": "OpenCanary - MySQL Login Attempt",
+  "description": "Detects instances where a MySQL service on an OpenCanary node has had a login attempt.",
+  "level": "alta",
+  "logsource": {
+   "category": "application",
+   "product": "opencanary"
+  },
+  "mitre": [
+   "T1003",
+   "T1213"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "101a1877-2cf4-474d-abfd-7f6ac4788d1a",
+  "title": "Antivirus - APT Malware Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports APT malware. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "critica",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1203",
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "238527ad-3c2c-4e4f-a1f6-92fd63adb864",
+  "title": "Antivirus - Exploitation Framework Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports an exploitation framework. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "critica",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1203",
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fa0c05b6-8ad3-468d-8231-c1cbccb64fba",
+  "title": "Antivirus - Hacktool Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports a hack tool or other attack tool. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "alta",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1204"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "78cc2dd2-7d20-4d32-93ff-057084c38b93",
+  "title": "Antivirus - Password Dumper Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports password dumpers and stealers. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place and check if passwords need to be reset.",
+  "level": "critica",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1003",
+   "T1003.001",
+   "T1003.002",
+   "T1558"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4c6ca276-d4d0-4a8c-9e4c-d69832f8671f",
+  "title": "Antivirus - Ransomware Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports ransomware. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "critica",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1486"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c9a88268-0047-4824-ba6e-4d81ce0b907c",
+  "title": "Antivirus - Relevant File Paths Alerts Signature",
+  "description": "Detects an Antivirus alert in a highly relevant file path or with a relevant file name. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "alta",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1588"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "97233998-3838-4581-88c6-f1d19d3993fb",
+  "title": "Antivirus - Remote Access Tools Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports a remote access tool. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "critica",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1203",
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fdf135a2-9241-4f96-a114-bb404948f736",
+  "title": "Antivirus - Web Shell Detection Signature",
+  "description": "Detects a highly relevant Antivirus alert that reports a web shell. It's highly recommended to tune this rule to the specific strings used by your anti virus solution by downloading a big WebShell repository from e.g. github and checking the matches. This event must not be ignored just because the AV has blocked the malware but investigate, how it came there in the first place.",
+  "level": "alta",
+  "logsource": {
+   "category": "antivirus"
+  },
+  "mitre": [
+   "T1505.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d84c0ded-edd7-4123-80ed-348bb3ccc4d5",
+  "title": "Suspicious SQL Query",
+  "description": "Detects suspicious SQL query keywrods that are often used during recon, exfiltration or destructive activities. Such as dropping tables and selecting wildcard fields",
+  "level": "media",
+  "logsource": {
+   "category": "database"
+  },
+  "mitre": [
+   "T1190",
+   "T1505.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "59b70e4d-dd17-44a9-b740-acf07ae3eb6a",
+  "title": "AWS Bedrock Guardrail Deleted",
+  "description": "Detects deletion of an Amazon Bedrock guardrail, which may indicate attempts to remove model safety controls and allow unsafe or unauthorized model responses.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1c722651-254a-4b04-a9f4-99b62a2d0a1f",
+  "title": "AWS Bedrock Guardrail Updated",
+  "description": "Detects updates to an Amazon Bedrock guardrail, which may indicate attempts to weaken model safety controls and allow unsafe or unauthorized model responses.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "39c9f26d-6e3b-4dbb-9c7a-4154b0281112",
+  "title": "AWS Bucket Deleted",
+  "description": "Detects the deletion of S3 buckets in AWS CloudTrail logs. Monitoring the deletion of S3 buckets is critical for security and data integrity, as it may indicate potential data loss or unauthorized access attempts.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6393e346-1977-46ef-8987-ad414a145fad",
+  "title": "AWS ConsoleLogin Failed Authentication",
+  "description": "Detects failed AWS console login attempts due to authentication failures. Monitoring these events is crucial for identifying potential brute-force attacks or unauthorized access attempts to AWS accounts.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1110"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "77caf516-34e5-4df9-b4db-20744fea0a60",
+  "title": "AWS Successful Console Login Without MFA",
+  "description": "Detects successful AWS console logins that were performed without Multi-Factor Authentication (MFA). This alert can be used to identify potential unauthorized access attempts, as logging in without MFA can indicate compromised credentials or misconfigured security settings.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4db60cc0-36fb-42b7-9b58-a5b53019fb74",
+  "title": "AWS CloudTrail Important Change",
+  "description": "Detects disabling, deleting and updating of a Trail",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d2656e78-c069-4571-8220-9e0ab5913f19",
+  "title": "AWS GuardDuty Detector Deleted Or Updated",
+  "description": "Detects successful deletion or disabling of an AWS GuardDuty detector, possibly by an attacker trying to avoid detection of its malicious activities. Upon deletion, GuardDuty stops monitoring the environment and all existing findings are lost. Verify with the user identity that this activity is legitimate.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685",
+   "T1685.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "352a918a-34d8-4882-8470-44830c507aa3",
+  "title": "Malicious Usage Of IMDS Credentials Outside Of AWS Infrastructure",
+  "description": "Detects when an instance identity has taken an action that isn't inside SSM. This can indicate that a compromised EC2 instance is being used as a pivot point.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078",
+   "T1078.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e1f7febb-7b94-4234-b5c6-00fb8500f5dd",
+  "title": "New Network ACL Entry Added",
+  "description": "Detects that network ACL entries have been added to a route table which could indicate that new attack vectors have been opened up in the AWS account.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1686.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c803b2ce-c4a2-4836-beae-b112010390b1",
+  "title": "New Network Route Added",
+  "description": "Detects the addition of a new network route to a route table in AWS.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1686.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a840e606-7c8c-4684-9bc1-eb6b6155127f",
+  "title": "PUA - AWS TruffleHog Execution",
+  "description": "Detects the execution of TruffleHog, a popular open-source tool used for scanning repositories for secrets and sensitive information, within an AWS environment. It has been reported to be used by threat actors for credential harvesting. All detections should be investigated to determine if the usage is authorized by security teams or potentially malicious.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1003",
+   "T1555"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a5ffb6ea-c784-4e01-b30a-deb6e58ca2ab",
+  "title": "AWS EnableRegion Command Monitoring",
+  "description": "Detects the use of the EnableRegion command in AWS CloudTrail logs. While AWS has 30+ regions, some of them are enabled by default, others must be explicitly enabled in each account separately. There may be situations where security monitoring does not cover some new AWS regions. Monitoring the EnableRegion command is important for identifying potential persistence mechanisms employed by adversaries, as enabling additional regions can facilitate continued access and operations within an AWS envi",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6fb77778-040f-4015-9440-572aa9b6b580",
+  "title": "Ingress/Egress Security Group Modification",
+  "description": "Detects when an account makes changes to the ingress or egress rules of a security group. This can indicate that an attacker is attempting to open up new attack vectors in the account, that they are trying to exfiltrate data over the network, or that they are trying to allow machines in that VPC/Subnet to contact a C&C server.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7a4409fc-f8ca-45f6-8006-127d779eaad9",
+  "title": "LoadBalancer Security Group Modification",
+  "description": "Detects changes to the security groups associated with an Elastic Load Balancer (ELB) or Application Load Balancer (ALB). This can indicate that a misconfiguration allowing more traffic into the system than required, or could indicate that an attacker is attempting to enable new connections into a VPC or subnet controlled by the account.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "14f3f1c8-02d5-43a2-a191-91ffb52d3015",
+  "title": "RDS Database Security Group Modification",
+  "description": "Detects changes to the security group entries for RDS databases. This can indicate that a misconfiguration has occurred which potentially exposes the database to the public internet, a wider audience within the VPC or that removal of valid rules has occurred which could impact the availability of the database to legitimate services and users.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "38e7f511-3f74-41d4-836e-f57dfa18eead",
+  "title": "Potential Malicious Usage of CloudTrail System Manager",
+  "description": "Detect when System Manager successfully executes commands against an instance.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1566",
+   "T1566.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e386b9b5-af12-450e-afff-761730fb8a98",
+  "title": "AWS VPC Flow Logs Deleted",
+  "description": "Detects the deletion of one or more VPC Flow Logs in AWS Elastic Compute Cloud (EC2) through the DeleteFlowLogs API call. Adversaries may delete flow logs to evade detection or remove evidence of network activity, hindering forensic investigations and visibility into malicious operations.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "07330162-dba1-4746-8121-a9647d49d297",
+  "title": "AWS Config Disabling Channel/Recorder",
+  "description": "Detects AWS Config Service disabling",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f8103686-e3e8-46f3-be72-65f7fcb4aa53",
+  "title": "AWS Console GetSigninToken Potential Abuse",
+  "description": "Detects potentially suspicious events involving \"GetSigninToken\". An adversary using the \"aws_consoler\" tool can leverage this console API to create temporary federated credential that help obfuscate which AWS credential is compromised (the original access key) and enables the adversary to pivot from the AWS CLI to console sessions without the need for MFA using the new access key issued in this request.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1021.007",
+   "T1550.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "20f754db-d025-4a8f-9d74-e0037e999a9a",
+  "title": "SES Identity Has Been Deleted",
+  "description": "Detects an instance of an SES identity being deleted via the \"DeleteIdentity\" event. This may be an indicator of an adversary removing the account that carried out suspicious or malicious activities",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1070"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ccd6a6c8-bb4e-4a91-9d2a-07e632819374",
+  "title": "AWS SAML Provider Deletion Activity",
+  "description": "Detects the deletion of an AWS SAML provider, potentially indicating malicious intent to disrupt administrative or security team access. An attacker can remove the SAML provider for the information security team or a team of system administrators, to make it difficult for them to work and investigate at the time of the attack and after it.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078.004",
+   "T1531"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a136ac98-b2bc-4189-a14d-f0d0388e57a7",
+  "title": "AWS S3 Bucket Versioning Disable",
+  "description": "Detects when S3 bucket versioning is disabled. Threat actors use this technique during AWS ransomware incidents prior to deleting S3 objects.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1490"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "16124c2d-e40b-4fcc-8f2c-5ab7870a2223",
+  "title": "AWS EC2 Disable EBS Encryption",
+  "description": "Identifies disabling of default Amazon Elastic Block Store (EBS) encryption in the current region. Disabling default encryption does not change the encryption status of your existing volumes.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1486",
+   "T1565"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "92f84194-8d9a-4ee0-8699-c30bfac59780",
+  "title": "AWS Key Pair Import Activity",
+  "description": "Detects the import of SSH key pairs into AWS EC2, which may indicate an attacker attempting to gain unauthorized access to instances. This activity could lead to initial access, persistence, or privilege escalation, potentially compromising sensitive data and operations.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1ab3c5ed-5baf-417b-bb6b-78ca33f6c3df",
+  "title": "AWS EC2 Startup Shell Script Change",
+  "description": "Detects changes to the EC2 instance startup script. The shell script will be executed as root/SYSTEM every time the specific instances are booted up.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1059.001",
+   "T1059.003",
+   "T1059.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "54b9a76a-3c71-4673-b4b3-2edb4566ea7b",
+  "title": "AWS EC2 VM Export Failure",
+  "description": "An attempt to export an AWS EC2 instance has been detected. A VM Export might indicate an attempt to extract information from an instance.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1005",
+   "T1537"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b94bf91e-c2bf-4047-9c43-c6810f43baad",
+  "title": "AWS ECS Task Definition That Queries The Credential Endpoint",
+  "description": "Detects when an Elastic Container Service (ECS) Task Definition includes a command to query the credential endpoint. This can indicate a potential adversary adding a backdoor to establish persistence or escalate privileges.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1525"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "25cb1ba1-8a19-4a23-a198-d252664c8cef",
+  "title": "AWS EFS Fileshare Modified or Deleted",
+  "description": "Detects when a EFS Fileshare is modified or deleted. You can't delete a file system that is in use. If the file system has any mount targets, the adversary must first delete them, so deletion of a mount will occur before deletion of a fileshare.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6a7ba45c-63d8-473e-9736-2eaabff79964",
+  "title": "AWS EFS Fileshare Mount Modified or Deleted",
+  "description": "Detects when a EFS Fileshare Mount is modified or deleted. An adversary breaking any file system using the mount target that is being deleted, which might disrupt instances or applications using those mounts.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1485"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "33d50d03-20ec-4b74-a74e-1e65a38af1c0",
+  "title": "AWS EKS Cluster Created or Deleted",
+  "description": "Identifies when an EKS cluster is created or deleted.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1485"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4ae68615-866f-4304-b24b-ba048dfa5ca7",
+  "title": "AWS ElastiCache Security Group Created",
+  "description": "Detects when an ElastiCache security group has been created.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1136",
+   "T1136.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7c797da2-9cf2-4523-ba64-33b06339f0cc",
+  "title": "AWS ElastiCache Security Group Modified or Deleted",
+  "description": "Identifies when an ElastiCache security group has been modified or deleted.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1531"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f305fd62-beca-47da-ad95-7690a0620084",
+  "title": "Potential Bucket Enumeration on AWS",
+  "description": "Looks for potential enumeration of AWS buckets via ListBuckets.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1580",
+   "T1619"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6e61ee20-ce00-4f8d-8aee-bedd8216f7e3",
+  "title": "AWS GuardDuty Important Change",
+  "description": "Detects updates of the GuardDuty list of trusted IPs, perhaps to disable security alerts against malicious IPs.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0a5177f4-6ca9-44c2-aacf-d3f3d8b6e4d2",
+  "title": "AWS IAM Backdoor Users Keys",
+  "description": "Detects AWS API key creation for a user by another user. Backdoored users can be used to obtain persistence in the AWS environment. Also with this alert, you can detect a flow of AWS keys in your org.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1098"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "db014773-b1d3-46bd-ba26-133337c0ffee",
+  "title": "AWS IAM S3Browser LoginProfile Creation",
+  "description": "Detects S3 Browser utility performing reconnaissance looking for existing IAM Users without a LoginProfile defined then (when found) creating a LoginProfile.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1059.009",
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "db014773-7375-4f4e-b83b-133337c0ffee",
+  "title": "AWS IAM S3Browser Templated S3 Bucket Policy Creation",
+  "description": "Detects S3 browser utility creating Inline IAM policy containing default S3 bucket name placeholder value of \"<YOUR-BUCKET-NAME>\".",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1059.009",
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "db014773-d9d9-4792-91e5-133337c0ffee",
+  "title": "AWS IAM S3Browser User or AccessKey Creation",
+  "description": "Detects S3 Browser utility creating IAM User or AccessKey.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1059.009",
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1279262f-1464-422f-ac0d-5b545320c526",
+  "title": "AWS KMS Imported Key Material Usage",
+  "description": "Detects the import or deletion of key material in AWS KMS, which can be used as part of ransomware attacks. This activity is uncommon and provides a high certainty signal.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1486",
+   "T1608.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ec541962-c05a-4420-b9ea-84de072d18f4",
+  "title": "New AWS Lambda Function URL Configuration Created",
+  "description": "Detects when a user creates a Lambda function URL configuration, which could be used to expose the function to the internet and potentially allow unauthorized access to the function's IAM role for AWS API calls. This could give an adversary access to the privileges associated with the Lambda service role that is attached to that function.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "97fbabf8-8e1b-47a2-b7d5-a418d2b95e3d",
+  "title": "AWS New Lambda Layer Attached",
+  "description": "Detects when a user attached a Lambda layer to an existing Lambda function. A malicious Lambda layer could execute arbitrary code in the context of the function's IAM role. This would give an adversary access to resources that the function has access to.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4990c2e3-f4b8-45e3-bc3c-30b14ff0ed26",
+  "title": "AWS Glue Development Endpoint Activity",
+  "description": "Detects possible suspicious glue development endpoint activity.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8a63cdd4-6207-414a-85bc-7e032bd3c1a2",
+  "title": "AWS RDS Master Password Change",
+  "description": "Detects the change of database master password. It may be a part of data exfiltration.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1020"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "457cc9ac-d8e6-4d1d-8c0e-251d0f11a74c",
+  "title": "Modification or Deletion of an AWS RDS Cluster",
+  "description": "Detects modifications to an RDS cluster or its deletion, which may indicate potential data exfiltration attempts, unauthorized access, or exposure of sensitive information.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1020"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c3f265c7-ff03-4056-8ab2-d486227b4599",
+  "title": "Restore Public AWS RDS Instance",
+  "description": "Detects the recovery of a new public database instance from a snapshot. It may be a part of data exfiltration.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1020"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8ad1600d-e9dc-4251-b0ee-a65268f29add",
+  "title": "AWS Root Credentials",
+  "description": "Detects AWS root account usage",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3940b5f1-3f46-44aa-b746-ebe615b879e0",
+  "title": "AWS Route 53 Domain Transfer Lock Disabled",
+  "description": "Detects when a transfer lock was removed from a Route 53 domain. It is recommended to refrain from performing this action unless intending to transfer the domain to a different registrar.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1098"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b056de1a-6e6e-4e40-a67e-97c9808cf41b",
+  "title": "AWS Route 53 Domain Transferred to Another Account",
+  "description": "Detects when a request has been made to transfer a Route 53 domain to another AWS account.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1098"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "78b3756a-7804-4ef7-8555-7b9024a02e2d",
+  "title": "AWS S3 Data Management Tampering",
+  "description": "Detects when a user tampers with S3 data management in Amazon Web Services.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1537"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a607e1fe-74bf-4440-a3ec-b059b9103157",
+  "title": "AWS SecurityHub Findings Evasion",
+  "description": "Detects the modification of the findings on SecurityHub.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "abae8fec-57bd-4f87-aff6-6e3db989843d",
+  "title": "AWS Snapshot Backup Exfiltration",
+  "description": "Detects the modification of an EC2 snapshot's permissions to enable access from another account",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1537"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d3adb3ef-b7e7-4003-9092-1924c797db35",
+  "title": "AWS Identity Center Identity Provider Change",
+  "description": "Detects a change in the AWS Identity Center (FKA AWS SSO) identity provider. A change in identity provider allows an attacker to establish persistent access or escalate privileges via user impersonation.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1556"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "905d389b-b853-46d0-9d3d-dea0d3a3cd49",
+  "title": "AWS STS AssumeRole Misuse",
+  "description": "Identifies the suspicious use of AssumeRole. Attackers could move laterally and escalate privileges.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1548",
+   "T1550",
+   "T1550.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9b1b8e9b-0a5d-4af1-9d2f-4c4b6e7c2c9d",
+  "title": "AWS STS GetCallerIdentity Enumeration Via TruffleHog",
+  "description": "Detects the use of TruffleHog for AWS credential validation by identifying GetCallerIdentity API calls where the userAgent indicates TruffleHog. Threat actors leverage TruffleHog to enumerate and validate exposed AWS keys. Successful exploitation allows threat actors to confirm the validity of compromised AWS credentials, facilitating further unauthorized access and actions within the AWS environment.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1087.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b45ab1d2-712f-4f01-a751-df3826969807",
+  "title": "AWS STS GetSessionToken Misuse",
+  "description": "Identifies the suspicious use of GetSessionToken. Tokens could be created and used by attackers to move laterally and escalate privileges.",
+  "level": "baixa",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1548",
+   "T1550",
+   "T1550.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f43f5d2f-3f2a-4cc8-b1af-81fde7dbaf0e",
+  "title": "AWS Suspicious SAML Activity",
+  "description": "Identifies when suspicious SAML activity has occurred in AWS. An adversary could gain backdoor access via SAML.",
+  "level": "media",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1078",
+   "T1548",
+   "T1550",
+   "T1550.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "055fb148-60f8-462d-ad16-26926ce050f1",
+  "title": "AWS User Login Profile Was Modified",
+  "description": "Detects activity when someone is changing passwords on behalf of other users. An attacker with the \"iam:UpdateLoginProfile\" permission on other users can change the password used to login to the AWS console on any user that already has a login profile setup.",
+  "level": "alta",
+  "logsource": {
+   "product": "aws",
+   "service": "cloudtrail"
+  },
+  "mitre": [
+   "T1098"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "288a39fc-4914-4831-9ada-270e9dc12cb4",
+  "title": "Azure Active Directory Hybrid Health AD FS New Server",
+  "description": "This detection uses azureactivity logs (Administrative category) to identify the creation or update of a server instance in an Azure AD Hybrid health AD FS service. A threat actor can create a new AD Health ADFS service and create a fake server instance to spoof AD FS signing logs. There is no need to compromise an on-prem AD FS server. This can be done programmatically via HTTP requests to Azure.",
+  "level": "media",
+  "logsource": {
+   "product": "azure",
+   "service": "activitylogs"
+  },
+  "mitre": [
+   "T1578"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "48739819-8230-4ee3-a8ea-e0289d1fb0ff",
+  "title": "Azure Active Directory Hybrid Health AD FS Service Delete",
+  "description": "This detection uses azureactivity logs (Administrative category) to identify the deletion of an Azure AD Hybrid health AD FS service instance in a tenant. A threat actor can create a new AD Health ADFS service and create a fake server to spoof AD FS signing logs. The health AD FS service can then be deleted after it is not longer needed via HTTP requests to Azure.",
+  "level": "media",
+  "logsource": {
+   "product": "azure",
+   "service": "activitylogs"
+  },
+  "mitre": [
+   "T1578.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ad87d14e-7599-4633-ba81-aeb60cfe8cd6",
+  "title": "Azure Application Gateway Modified or Deleted",
+  "description": "Identifies when a application gateway is modified or deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "azure",
+   "service": "activitylogs"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6f7e1c10-2dc9-4312-adb6-9574ff09a5c8",
+  "title": "Cisco Duo Successful MFA Authentication Via Bypass Code",
+  "description": "Detects when a successful MFA authentication occurs due to the use of a bypass code. A bypass code is a temporary passcode created by an administrator for a specific user to access a Duo-protected application. These are generally used as \"backup codes,\" so that enrolled users who are having problems with their mobile devices (e.g., mobile service is disrupted, the device is lost or stolen, etc.) or who temporarily can't use their enrolled devices (on a plane without mobile data services) can sti",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "duo"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9058ca8b-f397-4fd1-a9fa-2b7aad4d6309",
+  "title": "Okta Admin Functions Access Through Proxy",
+  "description": "Detects access to Okta admin functions through proxy.",
+  "level": "media",
+  "logsource": {
+   "service": "okta",
+   "product": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "413d4a81-6c98-4479-9863-014785fd579c",
+  "title": "Okta Admin Role Assigned to an User or Group",
+  "description": "Detects when an the Administrator role is assigned to an user or group.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1098.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "139bdd4b-9cd7-49ba-a2f4-744d0a8f5d8c",
+  "title": "Okta Admin Role Assignment Created",
+  "description": "Detects when a new admin role assignment is created. Which could be a sign of privilege escalation or persistence",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "19951c21-229d-4ccb-8774-b993c3ff3c5c",
+  "title": "Okta API Token Created",
+  "description": "Detects when a API token is created",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "cf1dbc6b-6205-41b4-9b88-a83980d2255b",
+  "title": "Okta API Token Revoked",
+  "description": "Detects when a API Token is revoked.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7899144b-e416-4c28-b0b5-ab8f9e0a541d",
+  "title": "Okta Application Modified or Deleted",
+  "description": "Detects when an application is modified or deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8f668cc4-c18e-45fe-ad00-624a981cf88a",
+  "title": "Okta Application Sign-On Policy Modified or Deleted",
+  "description": "Detects when an application Sign-on Policy is modified or deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ee39a9f7-5a79-4b0a-9815-d36b3cf28d3e",
+  "title": "Okta FastPass Phishing Detection",
+  "description": "Detects when Okta FastPass prevents a known phishing site.",
+  "level": "alta",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1566"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "969c7590-8c19-4797-8c1b-23155de6e7ac",
+  "title": "Okta Identity Provider Created",
+  "description": "Detects when a new identity provider is created for Okta.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1098.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "50e068d7-1e6b-4054-87e5-0a592c40c7e0",
+  "title": "Okta MFA Reset or Deactivated",
+  "description": "Detects when an attempt at deactivating or resetting MFA.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1556.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9f308120-69ed-4506-abde-ac6da81f4310",
+  "title": "Okta Network Zone Deactivated or Deleted",
+  "description": "Detects when an Network Zone is Deactivated or Deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a0b38b70-3cb5-484b-a4eb-c4d8e7bcc0a9",
+  "title": "Okta New Admin Console Behaviours",
+  "description": "Detects when Okta identifies new activity in the Admin Console.",
+  "level": "alta",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1078.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "91b76b84-8589-47aa-9605-c837583b82a9",
+  "title": "Potential Okta Password in AlternateID Field",
+  "description": "Detects when a user has potentially entered their password into the username field, which will cause the password to be retained in log files.",
+  "level": "alta",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1552"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1667a172-ed4c-463c-9969-efd92195319a",
+  "title": "Okta Policy Modified or Deleted",
+  "description": "Detects when an Okta policy is modified or deleted.",
+  "level": "baixa",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0c97c1d3-4057-45c9-b148-1de94b631931",
+  "title": "Okta Policy Rule Modified or Deleted",
+  "description": "Detects when an Policy Rule is Modified or Deleted.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5c82f0b9-3c6d-477f-a318-0e14a1df73e0",
+  "title": "Okta Security Threat Detected",
+  "description": "Detects when an security threat is detected in Okta.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "07e97cc6-aed1-43ae-9081-b3470d2367f1",
+  "title": "Okta Suspicious Activity Reported by End-user",
+  "description": "Detects when an Okta end-user reports activity by their account as being potentially suspicious.",
+  "level": "alta",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1586.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6cc2b61b-d97e-42ef-a9dd-8aa8dc951657",
+  "title": "Okta Unauthorized Access to App",
+  "description": "Detects when unauthorized access to app occurs.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "14701da0-4b0f-4ee6-9c95-2ffb4e73bb9a",
+  "title": "Okta User Account Locked Out",
+  "description": "Detects when an user account is locked out.",
+  "level": "media",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1531"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b6c718dd-8f53-4b9f-98d8-93fdca966969",
+  "title": "New Okta User Created",
+  "description": "Detects new user account creation",
+  "level": "info",
+  "logsource": {
+   "service": "okta",
+   "product": "okta"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bde30855-5c53-4c18-ae90-1ff79ebc9578",
+  "title": "Okta User Session Start Via An Anonymising Proxy Service",
+  "description": "Detects when an Okta user session starts where the user is behind an anonymising proxy service.",
+  "level": "alta",
+  "logsource": {
+   "product": "okta",
+   "service": "okta"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "62fff148-278d-497e-8ecd-ad6083231a35",
+  "title": "OneLogin User Assumed Another User",
+  "description": "Detects when an user assumed another user account.",
+  "level": "baixa",
+  "logsource": {
+   "product": "onelogin",
+   "service": "onelogin.events"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a717c561-d117-437e-b2d9-0118a7035d01",
+  "title": "OneLogin User Account Locked",
+  "description": "Detects when an user account is locked or suspended.",
+  "level": "baixa",
+  "logsource": {
+   "product": "onelogin",
+   "service": "onelogin.events"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c52a914f-3d8b-4b2a-bb75-b3991e75f8ba",
+  "title": "Binary Padding - Linux",
+  "description": "Adversaries may use binary padding to add junk data and change the on-disk representation of malware. This rule detect using dd and truncate to add a junk data to file.",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1027.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "70b4156e-50fc-4523-aa50-c9dddf1993fc",
+  "title": "Bpfdoor TCP Ports Redirect",
+  "description": "All TCP traffic on particular port from attacker is routed to different port. ex. '/sbin/iptables -t nat -D PREROUTING -p tcp -s 192.168.1.1 --dport 22 -j REDIRECT --to-ports 42392' The traffic looks like encrypted SSH communications going to TCP port 22, but in reality is being directed to the shell port once it hits the iptables rule for the attacker host only.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1686"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fe10751f-1995-40a5-aaa2-c97ccb4123fe",
+  "title": "Linux Capabilities Discovery",
+  "description": "Detects attempts to discover the files with setuid/setgid capability on them. That would allow adversary to escalate their privileges.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1083",
+   "T1548"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b3cec4e7-6901-4b0d-a02d-8ab2d8eb818b",
+  "title": "File Time Attribute Change - Linux",
+  "description": "Detect file time attribute change to hide new or changes to existing files.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1070.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a5b977d6-8a81-4475-91b9-49dbfcd941f7",
+  "title": "Remove Immutable File Attribute - Auditd",
+  "description": "Detects removing immutable file attribute.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1222.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "214e7e6c-f21b-47ff-bb6f-551b2d143fcf",
+  "title": "Clipboard Collection with Xclip Tool - Auditd",
+  "description": "Detects attempts to collect data stored in the clipboard from users with the usage of xclip tool. Xclip has to be installed. Highly recommended using rule on servers, due to high usage of clipboard utilities on user workstations.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1115"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f200dc3f-b219-425d-a17e-c38467364816",
+  "title": "Clipboard Collection of Image Data with Xclip Tool",
+  "description": "Detects attempts to collect image data stored in the clipboard from users with the usage of xclip tool. Xclip has to be installed. Highly recommended using rule on servers, due to high usage of clipboard utilities on user workstations.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1115"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "071d5e5a-9cef-47ec-bc4e-a42e34d8d0ed",
+  "title": "Possible Coin Miner CPU Priority Param",
+  "description": "Detects command line parameter very often used with coin miners",
+  "level": "critica",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1068"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a3b5e3e9-1b49-4119-8b8e-0344a01f21ee",
+  "title": "Data Compressed",
+  "description": "An adversary may compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1560.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "cb39d16b-b3b6-4a7a-8222-1cf24b686ffc",
+  "title": "Data Exfiltration with Wget",
+  "description": "Detects attempts to post the file with the usage of wget utility. The adversary can bypass the permission restriction with the misconfigured sudo permission for wget utility which could allow them to read files like /etc/shadow.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1048.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "37222991-11e9-4b6d-8bdf-60fbe48f753e",
+  "title": "Overwriting the File with Dev Zero or Null",
+  "description": "Detects overwriting (effectively wiping/deleting) of a file.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1485"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "74c01ace-0152-4094-8ae2-6fd776dd43e5",
+  "title": "File or Folder Permissions Change",
+  "description": "Detects file and folder permission changes.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1222.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "df3fcaea-2715-4214-99c5-0056ea59eb35",
+  "title": "Credentials In Files - Linux",
+  "description": "Detecting attempts to extract passwords with grep",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1552.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d08722cd-3d09-449a-80b4-83ea2d9d4616",
+  "title": "Hidden Files and Directories",
+  "description": "Detects adversary creating hidden file or directory, by detecting directories or files with . as the first character",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1564.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "45810b50-7edc-42ca-813b-bdac02fb946b",
+  "title": "Steganography Hide Zip Information in Picture File",
+  "description": "Detects appending of zip file to image",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1027.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9d4548fa-bba0-4e88-bd66-5d5bf516cda0",
+  "title": "Masquerading as Linux Crond Process",
+  "description": "Masquerading occurs when the name or location of an executable, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation. Several different variations of this technique have been observed.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1036.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "323ff3f5-0013-4847-bbd4-250b5edb62cc",
+  "title": "Modify System Firewall",
+  "description": "Detects the removal of system firewall rules. Adversaries may only delete or modify a specific system firewall rule to bypass controls limiting network usage or access. Detection rules that match only on the disabling of firewalls will miss this.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1686"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f4d3748a-65d1-4806-bd23-e25728081d01",
+  "title": "Network Sniffing - Linux",
+  "description": "Network sniffing refers to using the network interface on a system to monitor or capture information sent over a wired or wireless connection. An adversary may place a network interface into promiscuous mode to passively access data in transit over the network, or use span ports to capture a larger amount of data.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1040"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "dbe4b9c5-c254-4258-9688-d6af0b7967fd",
+  "title": "Screen Capture with Import Tool",
+  "description": "Detects adversary creating screen capture of a desktop with Import Tool. Highly recommended using rule on servers, due to high usage of screenshot utilities on user workstations. ImageMagick must be installed.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1113"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e2f17c5d-b02a-442b-9052-6eb89c9fec9c",
+  "title": "Screen Capture with Xwd",
+  "description": "Detects adversary creating screen capture of a full with xwd. Highly recommended using rule on servers, due high usage of screenshot utilities on user workstations",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1113"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ce446a9e-30b9-4483-8e38-d2c9ad0a2280",
+  "title": "Steganography Hide Files with Steghide",
+  "description": "Detects embedding of files with usage of steghide binary, the adversaries may use this technique to prevent the detection of hidden information.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1027.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a5a827d9-1bbe-4952-9293-c59d897eb41b",
+  "title": "Steganography Extract Files with Steghide",
+  "description": "Detects extraction of files with usage of steghide binary, the adversaries may use this technique to prevent the detection of hidden information.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1027.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1543ae20-cbdf-4ec1-8d12-7664d667a825",
+  "title": "Suspicious Commands Linux",
+  "description": "Detects relevant commands often related to malware or hacking activity",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1059.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eae8ce9f-bde9-47a6-8e79-f20d18419910",
+  "title": "Suspicious History File Operations - Linux",
+  "description": "Detects commandline operations on shell history files",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1552.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2625cc59-0634-40d0-821e-cb67382a3dd7",
+  "title": "Service Reload or Start - Linux",
+  "description": "Detects the start, reload or restart of a service.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1543.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4cb57c2f-1f29-41f8-893d-8bed8e1c1d2f",
+  "title": "System Shutdown/Reboot - Linux",
+  "description": "Adversaries may shutdown/reboot systems to interrupt access to, or aid in the destruction of, those systems.",
+  "level": "info",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1529"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "edd595d7-7895-4fa7-acb3-85a18a8772ca",
+  "title": "Steganography Unzip Hidden Information From Picture File",
+  "description": "Detects extracting of zip file from image file",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1027.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9a0d8ca0-2385-4020-b6c6-cb6153ca56f3",
+  "title": "System Owner or User Discovery - Linux",
+  "description": "Detects the execution of host or user discovery utilities such as \"whoami\", \"hostname\", \"id\", etc. Adversaries may use the information from System Owner/User Discovery during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1033"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a7af2487-9c2f-42e4-9bb9-ff961f0561d5",
+  "title": "Audio Capture",
+  "description": "Detects attempts to record audio using the arecord and ecasound utilities.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1123"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e497a24e-9345-4a62-9803-b06d7d7cb132",
+  "title": "ASLR Disabled Via Sysctl or Direct Syscall - Linux",
+  "description": "Detects actions that disable Address Space Layout Randomization (ASLR) in Linux, including: - Use of the `personality` syscall with the ADDR_NO_RANDOMIZE flag (0x0040000) - Modification of the /proc/sys/kernel/randomize_va_space file - Execution of the `sysctl` command to set `kernel.randomize_va_space=0` Disabling ASLR is often used by attackers during exploit development or to bypass memory protection mechanisms. A successful use of these methods can reduce the effectiveness of ASLR and make m",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1055.009",
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "49aae26c-450e-448b-911d-b3c13d178dfc",
+  "title": "Linux Keylogging with Pam.d",
+  "description": "Detect attempt to enable auditing of TTY input",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1003",
+   "T1056.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ca94a6db-8106-4737-9ed2-3e3bb826af0a",
+  "title": "Password Policy Discovery - Linux",
+  "description": "Detects password policy discovery commands",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1201"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f7158a64-6204-4d6d-868a-6e6378b467e0",
+  "title": "Suspicious C2 Activities",
+  "description": "Detects suspicious activities as declared by Florian Roth in its 'Best Practice Auditd Configuration'. This includes the detection of the following commands; wget, curl, base64, nc, netcat, ncat, ssh, socat, wireshark, rawshark, rdesktop, nmap. These commands match a few techniques from the tactics \"Command and Control\", including not exhaustively the following; Application Layer Protocol (T1071), Non-Application Layer Protocol (T1095), Data Encoding (T1132)",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f34047d9-20d3-4e8b-8672-0a35cc50dc71",
+  "title": "System Information Discovery - Auditd",
+  "description": "Detects System Information Discovery commands",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1082"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "977ef627-4539-4875-adf4-ed8f780c4922",
+  "title": "Auditing Configuration Changes on Linux Host",
+  "description": "Detect changes in auditd configuration files",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "808146b2-9332-4d78-9416-d7e47012d83d",
+  "title": "BPFDoor Abnormal Process ID or Lock File Accessed",
+  "description": "detects BPFDoor .lock and .pid files access in temporary file storage facility",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1059",
+   "T1106"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9e1bef8d-0fff-46f6-8465-9aa54e128c1e",
+  "title": "Use Of Hidden Paths Or Files",
+  "description": "Detects calls to hidden files or files located in hidden directories in NIX systems.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1574.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4b3cb710-5e83-4715-8c45-8b2b5b3e5751",
+  "title": "Modification of ld.so.preload",
+  "description": "Identifies modification of ld.so.preload for shared object injection. This technique is used by attackers to load arbitrary code into processes.",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1574.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c830f15d-6f6e-430f-8074-6f73d6807841",
+  "title": "Logging Configuration Changes on Linux Host",
+  "description": "Detect changes of syslog daemons configuration files",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ea61bb82-a5e0-42e6-8537-91d29500f1b9",
+  "title": "Potential Abuse of Linux Magic System Request Key",
+  "description": "Detects the potential abuse of the Linux Magic SysRq (System Request) key by adversaries with root or sufficient privileges to silently manipulate or destabilize a system. By writing to /proc/sysrq-trigger, they can crash the system, kill processes, or disrupt forensic analysis\u2014all while bypassing standard logging. Though intended for recovery and debugging, SysRq can be misused as a stealthy post-exploitation tool. It is controlled via /proc/sys/kernel/sysrq or permanently through /etc/sysctl.c",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1059.004",
+   "T1489",
+   "T1499",
+   "T1529"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1f358e2e-cb63-43c3-b575-dfb072a6814f",
+  "title": "System and Hardware Information Discovery",
+  "description": "Detects system information discovery commands",
+  "level": "info",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1082"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1bac86ba-41aa-4f62-9d6b-405eac99b485",
+  "title": "Systemd Service Creation",
+  "description": "Detects a creation of systemd services which could be used by adversaries to execute malicious code.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1543.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a94cdd87-6c54-4678-a6cc-2814ffe5a13d",
+  "title": "Unix Shell Configuration Modification",
+  "description": "Detect unix shell configuration modification. Adversaries may establish persistence through executing malicious commands triggered when a new shell is opened.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1546.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "53059bc0-1472-438b-956a-7508a94a91f0",
+  "title": "Disable System Firewall",
+  "description": "Detects disabling of system firewalls which could be used by adversaries to bypass controls that limit usage of the network.",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1686"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eca5e022-d368-4043-98e5-9736fb01f72f",
+  "title": "Clear or Disable Kernel Ring Buffer Logs via Syslog Syscall",
+  "description": "Detects the use of the `syslog` syscall with action code 5 (SYSLOG_ACTION_CLEAR), (4 is SYSLOG_ACTION_READ_CLEAR and 6 is SYSLOG_ACTION_CONSOLE_OFF) which clears the kernel ring buffer (dmesg logs). This can be used by attackers to hide traces after exploitation or privilege escalation. A common technique is running `dmesg -c`, which triggers this syscall internally.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1685.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "759d0d51-bc99-4b5e-9add-8f5b2c8e7512",
+  "title": "Creation Of An User Account",
+  "description": "Detects the creation of a new user account. Such accounts may be used for persistence that do not require persistent remote access tools to be deployed on the system.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1136.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "106d7cbd-80ff-4985-b682-a7043e5acb72",
+  "title": "Loading of Kernel Module via Insmod",
+  "description": "Detects loading of kernel modules with insmod command. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. Adversaries may use LKMs to obtain persistence within the system or elevate the privileges.",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1547.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3761e026-f259-44e6-8826-719ed8079408",
+  "title": "Linux Network Service Scanning - Auditd",
+  "description": "Detects enumeration of local or remote network services.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1046"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2dad0cba-c62a-4a4f-949f-5f6ecd619769",
+  "title": "Split A File Into Pieces - Linux",
+  "description": "Detection use of the command \"split\" to split files into parts and possible transfer.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1030"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b207d563-a1d9-4275-b349-77d1eb55aa6d",
+  "title": "System Info Discovery via Sysinfo Syscall",
+  "description": "Detects use of the sysinfo system call in Linux, which provides a snapshot of key system statistics such as uptime, load averages, memory usage, and the number of running processes. Malware or reconnaissance tools might leverage sysinfo to fingerprint the system - gathering data to determine if it's a viable target.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1057",
+   "T1082"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a39d7fa7-3fbd-4dc2-97e1-d87f546b1bbc",
+  "title": "Program Executions in Suspicious Folders",
+  "description": "Detects program executions in suspicious non-program folders related to malware or hacking activity",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1584",
+   "T1587"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "710bdbce-495d-491d-9a8f-7d0d88d2b41e",
+  "title": "Special File Creation via Mknod Syscall",
+  "description": "Detects usage of the `mknod` syscall to create special files (e.g., character or block devices). Attackers or malware might use `mknod` to create fake devices, interact with kernel interfaces, or establish covert channels in Linux systems. Monitoring the use of `mknod` is important because this syscall is rarely used by legitimate applications, and it can be abused to bypass file system restrictions or create backdoors.",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1543.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c0d3734d-330f-4a03-aae2-65dacc6a8222",
+  "title": "Webshell Remote Command Execution",
+  "description": "Detects possible command execution by web application/web shell",
+  "level": "critica",
+  "logsource": {
+   "product": "linux",
+   "service": "auditd"
+  },
+  "mitre": [
+   "T1505.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "36aa86ca-fd9d-4456-814e-d3b1b8e1e0bb",
+  "title": "Relevant ClamAV Message",
+  "description": "Detects relevant ClamAV messages",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "clamav"
+  },
+  "mitre": [
+   "T1588.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "af202fd3-7bff-4212-a25a-fb34606cfcbe",
+  "title": "Modifying Crontab",
+  "description": "Detects suspicious modification of crontab file.",
+  "level": "media",
+  "logsource": {
+   "product": "linux",
+   "service": "cron"
+  },
+  "mitre": [
+   "T1053.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1edd77db-0669-4fef-9598-165bda82826d",
+  "title": "Guacamole Two Users Sharing Session Anomaly",
+  "description": "Detects suspicious session with two users present",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "guacamole"
+  },
+  "mitre": [
+   "T1212"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "41e5c73d-9983-4b69-bd03-e13b67e9623c",
+  "title": "Equation Group Indicators",
+  "description": "Detects suspicious shell commands used in various Equation Group scripts and tools",
+  "level": "alta",
+  "logsource": {
+   "product": "linux"
+  },
+  "mitre": [
+   "T1059.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "18b042f0-2ecd-4b6e-9f8d-aa7a7e7de781",
+  "title": "Buffer Overflow Attempts",
+  "description": "Detects buffer overflow attempts in Unix system log files",
+  "level": "alta",
+  "logsource": {
+   "product": "linux"
+  },
+  "mitre": [
+   "T1068"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e09eb557-96d2-4de9-ba2d-30f712a5afd3",
+  "title": "Commands to Clear or Remove the Syslog - Builtin",
+  "description": "Detects specific commands commonly used to remove or empty the syslog",
+  "level": "alta",
+  "logsource": {
+   "product": "linux"
+  },
+  "mitre": [
+   "T1565.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7a14080d-a048-4de8-ae58-604ce58a795b",
+  "title": "Remote File Copy",
+  "description": "Detects the use of tools that copy files from or to remote systems",
+  "level": "baixa",
+  "logsource": {
+   "product": "linux"
+  },
+  "mitre": [
+   "T1105"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "23c43900-e732-45a4-8354-63e4a6c187ce",
+  "title": "MacOS Emond Launch Daemon",
+  "description": "Detects additions to the Emond Launch Daemon that adversaries may use to gain persistence and elevate privileges.",
+  "level": "media",
+  "logsource": {
+   "category": "file_event",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1546.014"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "dfe8b941-4e54-4242-b674-6b613d521962",
+  "title": "Startup Item File Created - MacOS",
+  "description": "Detects the creation of a startup item plist file, that automatically get executed at boot initialization to establish persistence. Adversaries may use startup items automatically executed at boot initialization to establish persistence. Startup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system to determine the execution order for all startup items.",
+  "level": "baixa",
+  "logsource": {
+   "category": "file_event",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1037.005"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1bc2e6c5-0885-472b-bed6-be5ea8eace55",
+  "title": "MacOS Scripting Interpreter AppleScript",
+  "description": "Detects execution of AppleScript of the macOS scripting language AppleScript.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "719c22d7-c11a-4f2c-93a6-2cfdd5412f68",
+  "title": "Decode Base64 Encoded Text -MacOs",
+  "description": "Detects usage of base64 utility to decode arbitrary base64-encoded text",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1027"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "95361ce5-c891-4b0a-87ca-e24607884a96",
+  "title": "Binary Padding - MacOS",
+  "description": "Adversaries may use binary padding to add junk data and change the on-disk representation of malware. This rule detect using dd and truncate to add a junk data to file.",
+  "level": "alta",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1027.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "88c0f9d8-30a8-4120-bb6b-ebb54abcf2a0",
+  "title": "File Time Attribute Change",
+  "description": "Detect file time attribute change to hide new or changes to existing files",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1070.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3b2c1059-ae5f-40b6-b5d4-6106d3ac20fe",
+  "title": "Hidden Flag Set On File/Directory Via Chflags - MacOS",
+  "description": "Detects the execution of the \"chflags\" utility with the \"hidden\" flag, in order to hide files on MacOS. When a file or directory has this hidden flag set, it becomes invisible to the default file listing commands and in graphical file browsers.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1105",
+   "T1218",
+   "T1552.001",
+   "T1564.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "acf61bd8-d814-4272-81f0-a7a269aa69aa",
+  "title": "Indicator Removal on Host - Clear Mac System Logs",
+  "description": "Detects deletion of local audit logs",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1685.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7794fa3c-edea-4cff-bec7-267dd4770fd7",
+  "title": "Clipboard Access Via OSAScript",
+  "description": "Detects access to clipboard content via osascript, which may be used for data collection but also occurs in legitimate clipboard utilities and automation scripts",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1059.002",
+   "T1115"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "51719bf5-e4fd-4e44-8ba8-b830e7ac0731",
+  "title": "Creation Of A Local User Account",
+  "description": "Detects the creation of a new user account. Such accounts may be used for persistence that do not require persistent remote access tools to be deployed on the system.",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1136.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b22a5b36-2431-493a-8be1-0bae56c28ef3",
+  "title": "Hidden User Creation",
+  "description": "Detects creation of a hidden user account on macOS (UserID < 500) or with IsHidden option",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1564.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b120b587-a4c2-4b94-875d-99c9807d6955",
+  "title": "Credentials from Password Stores - Keychain",
+  "description": "Detects passwords dumps from Keychain",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1555.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3603f18a-ec15-43a1-9af2-d196c8a7fec6",
+  "title": "System Integrity Protection (SIP) Disabled",
+  "description": "Detects the use of csrutil to disable the Configure System Integrity Protection (SIP). This technique is used in post-exploit scenarios.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1518.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "53821412-17b0-4147-ade0-14faae67d54b",
+  "title": "System Integrity Protection (SIP) Enumeration",
+  "description": "Detects the use of csrutil to view the Configure System Integrity Protection (SIP) status. This technique is used in post-exploit scenarios.",
+  "level": "baixa",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1518.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ff39f1a6-84ac-476f-a1af-37fcdf53d7c0",
+  "title": "Disable Security Tools",
+  "description": "Detects disabling security tools",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b743623c-2776-40e0-87b1-682b975d0ca5",
+  "title": "User Added To Admin Group Via Dscl",
+  "description": "Detects attempts to create and add an account to the admin group via \"dscl\"",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1078.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5d0fdb62-f225-42fb-8402-3dfe64da468a",
+  "title": "User Added To Admin Group Via DseditGroup",
+  "description": "Detects attempts to create and/or add an account to the admin group, thus granting admin privileges.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1078.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "821bcf4d-46c7-4b87-bc57-9509d3ba7c11",
+  "title": "Root Account Enable Via Dsenableroot",
+  "description": "Detects attempts to enable the root account via \"dsenableroot\"",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1078",
+   "T1078.001",
+   "T1078.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "089dbdf6-b960-4bcc-90e3-ffc3480c20f6",
+  "title": "File and Directory Discovery - MacOS",
+  "description": "Detects usage of system utilities to discover files and directories",
+  "level": "info",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1083"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "53b1b378-9b06-4992-b972-dde6e423d2b4",
+  "title": "Credentials In Files",
+  "description": "Detecting attempts to extract passwords with grep and laZagne",
+  "level": "alta",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1552.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "60f1ce20-484e-41bd-85f4-ac4afec2c541",
+  "title": "GUI Input Capture - macOS",
+  "description": "Detects attempts to use system dialog prompts to capture user credentials",
+  "level": "baixa",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1056.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1cf98dc2-fcb0-47c9-8aea-654c9284d1ae",
+  "title": "Disk Image Creation Via Hdiutil - MacOS",
+  "description": "Detects the execution of the hdiutil utility in order to create a disk image.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bf241472-f014-4f01-a869-96f99330ca8c",
+  "title": "Disk Image Mounting Via Hdiutil - MacOS",
+  "description": "Detects the execution of the hdiutil utility in order to mount disk images.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1560.001",
+   "T1566.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e0cfaecd-602d-41af-988d-f6ccebb2af26",
+  "title": "Suspicious Installer Package Child Process",
+  "description": "Detects the execution of suspicious child processes from macOS installer package parent process. This includes osascript, JXA, curl and wget amongst other interpreters",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059",
+   "T1059.007",
+   "T1071",
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2d5e7a8b-f484-4a24-945d-7f0efd52eab0",
+  "title": "System Information Discovery Using Ioreg",
+  "description": "Detects the use of \"ioreg\" which will show I/O Kit registry information. This process is used for system information discovery. It has been observed in-the-wild by calling this process directly or using bash and grep to look for specific strings.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1082"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2316929c-01aa-438c-970f-099145ab1ee6",
+  "title": "JAMF MDM Potential Suspicious Child Process",
+  "description": "Detects potential suspicious child processes of \"jamf\". Could be a sign of potential abuse of Jamf as a C2 server as seen by Typhon MythicAgent.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "be2e3a5c-9cc7-4d02-842a-68e9cb26ec49",
+  "title": "JAMF MDM Execution",
+  "description": "Detects execution of the \"jamf\" binary to create user accounts and run commands. For example, the binary can be abused by attackers on the system in order to bypass security controls or remove application control polices.",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f1408a58-0e94-4165-b80a-da9f96cf6fc3",
+  "title": "JXA In-memory Execution Via OSAScript",
+  "description": "Detects possible malicious execution of JXA in-memory via OSAScript",
+  "level": "alta",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1059.002",
+   "T1059.007"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ae9d710f-dcd1-4f75-a0a5-93a73b5dda0e",
+  "title": "Launch Agent/Daemon Execution Via Launchctl",
+  "description": "Detects the execution of programs as Launch Agents or Launch Daemons using launchctl on macOS.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1543.001",
+   "T1543.004",
+   "T1569.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ddf36b67-e872-4507-ab2e-46bda21b842c",
+  "title": "Local System Accounts Discovery - MacOs",
+  "description": "Detects enumeration of local system accounts on MacOS systems. This can be used by attackers to identify accounts for lateral movement or privilege escalation.",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1087.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "89bb1f97-c7b9-40e8-b52b-7d6afbd67276",
+  "title": "Local Groups Discovery - MacOs",
+  "description": "Detects enumeration of local system groups",
+  "level": "info",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1069.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "84bae5d4-b518-4ae0-b331-6d4afd34d00f",
+  "title": "MacOS Network Service Scanning",
+  "description": "Detects enumeration of local or remote network services.",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1046"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "adc9bcc4-c39c-4f6b-a711-1884017bf043",
+  "title": "Network Sniffing - MacOs",
+  "description": "Detects the usage of tooling to sniff network traffic. An adversary may place a network interface into promiscuous mode to passively access data in transit over the network, or use span ports to capture a larger amount of data.",
+  "level": "info",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1040"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6d8a7cf1-8085-423b-b87d-7e880faabbdf",
+  "title": "File Download Via Nscurl - MacOS",
+  "description": "Detects the execution of the nscurl utility in order to download files.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1105"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "69483748-1525-4a6c-95ca-90dc8d431b68",
+  "title": "Suspicious Microsoft Office Child Process - MacOS",
+  "description": "Detects suspicious child processes spawning from microsoft office suite applications such as word or excel. This could indicates malicious macro execution",
+  "level": "alta",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1059.002",
+   "T1137.002",
+   "T1204.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b9d9b652-d8ed-4697-89a2-a1186ee680ac",
+  "title": "OSACompile Run-Only Execution",
+  "description": "Detects potential suspicious run-only executions compiled using OSACompile",
+  "level": "alta",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1059.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "234dc5df-40b5-49d1-bf53-0d44ce778eca",
+  "title": "Payload Decoded and Decrypted via Built-in Utilities",
+  "description": "Detects when a built-in utility is used to decode and decrypt a payload after a macOS disk image (DMG) is executed. Malware authors may attempt to evade detection and trick users into executing malicious code by encoding and encrypting their payload and placing it in a disk image file. This behavior is consistent with adware or malware families such as Bundlore and Shlayer.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059",
+   "T1140",
+   "T1204"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "65d506d3-fcfe-4071-b4b2-bcefe721bbbb",
+  "title": "Potential Persistence Via PlistBuddy",
+  "description": "Detects potential persistence activity using LaunchAgents or LaunchDaemons via the PlistBuddy utility",
+  "level": "alta",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1543.001",
+   "T1543.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "22c45af6-f590-4d44-bab3-b5b2d2a2b6d9",
+  "title": "Remote Access Tool - Potential MeshAgent Execution - MacOS",
+  "description": "Detects potential execution of MeshAgent which is a tool used for remote access. Historical data shows that threat actors rename MeshAgent binary to evade detection. Matching command lines with the '--meshServiceName' argument can indicate that the MeshAgent is being used for remote access.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bd3b5eaa-439d-4a42-8f35-a49f5c8a2582",
+  "title": "Remote Access Tool - Renamed MeshAgent Execution - MacOS",
+  "description": "Detects the execution of a renamed instance of the Remote Monitoring and Management (RMM) tool, MeshAgent. RMM tools such as MeshAgent are commonly utilized by IT administrators for legitimate remote support and system management. However, malicious actors may exploit these tools by renaming them to bypass detection mechanisms, enabling unauthorized access and control over compromised systems.",
+  "level": "alta",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1036.003",
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f459ccb4-9805-41ea-b5b2-55e279e2424a",
+  "title": "Remote Access Tool - Team Viewer Session Started On MacOS Host",
+  "description": "Detects the command line executed when TeamViewer starts a session started by a remote host. Once a connection has been started, an investigator can verify the connection details by viewing the \"incoming_connections.txt\" log file in the TeamViewer folder.",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1133"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "10227522-8429-47e6-a301-f2b2d014e7ad",
+  "title": "Macos Remote System Discovery",
+  "description": "Detects the enumeration of other remote systems.",
+  "level": "info",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1018"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7c3b43d8-d794-47d2-800a-d277715aa460",
+  "title": "Scheduled Cron Task/Job - MacOs",
+  "description": "Detects abuse of the cron utility to perform task scheduling for initial or recurring execution of malicious code. Detection will focus on crontab jobs uploaded from the tmp folder.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1053.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0877ed01-da46-4c49-8476-d49cdd80dfa7",
+  "title": "Screen Capture - macOS",
+  "description": "Detects attempts to use screencapture to collect macOS screenshots",
+  "level": "baixa",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1113"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0ed75b9c-c73b-424d-9e7d-496cd565fbe0",
+  "title": "Security Software Discovery - MacOs",
+  "description": "Detects usage of system utilities (only grep for now) to discover security software discovery",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1518.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b6e2a2e3-2d30-43b1-a4ea-071e36595690",
+  "title": "Space After Filename - macOS",
+  "description": "Detects attempts to masquerade as legitimate files by adding a space to the end of the filename.",
+  "level": "baixa",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1036.006"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7f2bb9d5-6395-4de5-969c-70c11fbe6b12",
+  "title": "Split A File Into Pieces",
+  "description": "Detection use of the command \"split\" to split files into parts and possible transfer.",
+  "level": "baixa",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1030"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0250638a-2b28-4541-86fc-ea4c558fa0c6",
+  "title": "Suspicious Browser Child Process - MacOS",
+  "description": "Detects suspicious child processes spawned from browsers. This could be a result of a potential web browser exploitation.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059",
+   "T1189",
+   "T1203"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6e4dcdd1-e48b-42f7-b2d8-3b413fc58cb4",
+  "title": "Suspicious Execution via macOS Script Editor",
+  "description": "Detects when the macOS Script Editor utility spawns an unusual child process.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059",
+   "T1059.002",
+   "T1204",
+   "T1204.001",
+   "T1553",
+   "T1566",
+   "T1566.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "85de3a19-b675-4a51-bfc6-b11a5186c971",
+  "title": "Potential Discovery Activity Using Find - MacOS",
+  "description": "Detects usage of \"find\" binary in a suspicious manner to perform discovery",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1083"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "508a9374-ad52-4789-b568-fc358def2c65",
+  "title": "Suspicious History File Operations",
+  "description": "Detects commandline operations on shell history files",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1552.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "13db8d2e-7723-4c2c-93c1-a4d36994f7ef",
+  "title": "Potential In-Memory Download And Compile Of Payloads",
+  "description": "Detects potential in-memory downloading and compiling of applets using curl and osacompile as seen used by XCSSET malware",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059.007",
+   "T1105"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7ed2c9f7-c59d-4c82-a7e2-f859aa676099",
+  "title": "Suspicious MacOS Firmware Activity",
+  "description": "Detects when a user manipulates with Firmward Password on MacOS. NOTE - this command has been disabled on silicon-based apple computers.",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "58800443-f9fc-4d55-ae0c-98a3966dfb97",
+  "title": "System Network Discovery - macOS",
+  "description": "Detects enumeration of local network configuration",
+  "level": "info",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1016"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a753a6af-3126-426d-8bd0-26ebbcb92254",
+  "title": "Osacompile Execution By Potentially Suspicious Applet/Osascript",
+  "description": "Detects potential suspicious applet or osascript executing \"osacompile\".",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1059.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5de06a6f-673a-4fc0-8d48-bcfe3837b033",
+  "title": "System Information Discovery Using sw_vers",
+  "description": "Detects the use of \"sw_vers\" for system information discovery",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1082"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "652c098d-dc11-4ba6-8566-c20e89042f2b",
+  "title": "User Added To Admin Group Via Sysadminctl",
+  "description": "Detects attempts to create and add an account to the admin group via \"sysadminctl\"",
+  "level": "media",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1078.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d7329412-13bd-44ba-a072-3387f804a106",
+  "title": "Guest Account Enabled Via Sysadminctl",
+  "description": "Detects attempts to enable the guest account using the sysadminctl utility",
+  "level": "baixa",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1078",
+   "T1078.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6ff08e55-ea53-4f27-94a1-eff92e6d9d5c",
+  "title": "System Information Discovery Via Sysctl - MacOS",
+  "description": "Detects the execution of \"sysctl\" with specific arguments that have been used by threat actors and malware. It provides system hardware information. This process is primarily used to detect and avoid virtualization and analysis environments.",
+  "level": "media",
+  "logsource": {
+   "product": "macos",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1082",
+   "T1497.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9a7a0393-2144-4626-9bf1-7c2f5a7321db",
+  "title": "System Network Connections Discovery - MacOs",
+  "description": "Detects usage of system utilities to discover system network connections",
+  "level": "info",
+  "logsource": {
+   "category": "process_creation",
+   "product": "macos"
+  },
+  "mitre": [
+   "T1049"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ceb407f6-8277-439b-951f-e4210e3ed956",
+  "title": "Cisco Clear Logs",
+  "description": "Clear command history in network OS which is used for defense evasion",
+  "level": "alta",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1070.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "cd072b25-a418-4f98-8ebc-5093fb38fe1a",
+  "title": "Cisco Collect Data",
+  "description": "Collect pertinent data from the configuration files",
+  "level": "baixa",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1005",
+   "T1087.001",
+   "T1552.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1f978c6a-4415-47fb-aca5-736a44d7ca3d",
+  "title": "Cisco Crypto Commands",
+  "description": "Show when private keys are being exported from the device, or when new certificates are installed",
+  "level": "alta",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1552.004",
+   "T1553.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9e8f6035-88bf-4a63-96b6-b17c0508257e",
+  "title": "Cisco Disabling Logging",
+  "description": "Turn off logging locally or remote",
+  "level": "alta",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9705a6a1-6db6-4a16-a987-15b7151e299b",
+  "title": "Cisco Discovery",
+  "description": "Find information about network devices that is not stored in config files",
+  "level": "baixa",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1016",
+   "T1018",
+   "T1033",
+   "T1049",
+   "T1057",
+   "T1082",
+   "T1083",
+   "T1124",
+   "T1201"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d94a35f0-7a29-45f6-90a0-80df6159967c",
+  "title": "Cisco Denial of Service",
+  "description": "Detect a system being shutdown or put into different boot mode",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1495",
+   "T1529",
+   "T1565.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ef0ff092-a24a-4fbc-beea-06c08d53e085",
+  "title": "Cisco Dot1x Disabled",
+  "description": "Detects the manual disablement of IEEE 802.1X (dot1x) on a Cisco network device interface. Disabling dot1x bypasses Network Access Control (NAC) mechanisms, potentially allowing unauthorized devices to gain access to the internal network. This activity is a common technique used by attackers or malicious insiders to establish persistence or perform lateral movement via rogue devices.",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1556.004",
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "71d65515-c436-43c0-841b-236b1f32c21e",
+  "title": "Cisco File Deletion",
+  "description": "See what files are being deleted from flash file systems",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1070.004",
+   "T1561.001",
+   "T1561.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b094d9fb-b1ad-4650-9f1a-fb7be9f1d34b",
+  "title": "Cisco Show Commands Input",
+  "description": "See what commands are being input into the device by other people, full credentials can be in the history",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1552.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6d844f0f-1c18-41af-8f19-33e7654edfc3",
+  "title": "Cisco Local Accounts",
+  "description": "Find local accounts being created or modified as well as remote authentication configurations",
+  "level": "alta",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1098",
+   "T1136.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "671ffc77-50a7-464f-9e3d-9ea2b493b26b",
+  "title": "Cisco Modify Configuration",
+  "description": "Modifications to a config that will serve an adversary's impacts or persistence",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1053",
+   "T1490",
+   "T1505",
+   "T1565.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5e51acb2-bcbe-435b-99c6-0e3cd5e2aa59",
+  "title": "Cisco Stage Data",
+  "description": "Various protocols maybe used to put data on the device for exfil or infil",
+  "level": "baixa",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1074",
+   "T1105",
+   "T1560.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b9e1f193-d236-4451-aaae-2f3d2102120d",
+  "title": "Cisco Sniffing",
+  "description": "Show when a monitor or a span/rspan is setup or modified",
+  "level": "media",
+  "logsource": {
+   "product": "cisco",
+   "service": "aaa"
+  },
+  "mitre": [
+   "T1040"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "56fa3cd6-f8d6-4520-a8c7-607292971886",
+  "title": "Cisco BGP Authentication Failures",
+  "description": "Detects BGP failures which may be indicative of brute force attacks to manipulate routing",
+  "level": "baixa",
+  "logsource": {
+   "product": "cisco",
+   "service": "bgp"
+  },
+  "mitre": [
+   "T1078",
+   "T1110",
+   "T1557"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "50e606bf-04ce-4ca7-9d54-3449494bbd4b",
+  "title": "Cisco LDP Authentication Failures",
+  "description": "Detects LDP failures which may be indicative of brute force attacks to manipulate MPLS labels",
+  "level": "baixa",
+  "logsource": {
+   "product": "cisco",
+   "service": "ldp"
+  },
+  "mitre": [
+   "T1078",
+   "T1110",
+   "T1557"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "aff715fa-4dd5-497a-8db3-910bea555566",
+  "title": "DNS Query to External Service Interaction Domains",
+  "description": "Detects DNS queries to well-known out-of-band application security testing (OAST) and callback domains. These services (e.g. Burp Collaborator, interactsh, canarytokens, dnslog.cn) are used by security researchers and attackers alike to confirm blind vulnerabilities such as SSRF, XXE, blind RCE, and Log4Shell-style injections, where the exploit payload triggers an external DNS lookup to a controlled domain. A detection indicates that a host on your network resolved one of these domains, which ma",
+  "level": "alta",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1190",
+   "T1595.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2975af79-28c4-4d2f-a951-9095f229df29",
+  "title": "Cobalt Strike DNS Beaconing",
+  "description": "Detects suspicious DNS queries known from Cobalt Strike beacons",
+  "level": "critica",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1071.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b593fd50-7335-4682-a36c-4edcb68e4641",
+  "title": "Monero Crypto Coin Mining Pool Lookup",
+  "description": "Detects suspicious DNS queries to Monero mining pools",
+  "level": "alta",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1496",
+   "T1567"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4153a907-2451-4e4f-a578-c52bb6881432",
+  "title": "Suspicious DNS Query with B64 Encoded String",
+  "description": "Detects suspicious DNS queries using base64 encoding",
+  "level": "media",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1048.003",
+   "T1071.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c64c5175-5189-431b-a55e-6d9882158251",
+  "title": "Telegram Bot API Request",
+  "description": "Detects suspicious DNS queries to api.telegram.org used by Telegram Bots of any kind",
+  "level": "media",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1102.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8ae51330-899c-4641-8125-e39f2e07da72",
+  "title": "DNS TXT Answer with Possible Execution Strings",
+  "description": "Detects strings used in command execution in DNS TXT Answer",
+  "level": "alta",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1071.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "3eaf6218-3bed-4d8a-8707-274096f12a18",
+  "title": "Wannacry Killswitch Domain",
+  "description": "Detects wannacry killswitch domain dns queries",
+  "level": "alta",
+  "logsource": {
+   "category": "dns"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d7fb8f0e-bd5f-45c2-b467-19571c490d7e",
+  "title": "Cleartext Protocol Usage",
+  "description": "Ensure that all account usernames and authentication credentials are transmitted across networks using encrypted channels. Ensure that an encryption is used for all sensitive information in transit. Ensure that an encrypted channels is used for all administrative account access.",
+  "level": "baixa",
+  "logsource": {
+   "category": "firewall"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "cd0a4943-0edd-42cf-b50c-06f77a10d4c1",
+  "title": "FortiGate - New Administrator Account Created",
+  "description": "Detects the creation of an administrator account on a Fortinet FortiGate Firewall.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1136.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5c8d7b41-3812-432f-a0bb-4cfb7c31827e",
+  "title": "FortiGate - Firewall Address Object Added",
+  "description": "Detects the addition of firewall address objects on a Fortinet FortiGate Firewall.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1686.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f24ab7a8-f09a-4319-82c1-915586aa642b",
+  "title": "FortiGate - New Firewall Policy Added",
+  "description": "Detects the addition of a new firewall policy on a Fortinet FortiGate Firewall.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1686.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ddbbe845-1d74-43a8-8231-2156d180234d",
+  "title": "FortiGate - New Local User Created",
+  "description": "Detects the creation of a new local user on a Fortinet FortiGate Firewall. The new local user could be used for VPN connections.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1136.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2bfb6216-0c31-4d20-8501-2629b29a3fa2",
+  "title": "FortiGate - New VPN SSL Web Portal Added",
+  "description": "Detects the addition of a VPN SSL Web Portal on a Fortinet FortiGate Firewall. This behavior was observed in pair with modification of VPN SSL settings.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1133"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "69ffc84e-8b1a-4024-8351-e018f66b8275",
+  "title": "FortiGate - User Group Modified",
+  "description": "Detects the modification of a user group on a Fortinet FortiGate Firewall. The group could be used to grant VPN access to a network.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8b5dacf2-aeb7-459d-b133-678eb696d410",
+  "title": "FortiGate - VPN SSL Settings Modified",
+  "description": "Detects the modification of VPN SSL Settings (for example, the modification of authentication rules). This behavior was observed in pair with the addition of a VPN SSL Web Portal.",
+  "level": "media",
+  "logsource": {
+   "product": "fortigate",
+   "service": "event"
+  },
+  "mitre": [
+   "T1133"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a557ffe6-ac54-43d2-ae69-158027082350",
+  "title": "Huawei BGP Authentication Failures",
+  "description": "Detects BGP failures which may be indicative of brute force attacks to manipulate routing.",
+  "level": "baixa",
+  "logsource": {
+   "product": "huawei",
+   "service": "bgp"
+  },
+  "mitre": [
+   "T1078",
+   "T1110",
+   "T1557"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a7c0ae48-8df8-42bf-91bd-2ea57e2f9d43",
+  "title": "Juniper BGP Missing MD5",
+  "description": "Detects juniper BGP missing MD5 digest. Which may be indicative of brute force attacks to manipulate routing.",
+  "level": "baixa",
+  "logsource": {
+   "product": "juniper",
+   "service": "bgp"
+  },
+  "mitre": [
+   "T1078",
+   "T1110",
+   "T1557"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b640c0b8-87f8-4daa-aef8-95a24261dd1d",
+  "title": "MITRE BZAR Indicators for Execution",
+  "description": "Windows DCE-RPC functions which indicate an execution techniques on the remote system. All credit for the Zeek mapping of the suspicious endpoint/operation field goes to MITRE",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "dce_rpc"
+  },
+  "mitre": [
+   "T1047",
+   "T1053.002",
+   "T1569.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "53389db6-ba46-48e3-a94c-e0f2cefe1583",
+  "title": "MITRE BZAR Indicators for Persistence",
+  "description": "Windows DCE-RPC functions which indicate a persistence techniques on the remote system. All credit for the Zeek mapping of the suspicious endpoint/operation field goes to MITRE.",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "dce_rpc"
+  },
+  "mitre": [
+   "T1547.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4096842a-8f9f-4d36-92b4-d0b2a62f9b2a",
+  "title": "Potential PetitPotam Attack Via EFS RPC Calls",
+  "description": "Detects usage of the windows RPC library Encrypting File System Remote Protocol (MS-EFSRPC). Variations of this RPC are used within the attack refereed to as PetitPotam. The usage of this RPC function should be rare if ever used at all. Thus usage of this function is uncommon enough that any usage of this RPC function should warrant further investigation to determine if it is legitimate. View surrounding logs (within a few minutes before and after) from the Source IP to. Logs from from the Sourc",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "dce_rpc"
+  },
+  "mitre": [
+   "T1187",
+   "T1557.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bae2865c-5565-470d-b505-9496c87d0c30",
+  "title": "SMB Spoolss Name Piped Usage",
+  "description": "Detects the use of the spoolss named pipe over SMB. This can be used to trigger the authentication via NTLM of any machine that has the spoolservice enabled.",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1021.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7100f7e3-92ce-4584-b7b7-01b40d3d4118",
+  "title": "Default Cobalt Strike Certificate",
+  "description": "Detects the presence of default Cobalt Strike certificate in the HTTPS traffic",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "x509"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5588576c-5898-4fac-bcdd-7475a60e8f43",
+  "title": "Suspicious DNS Query Indicating Kerberos Coercion via DNS Object SPN Spoofing - Network",
+  "description": "Detects DNS queries containing patterns associated with Kerberos coercion attacks via DNS object spoofing. The pattern \"1UWhRCAAAAA..BAAAA\" is a base64-encoded signature that corresponds to a marshaled CREDENTIAL_TARGET_INFORMATION structure. Attackers can use this technique to coerce authentication from victim systems to attacker-controlled hosts. It is one of the strong indicators of a Kerberos coercion attack, where adversaries manipulate DNS records to spoof Service Principal Names (SPNs) an",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "dns"
+  },
+  "mitre": [
+   "T1187",
+   "T1557.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "bf74135c-18e8-4a72-a926-0e4f47888c19",
+  "title": "DNS Events Related To Mining Pools",
+  "description": "Identifies clients that may be performing DNS lookups associated with common currency mining pools.",
+  "level": "baixa",
+  "logsource": {
+   "service": "dns",
+   "product": "zeek"
+  },
+  "mitre": [
+   "T1496",
+   "T1569.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fa7703d6-0ee8-4949-889c-48c84bc15b6f",
+  "title": "New Kind of Network (NKN) Detection",
+  "description": "NKN is a networking service using blockchain technology to support a decentralized network of peers. While there are legitimate uses for it, it can also be used as a C2 channel. This rule looks for a DNS request to the ma>",
+  "level": "baixa",
+  "logsource": {
+   "product": "zeek",
+   "service": "dns"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ede05abc-2c9e-4624-9944-9ff17fdc0bf5",
+  "title": "Suspicious DNS Z Flag Bit Set",
+  "description": "The DNS Z flag is bit within the DNS protocol header that is, per the IETF design, meant to be used reserved (unused). Although recently it has been used in DNSSec, the value being set to anything other than 0 should be rare. Otherwise if it is set to non 0 and DNSSec is being used, then excluding the legitimate domains is low effort and high reward. Determine if multiple of these files were accessed in a short period of time to further enhance the possibility of seeing if this was a one off or ",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "dns"
+  },
+  "mitre": [
+   "T1095",
+   "T1571"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a8322756-015c-42e7-afb1-436e85ed3ff5",
+  "title": "DNS TOR Proxies",
+  "description": "Identifies IPs performing DNS lookups associated with common Tor proxies.",
+  "level": "media",
+  "logsource": {
+   "service": "dns",
+   "product": "zeek"
+  },
+  "mitre": [
+   "T1048"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "aac2fd97-bcba-491b-ad66-a6edf89c71bf",
+  "title": "Executable from Webdav",
+  "description": "Detects executable access via webdav6. Can be seen in APT 29 such as from the emulated APT 29 hackathon https://github.com/OTRF/detection-hackathon-apt29/",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "http"
+  },
+  "mitre": [
+   "T1105"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "68c2c604-92ad-468b-bf4a-aac49adad08c",
+  "title": "HTTP Request to Low Reputation TLD or Suspicious File Extension",
+  "description": "Detects HTTP requests to low reputation TLDs (e.g. .xyz, .top, .ru) or ending in suspicious file extensions (.exe, .dll, .hta), which may indicate malicious activity.",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "http"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "705072a5-bb6f-4ced-95b6-ecfa6602090b",
+  "title": "WebDav Put Request",
+  "description": "A General detection for WebDav user-agent being used to PUT files on a WebDav network share. This could be an indicator of exfiltration.",
+  "level": "baixa",
+  "logsource": {
+   "product": "zeek",
+   "service": "http"
+  },
+  "mitre": [
+   "T1048.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1fc0809e-06bf-4de3-ad52-25e5263b7623",
+  "title": "Publicly Accessible RDP Service",
+  "description": "Detects connections from routable IPs to an RDP listener. Which is indicative of a publicly-accessible RDP service.",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "rdp"
+  },
+  "mitre": [
+   "T1021.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "dde85b37-40cd-4a94-b00c-0b8794f956b5",
+  "title": "Remote Task Creation via ATSVC Named Pipe - Zeek",
+  "description": "Detects remote task creation via at.exe or API interacting with ATSVC namedpipe",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1053.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "92dae1ed-1c9d-4eff-a567-33acbd95b00e",
+  "title": "Possible Impacket SecretDump Remote Activity - Zeek",
+  "description": "Detect AD credential dumping using impacket secretdump HKTL. Based on the SIGMA rules/windows/builtin/win_impacket_secretdump.yml",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1003.002",
+   "T1003.003",
+   "T1003.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "021310d9-30a6-480a-84b7-eaa69aeb92bb",
+  "title": "First Time Seen Remote Named Pipe - Zeek",
+  "description": "This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1021.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f1b3a22a-45e6-4004-afb5-4291f9c21166",
+  "title": "Suspicious PsExec Execution - Zeek",
+  "description": "detects execution of psexec or paexec with renamed service name, this rule helps to filter out the noise if psexec is used for legit purposes or if attacker uses a different psexec client other than sysinternal one",
+  "level": "alta",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1021.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "286b47ed-f6fe-40b3-b3a8-35129acd43bc",
+  "title": "Suspicious Access to Sensitive File Extensions - Zeek",
+  "description": "Detects known sensitive file extensions via Zeek",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2e69f167-47b5-4ae7-a390-47764529eff5",
+  "title": "Transferring Files with Credential Data via Network Shares - Zeek",
+  "description": "Transferring files with well-known filenames (sensitive files with credential data) using network shares",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "smb_files"
+  },
+  "mitre": [
+   "T1003.001",
+   "T1003.002",
+   "T1003.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "503fe26e-b5f2-4944-a126-eab405cc06e5",
+  "title": "Kerberos Network Traffic RC4 Ticket Encryption",
+  "description": "Detects kerberos TGS request using RC4 encryption which may be indicative of kerberoasting",
+  "level": "media",
+  "logsource": {
+   "product": "zeek",
+   "service": "kerberos"
+  },
+  "mitre": [
+   "T1558.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1da8ce0b-855d-4004-8860-7d64d42063b1",
+  "title": "Apache Segmentation Fault",
+  "description": "Detects a segmentation fault error message caused by a crashing apache worker process",
+  "level": "alta",
+  "logsource": {
+   "service": "apache"
+  },
+  "mitre": [
+   "T1499.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e9a2b582-3f6a-48ac-b4a1-6849cdc50b3c",
+  "title": "Apache Threading Error",
+  "description": "Detects an issue in apache logs that reports threading related errors",
+  "level": "media",
+  "logsource": {
+   "service": "apache"
+  },
+  "mitre": [
+   "T1190",
+   "T1210"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "59ec40bb-322e-40ab-808d-84fa690d7e56",
+  "title": "Nginx Core Dump",
+  "description": "Detects a core dump of a crashing Nginx worker process, which could be a signal of a serious problem or exploitation attempts.",
+  "level": "alta",
+  "logsource": {
+   "service": "nginx"
+  },
+  "mitre": [
+   "T1499.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "195c1119-ef07-4909-bb12-e66f5e07bf3c",
+  "title": "Download from Suspicious Dyndns Hosts",
+  "description": "Detects download of certain file types from hosts with dynamic DNS names (selected list)",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1105",
+   "T1568"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "00d0b5ab-1f55-4120-8e83-487c0a7baf19",
+  "title": "Download From Suspicious TLD - Blacklist",
+  "description": "Detects download of certain file types from hosts in suspicious TLDs",
+  "level": "baixa",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1203",
+   "T1204.002",
+   "T1566"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b5de2919-b74a-4805-91a7-5049accbaefe",
+  "title": "Download From Suspicious TLD - Whitelist",
+  "description": "Detects executable downloads from suspicious remote systems",
+  "level": "baixa",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1203",
+   "T1204.002",
+   "T1566"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e09aed7a-09e0-4c9a-90dd-f0d52507347e",
+  "title": "Windows WebDAV User Agent",
+  "description": "Detects WebDav DownloadCradle",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b59c98c6-95e8-4d65-93ee-f594dfb96b17",
+  "title": "F5 BIG-IP iControl Rest API Command Execution - Proxy",
+  "description": "Detects POST requests to the F5 BIG-IP iControl Rest API \"bash\" endpoint, which allows the execution of commands on the BIG-IP",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1712bafe-be05-4a0e-89d4-17a3ed151bf5",
+  "title": "Potential Hello-World Scraper Botnet Activity",
+  "description": "Detects network traffic potentially associated with a scraper botnet variant that uses the \"Hello-World/1.0\" user-agent string.",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1595"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "304810ed-8853-437f-9e36-c4975c3dfd7e",
+  "title": "HackTool - BabyShark Agent Default URL Pattern",
+  "description": "Detects Baby Shark C2 Framework default communication patterns",
+  "level": "critica",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f3f21ce1-cdef-4bfc-8328-ed2e826f5fac",
+  "title": "HackTool - CobaltStrike Malleable Profile Patterns - Proxy",
+  "description": "Detects cobalt strike malleable profiles patterns (URI, User-Agents, Methods).",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b923f7d6-ac89-4a50-a71a-89fb846b4aa8",
+  "title": "HackTool - Empire UserAgent URI Combo",
+  "description": "Detects user agent and URI paths used by empire agents",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1a9bb21a-1bb5-42d7-aa05-3219c7c8f47d",
+  "title": "PUA - Advanced IP/Port Scanner Update Check",
+  "description": "Detect the update check performed by Advanced IP/Port Scanner utilities.",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1590"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2b1ee7e4-89b6-4739-b7bb-b811b6607e5e",
+  "title": "PwnDrp Access",
+  "description": "Detects downloads from PwnDrp web servers developed for red team testing and most likely also used for criminal activity",
+  "level": "critica",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001",
+   "T1102.001",
+   "T1102.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5468045b-4fcc-4d1a-973c-c9c9578edacb",
+  "title": "Raw Paste Service Access",
+  "description": "Detects direct access to raw pastes in different paste services often used by malware in their second stages to download malicious code in encrypted or encoded form",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001",
+   "T1102.001",
+   "T1102.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "4922a5dd-6743-4fc2-8e81-144374280997",
+  "title": "Flash Player Update from Suspicious Location",
+  "description": "Detects a flashplayer update from an unofficial location",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1036.005",
+   "T1189",
+   "T1204.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "eb6c2004-1cef-427f-8885-9042974e5eb6",
+  "title": "Suspicious Network Communication With IPFS",
+  "description": "Detects connections to interplanetary file system (IPFS) containing a user's email address which mirrors behaviours observed in recent phishing campaigns leveraging IPFS to host credential harvesting webpages.",
+  "level": "baixa",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1056"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b494b165-6634-483d-8c47-2026a6c52372",
+  "title": "Telegram API Access",
+  "description": "Detects suspicious requests to Telegram API without the usual Telegram User-Agent",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001",
+   "T1102.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6ec820f2-e963-4801-9127-d8b2dce4d31b",
+  "title": "APT User Agent",
+  "description": "Detects suspicious user agent strings used in APT malware in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d443095b-a221-4957-a2c4-cd1756c9b747",
+  "title": "Suspicious Base64 Encoded User-Agent",
+  "description": "Detects suspicious encoded User-Agent strings, as seen used by some malware.",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8ccd35a2-1c7c-468b-b568-ac6cdf80eec3",
+  "title": "Bitsadmin to Uncommon IP Server Address",
+  "description": "Detects Bitsadmin connections to IP addresses instead of FQDN names",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001",
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9eb68894-7476-4cd6-8752-23b51f5883a7",
+  "title": "Bitsadmin to Uncommon TLD",
+  "description": "Detects Bitsadmin connections to domains with uncommon TLDs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001",
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fa935401-513b-467b-81f4-f9e77aa0dd78",
+  "title": "Crypto Miner User Agent",
+  "description": "Detects suspicious user agent strings used by crypto miners in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "21e44d78-95e7-421b-a464-ffd8395659c4",
+  "title": "HTTP Request With Empty User Agent",
+  "description": "Detects a potentially suspicious empty user agent strings in proxy log. Could potentially indicate an uncommon request method.",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fdd1bfb5-f60b-4a35-910e-f36ed3d0b32f",
+  "title": "Exploit Framework User Agent",
+  "description": "Detects suspicious user agent strings used by exploit / pentest frameworks like Metasploit in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c42a3073-30fb-48ae-8c99-c23ada84b103",
+  "title": "Hack Tool User Agent",
+  "description": "Detects suspicious user agent strings user by hack tools in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1110",
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5c84856b-55a5-45f1-826f-13f37250cf4e",
+  "title": "Malware User Agent",
+  "description": "Detects suspicious user agent strings used by malware in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c8557060-9221-4448-8794-96320e6f3e74",
+  "title": "Windows PowerShell User Agent",
+  "description": "Detects Windows PowerShell Web Access",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2c03648b-e081-41a5-b9fb-7d854a915091",
+  "title": "Rclone Activity via Proxy",
+  "description": "Detects the use of rclone, a command-line program to manage files on cloud storage, via its default user-agent string",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1567.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7195a772-4b3f-43a4-a210-6a003d65caa1",
+  "title": "Suspicious User Agent",
+  "description": "Detects suspicious malformed user agent strings in proxy logs",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "894a8613-cf12-48b3-8e57-9085f54aa0c3",
+  "title": "Potential Base64 Encoded User-Agent",
+  "description": "Detects User Agent strings that end with an equal sign, which can be a sign of base64 encoding.",
+  "level": "media",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1ae64f96-72b6-48b3-ad3d-e71dff6c6398",
+  "title": "Suspicious External WebDAV Execution",
+  "description": "Detects executables launched from external WebDAV shares using the WebDAV Explorer integration, commonly seen in initial access campaigns.",
+  "level": "alta",
+  "logsource": {
+   "category": "proxy"
+  },
+  "mitre": [
+   "T1566",
+   "T1584"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "85254a62-22be-4239-b79c-2ec17e566c37",
+  "title": "F5 BIG-IP iControl Rest API Command Execution - Webserver",
+  "description": "Detects POST requests to the F5 BIG-IP iControl Rest API \"bash\" endpoint, which allows the execution of commands on the BIG-IP",
+  "level": "media",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7cb02516-6d95-4ffc-8eee-162075e111ac",
+  "title": "Successful IIS Shortname Fuzzing Scan",
+  "description": "When IIS uses an old .Net Framework it's possible to enumerate folders with the symbol \"~\"",
+  "level": "media",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "583aa0a2-30b1-4d62-8bf3-ab73689efe6c",
+  "title": "Java Payload Strings",
+  "description": "Detects possible Java payloads in web access logs",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "412d55bc-7737-4d25-9542-5b396867ce55",
+  "title": "JNDIExploit Pattern",
+  "description": "Detects exploitation attempt using the JNDI-Exploit-Kit",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7745c2ea-24a5-4290-b680-04359cb84b35",
+  "title": "Path Traversal Exploitation Attempts",
+  "description": "Detects path traversal exploitation attempts",
+  "level": "media",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "953d460b-f810-420a-97a2-cfca4c98e602",
+  "title": "Source Code Enumeration Detection by Keyword",
+  "description": "Detects source code enumeration that use GET requests by keyword searches in URL strings",
+  "level": "media",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1083"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5513deaf-f49a-46c2-a6c8-3f111b5cb453",
+  "title": "SQL Injection Strings In URI",
+  "description": "Detects potential SQL injection attempts via GET requests in access logs.",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ada3bc4f-f0fd-42b9-ba91-e105e8af7342",
+  "title": "Server Side Template Injection Strings",
+  "description": "Detects SSTI attempts sent via GET requests in access logs",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1221"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "19aa4f58-94ca-45ff-bc34-92e533c0994a",
+  "title": "Suspicious User-Agents Related To Recon Tools",
+  "description": "Detects known suspicious (default) user-agents related to scanning/recon tools",
+  "level": "media",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1190"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9f6a34b4-2688-4eb7-a7f5-e39fef573d0e",
+  "title": "Suspicious Windows Strings In URI",
+  "description": "Detects suspicious Windows strings in URI which could indicate possible exfiltration or webshell communication",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1505.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2ea44a60-cfda-11ea-87d0-0242ac130003",
+  "title": "Webshell ReGeorg Detection Via Web Logs",
+  "description": "Certain strings in the uri_query field when combined with null referer and null user agent can indicate activity associated with the webshell ReGeorg.",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1505.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7ff9db12-1b94-4a79-ba68-a2402c5d6729",
+  "title": "Windows Webshell Strings",
+  "description": "Detects common commands used in Windows webshells",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1505.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "65354b83-a2ea-4ea6-8414-3ab38be0d409",
+  "title": "Cross Site Scripting Strings",
+  "description": "Detects XSS attempts injected via GET requests in access logs",
+  "level": "alta",
+  "logsource": {
+   "category": "webserver"
+  },
+  "mitre": [
+   "T1189"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "78bc5783-81d9-4d73-ac97-59f6db4f72a8",
+  "title": "Relevant Anti-Virus Signature Keywords In Application Log",
+  "description": "Detects potentially highly relevant antivirus events in the application log based on known virus signature names and malware keywords.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1588"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "a18e0862-127b-43ca-be12-1a542c75c7c5",
+  "title": "LSASS Process Crashed - Application",
+  "description": "Detects Windows error reporting events where the process that crashed is LSASS (Local Security Authority Subsystem Service). This could be the cause of a provoked crash by techniques such as Lsass-Shtinkering to dump credentials.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1003.001"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "545a5da6-f103-4919-a519-e9aec1026ee4",
+  "title": "Microsoft Malware Protection Engine Crash",
+  "description": "This rule detects a suspicious crash of the Microsoft Malware Protection Engine",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1211",
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e6e88853-5f20-4c4a-8d26-cd469fd8d31f",
+  "title": "Ntdsutil Abuse",
+  "description": "Detects potential abuse of ntdsutil to dump ntds.dit database",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1003.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "94dc4390-6b7c-4784-8ffc-335334404650",
+  "title": "Dump Ntds.dit To Suspicious Location",
+  "description": "Detects potential abuse of ntdsutil to dump ntds.dit database to a suspicious location",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "48d91a3a-2363-43ba-a456-ca71ac3da5c2",
+  "title": "Audit CVE Event",
+  "description": "Detects events generated by user-mode applications when they call the CveEventWrite API when a known vulnerability is trying to be exploited. MS started using this log in Jan. 2020 with CVE-2020-0601 (a Windows CryptoAPI vulnerability. Unfortunately, that is about the only instance of CVEs being written to this log.",
+  "level": "critica",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1068",
+   "T1203",
+   "T1210",
+   "T1211",
+   "T1212",
+   "T1499.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9703792d-fd9a-456d-a672-ff92efe4806a",
+  "title": "Backup Catalog Deleted",
+  "description": "Detects backup catalog deletions",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1070.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b4c8da4a-1c12-46b0-8a2b-0a8521d03442",
+  "title": "Restricted Software Access By SRP",
+  "description": "Detects restricted access to applications by the Software Restriction Policies (SRP) policy",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1072"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "570ae5ec-33dc-427c-b815-db86228ad43e",
+  "title": "Application Uninstalled",
+  "description": "An application has been removed. Check if it is critical.",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1489"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c7c8aa1c-5aff-408e-828b-998e3620b341",
+  "title": "MSI Installation From Suspicious Locations",
+  "description": "Detects MSI package installation from suspicious locations",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5594e67a-7f92-4a04-b65d-1a42fd824a60",
+  "title": "MSI Installation From Web",
+  "description": "Detects installation of a remote msi file from web.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1218",
+   "T1218.007"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "87261fb2-69d0-42fe-b9de-88c6b5f65a43",
+  "title": "Atera Agent Installation",
+  "description": "Detects successful installation of Atera Remote Monitoring & Management (RMM) agent as recently found to be used by Conti operators",
+  "level": "alta",
+  "logsource": {
+   "service": "application",
+   "product": "windows"
+  },
+  "mitre": [
+   "T1219.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "08200f85-2678-463e-9c32-88dce2f073d1",
+  "title": "MSSQL Add Account To Sysadmin Role",
+  "description": "Detects when an attacker tries to backdoor the MSSQL server by adding a backdoor account to the sysadmin fixed server role",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "00321fee-ca72-4cce-b011-5415af3b9960",
+  "title": "MSSQL Destructive Query",
+  "description": "Detects the invocation of MS SQL transactions that are destructive towards table or database data, such as \"DROP TABLE\" or \"DROP DATABASE\".",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1485"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "350dfb37-3706-4cdc-9e2e-5e24bc3a46df",
+  "title": "MSSQL Disable Audit Settings",
+  "description": "Detects when an attacker calls the \"ALTER SERVER AUDIT\" or \"DROP SERVER AUDIT\" transaction in order to delete or disable audit logs on the server",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "218d2855-2bba-4f61-9c85-81d0ea63ac71",
+  "title": "MSSQL Server Failed Logon",
+  "description": "Detects failed logon attempts from clients to MSSQL server.",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1110"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "ebfe73c2-5bc9-4ed9-aaa8-8b54b2b4777d",
+  "title": "MSSQL Server Failed Logon From External Network",
+  "description": "Detects failed logon attempts from clients with external network IP to an MSSQL server. This can be a sign of a bruteforce attack.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1110"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b3d57a5c-c92e-4b48-9a79-5f124b7cf964",
+  "title": "MSSQL SPProcoption Set",
+  "description": "Detects when the a stored procedure is set or cleared for automatic execution in MSSQL. A stored procedure that is set to automatic execution runs every time an instance of SQL Server is started",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "7f103213-a04e-4d59-8261-213dddf22314",
+  "title": "MSSQL XPCmdshell Suspicious Execution",
+  "description": "Detects when the MSSQL \"xp_cmdshell\" stored procedure is used to execute commands",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d08dd86f-681e-4a00-a92c-1db218754417",
+  "title": "MSSQL XPCmdshell Option Change",
+  "description": "Detects when the MSSQL \"xp_cmdshell\" stored procedure setting is changed.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "076ebe48-cc05-4d8f-9d41-89245cd93a14",
+  "title": "Remote Access Tool - ScreenConnect Command Execution",
+  "description": "Detects command execution via ScreenConnect RMM",
+  "level": "baixa",
+  "logsource": {
+   "service": "application",
+   "product": "windows"
+  },
+  "mitre": [
+   "T1059.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5d19eb78-5b5b-4ef2-a9f0-4bfa94d58a13",
+  "title": "Remote Access Tool - ScreenConnect File Transfer",
+  "description": "Detects file being transferred via ScreenConnect RMM",
+  "level": "baixa",
+  "logsource": {
+   "service": "application",
+   "product": "windows"
+  },
+  "mitre": [
+   "T1059.003"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6c82cf5c-090d-4d57-9188-533577631108",
+  "title": "Microsoft Malware Protection Engine Crash - WER",
+  "description": "This rule detects a suspicious crash of the Microsoft Malware Protection Engine",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "application"
+  },
+  "mitre": [
+   "T1211",
+   "T1685"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "401e5d00-b944-11ea-8f9a-00163ecd60ae",
+  "title": "AppLocker Prevented Application or Script from Running",
+  "description": "Detects when AppLocker prevents the execution of an Application, DLL, Script, MSI, or Packaged-App from running.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "applocker"
+  },
+  "mitre": [
+   "T1059.001",
+   "T1059.003",
+   "T1059.005",
+   "T1059.006",
+   "T1059.007",
+   "T1204.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "557e3bd3-7f21-495d-8d50-7c8bdfb8041c",
+  "title": "AppLocker Application Would Have Been Blocked",
+  "description": "Detects when AppLocker \"Audit only\" enforcement mode reports that an Application, DLL, Script, MSI, or Packaged-App would have been blocked if AppLocker \"Enforce rules\" enforcement mode was enabled.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "applocker"
+  },
+  "mitre": [
+   "T1059.001",
+   "T1059.003",
+   "T1059.005",
+   "T1059.006",
+   "T1059.007",
+   "T1204.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d29a20b2-be4b-4827-81f2-3d8a59eab5fc",
+  "title": "Sysinternals Tools AppX Versions Execution",
+  "description": "Detects execution of Sysinternals tools via an AppX package. Attackers could install the Sysinternals Suite to get access to tools such as psexec and procdump to avoid detection based on System paths.",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "appmodel-runtime"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6ae53108-c3a0-4bee-8f45-c7591a2c337f",
+  "title": "Deployment AppX Package Was Blocked By AppLocker",
+  "description": "Detects an appx package deployment that was blocked by AppLocker policy.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8b48ad89-10d8-4382-a546-50588c410f0d",
+  "title": "Remote AppX Package Downloaded from File Sharing or CDN Domain",
+  "description": "Detects an appx package that was added to the pipeline of the \"to be processed\" packages which was downloaded from a file sharing or CDN domain.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "898d5fc9-fbc3-43de-93ad-38e97237c344",
+  "title": "AppX Package Deployment Failed Due to Signing Requirements",
+  "description": "Detects an appx package deployment / installation with the error code \"0x80073cff\" which indicates that the package didn't meet the signing requirements.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5cdeaf3d-1489-477c-95ab-c318559fc051",
+  "title": "AppX Located in Known Staging Directory Added to Deployment Pipeline",
+  "description": "Detects an appx package that was added to the pipeline of the \"to be processed\" packages that is located in a known folder often used as a staging directory.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e54279c7-4910-4e2c-902c-c56a25b549f6",
+  "title": "Windows AppX Deployment Full Trust Package Installation",
+  "description": "Detects the installation of MSIX/AppX packages with full trust privileges which run with elevated privileges outside normal AppX container restrictions",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [
+   "T1204.002",
+   "T1553.005"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "09d3b48b-be17-47f5-bf4e-94e7e75d09ce",
+  "title": "Potential Malicious AppX Package Installation Attempts",
+  "description": "Detects potential installation or installation attempts of known malicious appx packages",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e021bbb5-407f-41f5-9dc9-1864c45a7a51",
+  "title": "Deployment Of The AppX Package Was Blocked By The Policy",
+  "description": "Detects an appx package deployment that was blocked by the local computer policy. The following events indicate that an AppX package deployment was blocked by a policy: - Event ID 441: The package deployment operation is blocked by the \"Allow deployment operations in special profiles\" policy - Event ID 442: Deployments to non-system volumes are blocked by the \"Disable deployment of Windows Store apps to non-system volumes\" policy.\" - Event ID 453: Package blocked by a platform policy. - Event ID",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c977cb50-3dff-4a9f-b873-9290f56132f1",
+  "title": "AppX Located in Uncommon Directory Added to Deployment Pipeline",
+  "description": "Detects an appx package that was added to the pipeline of the \"to be processed\" packages that is located in uncommon locations.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9a025188-6f2d-42f8-bb2f-d3a83d24a5af",
+  "title": "Windows AppX Deployment Unsigned Package Installation",
+  "description": "Detects attempts to install unsigned MSIX/AppX packages using the -AllowUnsigned parameter via AppXDeployment-Server events",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxdeployment-server"
+  },
+  "mitre": [
+   "T1204.002",
+   "T1553.005"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b5aa7d60-c17e-4538-97de-09029d6cd76b",
+  "title": "Suspicious Digital Signature Of AppX Package",
+  "description": "Detects execution of AppX packages with known suspicious or malicious signature",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "appxpackaging-om"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "1ff315dc-2a3a-4b71-8dde-873818d25d39",
+  "title": "New BITS Job Created Via Bitsadmin",
+  "description": "Detects the creation of a new bits job by Bitsadmin",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "fe3a2d49-f255-4d10-935c-bda7391108eb",
+  "title": "New BITS Job Created Via PowerShell",
+  "description": "Detects the creation of a new bits job by PowerShell",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "b85e5894-9b19-4d86-8c87-a2f3b81f0521",
+  "title": "BITS Transfer Job Downloading File Potential Suspicious Extension",
+  "description": "Detects new BITS transfer job saving local files with potential suspicious extensions",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "d635249d-86b5-4dad-a8c7-d7272b788586",
+  "title": "BITS Transfer Job Download From File Sharing Domains",
+  "description": "Detects BITS transfer job downloading files from a file sharing domain.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "90f138c1-f578-4ac3-8c49-eecfd847c8b7",
+  "title": "BITS Transfer Job Download From Direct IP",
+  "description": "Detects a BITS transfer job downloading file(s) from a direct IP address.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6d44fb93-e7d2-475c-9d3d-54c9c1e33427",
+  "title": "BITS Transfer Job With Uncommon Or Suspicious Remote TLD",
+  "description": "Detects a suspicious download using the BITS client from a FQDN that is unusual. Adversaries may abuse BITS jobs to persistently execute or clean up after malicious payloads.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f8a56cb7-a363-44ed-a82f-5926bb44cd05",
+  "title": "BITS Transfer Job Download To Potential Suspicious Folder",
+  "description": "Detects new BITS transfer job where the LocalName/Saved file is stored in a potentially suspicious location",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "bits-client"
+  },
+  "mitre": [
+   "T1197"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e2b5163d-7deb-4566-9af3-40afea6858c3",
+  "title": "Certificate Private Key Acquired",
+  "description": "Detects when an application acquires a certificate private key",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "capi2"
+  },
+  "mitre": [
+   "T1649"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "58c0bff0-40a0-46e8-b5e8-b734b84d2017",
+  "title": "Certificate Exported From Local Certificate Store",
+  "description": "Detects when an application exports a certificate (and potentially the private key as well) from the local Windows certificate store.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "certificateservicesclient-lifecycle-system"
+  },
+  "mitre": [
+   "T1649"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "f8931561-97f5-4c46-907f-0a4a592e47a7",
+  "title": "CodeIntegrity - Unmet Signing Level Requirements By File Under Validation",
+  "description": "Detects attempted file load events that did not meet the signing level requirements. It often means the file's signature is revoked or a signature with the Lifetime Signing EKU has expired. This event is best correlated with EID 3089 to determine the error of the validation.",
+  "level": "baixa",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "5daf11c3-022b-4969-adb9-365e6c078c7c",
+  "title": "CodeIntegrity - Disallowed File For Protected Processes Has Been Blocked",
+  "description": "Detects block events for files that are disallowed by code integrity for protected processes",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "e4be5675-4a53-426a-8c81-a8bb2387e947",
+  "title": "CodeIntegrity - Blocked Image/Driver Load For Policy Violation",
+  "description": "Detects blocked load events that did not meet the authenticode signing level requirements or violated the code integrity policy.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [
+   "T1543"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "9b72b82d-f1c5-4632-b589-187159bc6ec1",
+  "title": "CodeIntegrity - Blocked Driver Load With Revoked Certificate",
+  "description": "Detects blocked load attempts of revoked drivers",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [
+   "T1543"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "320fccbf-5e32-4101-82b8-2679c5f007c6",
+  "title": "CodeIntegrity - Revoked Kernel Driver Loaded",
+  "description": "Detects the load of a revoked kernel driver",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "6f156c48-3894-4952-baf0-16193e9067d2",
+  "title": "CodeIntegrity - Blocked Image Load With Revoked Certificate",
+  "description": "Detects blocked image load events with revoked certificates by code integrity.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "881b7725-47cc-4055-8000-425823344c59",
+  "title": "CodeIntegrity - Revoked Image Loaded",
+  "description": "Detects image load events with revoked certificates by code integrity.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "951f8d29-f2f6-48a7-859f-0673ff105e6f",
+  "title": "CodeIntegrity - Unsigned Kernel Module Loaded",
+  "description": "Detects the presence of a loaded unsigned kernel module on the system.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "c92c24e7-f595-493f-9c98-53d5142f5c18",
+  "title": "CodeIntegrity - Unsigned Image Loaded",
+  "description": "Detects loaded unsigned image on the system",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "2f8cd7a0-9d5a-4f62-9f8b-2c951aa0dd1f",
+  "title": "CodeIntegrity - Unmet WHQL Requirements For Loaded Kernel Module",
+  "description": "Detects loaded kernel modules that did not meet the WHQL signing requirements.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "codeintegrity-operational"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "50cb47b8-2c33-4b23-a2e9-4600657d9746",
+  "title": "Loading Diagcab Package From Remote Path",
+  "description": "Detects loading of diagcab packages from a remote path, as seen in DogWalk vulnerability",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "diagnosis-scripted"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "29f171d7-aa47-42c7-9c7b-3c87938164d9",
+  "title": "DNS Query for Anonfiles.com Domain - DNS Client",
+  "description": "Detects DNS queries for anonfiles.com, which is an anonymous file upload platform often used for malicious purposes",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "dns-client"
+  },
+  "mitre": [
+   "T1567.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "0d18728b-f5bf-4381-9dcf-915539fff6c2",
+  "title": "Suspicious Cobalt Strike DNS Beaconing - DNS Client",
+  "description": "Detects a program that invoked suspicious DNS queries known from Cobalt Strike beacons",
+  "level": "critica",
+  "logsource": {
+   "product": "windows",
+   "service": "dns-client"
+  },
+  "mitre": [
+   "T1071.004"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "66474410-b883-415f-9f8d-75345a0a66a6",
+  "title": "DNS Query To MEGA Hosting Website - DNS Client",
+  "description": "Detects DNS queries for subdomains related to MEGA sharing website",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "dns-client"
+  },
+  "mitre": [
+   "T1567.002"
+  ],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "8b69fd42-9dad-4674-abef-7fdef43ef92a",
+  "title": "DNS Query To Put.io - DNS Client",
+  "description": "Detects DNS queries for subdomains related to \"Put.io\" sharing website.",
+  "level": "media",
+  "logsource": {
+   "product": "windows",
+   "service": "dns-client"
+  },
+  "mitre": [],
+  "source_repo": "SigmaHQ/sigma"
+ },
+ {
+  "id": "73e2a5fb-6320-4e22-bb1e-89f1b47117da",
+  "title": "Suspicious VM Clone or Snapshot Activity in vCenter",
+  "description": "Detects unauthorized VM clone/snapshot operations \u2013 BRICKSTORM used these to access data and credentials",
+  "level": "alta",
+  "logsource": {
+   "product": "vmware",
+   "service": "vpxd"
+  },
+  "mitre": [
+   "T1578"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "8f2b7a22-7a2e-4de0-91df-15f883a51231",
+  "title": "BRICKSTORM DoH Beaconing from Appliance Interfaces",
+  "description": "Detects suspicious DNS-over-HTTPS (DoH) traffic from vSphere/VAMI/management IPs to public resolvers \u2013 tactic observed in BRICKSTORM espionage campaign",
+  "level": "alta",
+  "logsource": {
+   "product": "firewall",
+   "service": "network_connection"
+  },
+  "mitre": [
+   "T1071.001"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "b3f2a612-9e92-47c4-8898-f7a5fa7d94f5",
+  "title": "Appliance IP Authenticating to Windows Hosts",
+  "description": "Detects authentication attempts from VMware/vSphere appliance IPs to Windows domain members \u2013 tactic reported in BRICKSTORM campaign",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "security"
+  },
+  "mitre": [
+   "T1021.002"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "3c2a9d4b-9f7d-4b8c-9b2a-5c1f0a9e2e77",
+  "title": "CHM (hh.exe) Execution Indicative of CHM-based Infection Chain",
+  "description": "Detects execution of the Windows HTML Help executable (hh.exe) used to open CHM files. Public reporting shows attackers delivering CHM inside password-protected ZIPs (opened after SVG redirect), which when launched can kick off loaders such as CountLoader. This rule flags instances of hh.exe execution with suspicious command-line characteristics and parent/child indicators.",
+  "level": "alta",
+  "logsource": {
+   "product": "windows",
+   "service": "sysmon",
+   "category": "process_creation"
+  },
+  "mitre": [
+   "T1204"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "5f9f1d4a-xxxx-4a2b-9a2b-xxxxxxxxxxxx",
+  "title": "Citrix NetScaler - Suspicious HTTP request with binary/non-printable payloads and 5xx response (CVE-2025-7775)",
+  "description": "Detects suspicious HTTP requests to NetScaler appliance (NetScaler/Citrix Server header) that contain binary/non-printable bytes or unusually large request bodies and are followed by server 5xx responses \u2014 indicative of memory overflow attempts (CVE-2025-7775). Tuned to reduce false positives by requiring NetScaler server header and server error response.",
+  "level": "alta",
+  "logsource": {
+   "product": "webserver",
+   "service": "http"
+  },
+  "mitre": [],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "10c94b77-c0c8-4b60-b2da-4ee0f6e41df6",
+  "title": "New Local User Created on vCenter/ESXi Host",
+  "description": "Detects creation of new local accounts in vCenter/ESXi appliances \u2013 observed in BRICKSTORM activity",
+  "level": "alta",
+  "logsource": {
+   "product": "vmware",
+   "service": "vpxd"
+  },
+  "mitre": [
+   "T1136"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "e83dce5a-f2e0-4937-b2c5-8c9ff14998d9",
+  "title": "SSH Service Enabled on VMware vSphere Appliance",
+  "description": "Detects enabling of SSH on VMware vSphere/VAMI appliances \u2013 a persistence tactic seen in BRICKSTORM campaign",
+  "level": "alta",
+  "logsource": {
+   "product": "linux",
+   "service": "syslog"
+  },
+  "mitre": [
+   "T1543.003"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ },
+ {
+  "id": "6c4d1a2c-3f91-4c8f-9c83-7a13b3b7c1a9",
+  "title": "Suspicious C2 Communication from Stealer/Banker IOCs",
+  "description": "",
+  "level": "alta",
+  "logsource": {
+   "category": "network_connection",
+   "product": "windows"
+  },
+  "mitre": [
+   "T1071"
+  ],
+  "source_repo": "abdulmyid-cyber/SIEM-Content"
+ }
+]
