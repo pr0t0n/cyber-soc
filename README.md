@@ -129,6 +129,43 @@ estiver configurado em Integrações) + nota de risco por porta/protocolo
 (`app/services/threat_intel.py`) — sempre calculada, mesmo sem provedor
 externo.
 
+## Wazuh real em Docker (SIEM de origem)
+
+`wazuh/` é um clone do stack oficial `wazuh/wazuh-docker` (single-node,
+v4.14.7 — manager + indexer OpenSearch + dashboard), com uma integração
+customizada que encaminha alertas para o Cyber SOC Copilot:
+
+```bash
+cd wazuh
+docker compose -f generate-indexer-certs.yml run --rm generator  # gera config/wazuh_indexer_ssl_certs/ (fora do git — chaves privadas)
+cp config/wazuh_cluster/wazuh_manager.conf.example config/wazuh_cluster/wazuh_manager.conf
+# edite o <api_key> do bloco <integration> com o ingest_token real
+# (POST /api/admin/connectors no Cyber SOC — devolvido em claro só na criação)
+docker compose up -d
+```
+
+- **Manager**: API em `https://localhost:55000` (`wazuh-wui` /
+  `MyS3cr37P450r.*-`), agente de registro em `1515`, eventos em `1514`.
+- **Dashboard**: `https://localhost:8443` (`admin` / `SecretPassword`).
+- **Integração customizada** (`config/integrations/custom-cyber-soc`,
+  registrada em `config/wazuh_cluster/wazuh_manager.conf`): a cada alerta
+  (nível ≥3), o manager executa esse script, que faz `POST` para
+  `http://host.docker.internal:8020/api/ingest/wazuh` com o `Bearer` do
+  conector "Wazuh Docker (local)" cadastrado em Administração → Integrações
+  do Cyber SOC. **Atenção**: o script precisa de permissão `750`
+  (`root:wazuh`, sem acesso de "outros") — é assim que os scripts oficiais
+  (`slack`, `virustotal`, ...) vêm; com `755` o `wazuh-integratord` recusa
+  executar (`wpopenv(): file ... has write permissions`).
+- **Tráfego de rede local**: um agente Wazuh real (`wazuh.agent`, serviço
+  `cyber-soc-local-net`) se registra automaticamente no manager (`authd`) e
+  roda o módulo `syscollector` (`network: yes`, já habilitado por padrão) —
+  reporta as interfaces de rede e contadores de tráfego reais do ambiente
+  Docker (`GET /syscollector/{agent_id}/netiface` na API do Wazuh).
+- Todo evento que chega por essa integração recebe a tag `LOCAL-WAZUH`
+  (herdada do conector) e passa pelo mesmo motor de regras (skills + RAG +
+  Supervisor) descrito acima — visível em Eventos/Dashboard filtrando por
+  essa tag.
+
 ## Testes
 
 ```bash
@@ -192,3 +229,5 @@ usuário; visual executivo, cores simples e minimalistas.
 | RAG vetorial no Copilot | O motor de regras já usa RAG real; o chat do Copilot ainda usa lista simples dos últimos eventos |
 | Catálogo de skills mais amplo | Suricata/ModSecurity hoje cobrem uma amostra real (scan completo + malware/exploit/XSS/SQLi/RCE parciais), não o ruleset inteiro |
 | Registro no mfe-platform HUB | Deliberadamente adiado, como o `cyber-sdo` também fez |
+| Migrations (Alembic) | Hoje `Base.metadata.create_all()` só cria tabelas novas, nunca altera colunas em tabela já existente — mudança de schema em ambiente já semeado exige `ALTER TABLE` manual (ou recriar o volume, em dev) |
+| Repositório no GitHub | Commit local pronto na `main` (`git log`); a criação do repo remoto via API foi bloqueada pelo classificador de permissões do modo automático — precisa de autorização explícita do usuário para essa chamada específica |

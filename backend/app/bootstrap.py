@@ -29,12 +29,19 @@ async def _ensure_admin(db: AsyncSession) -> None:
 
 
 async def _ensure_skills(db: AsyncSession) -> int:
-    count = (await db.execute(select(func.count(Skill.id)))).scalar() or 0
-    if count:
-        return 0
+    """Idempotente por (source, external_id) — não por contagem total, para que
+    novas fontes adicionadas depois (ex.: sigma, agent_threats) sejam
+    carregadas em instalações já semeadas, sem duplicar as existentes."""
+    existing = set(
+        (await db.execute(select(Skill.source, Skill.external_id))).all()
+    )
     installed = 0
     for entry in skills_catalog.load_all():
+        key = (entry["source"], entry["external_id"])
+        if key in existing:
+            continue
         db.add(Skill(**entry))
+        existing.add(key)
         installed += 1
     await db.commit()
     return installed

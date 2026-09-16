@@ -1,0 +1,46 @@
+#!/var/ossec/framework/python/bin/python3
+"""Integração customizada Wazuh -> Cyber SOC Copilot.
+
+Contrato de integração customizada do Wazuh: o manager chama este script com
+(alert_file, api_key, hook_url) a cada alerta que casar as regras configuradas
+em <integration>. O alerta já vem no schema que app/api/ingest.py espera
+(rule.level/description/mitre, data.srcip/dstip/dstport/protocol, agent,
+full_log) — repassamos praticamente sem transformação.
+"""
+import json
+import sys
+
+import urllib.request
+
+ALERT_FILE = sys.argv[1]
+API_KEY = sys.argv[2]  # token de ingestão do conector siem/wazuh no cyber-soc
+HOOK_URL = sys.argv[3]
+
+
+def main() -> None:
+    with open(ALERT_FILE, encoding="utf-8") as f:
+        alert = json.load(f)
+
+    payload = {
+        "id": str(alert.get("id", "")),
+        "timestamp": alert.get("timestamp"),
+        "rule": alert.get("rule", {}),
+        "agent": alert.get("agent", {}),
+        "data": alert.get("data", {}),
+        "full_log": alert.get("full_log", ""),
+    }
+
+    req = urllib.request.Request(
+        HOOK_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json", "Authorization": f"Bearer {API_KEY}"},
+        method="POST",
+    )
+    try:
+        urllib.request.urlopen(req, timeout=10)
+    except Exception as exc:  # noqa: BLE001 — nunca derruba o manager por falha de rede
+        sys.stderr.write(f"custom-cyber-soc: falha ao enviar alerta: {exc}\n")
+
+
+if __name__ == "__main__":
+    main()
