@@ -4,11 +4,24 @@ de segundos por chamada, e aqui rodam até 4 chamadas (3 grupos + supervisor).
 """
 from __future__ import annotations
 
+import asyncio
+from datetime import datetime, timezone
+
 from sqlalchemy import func, select
 
 from ..agents.graph import analyze_event
 from ..db import SessionLocal
 from ..models import Event, Incident
+from .event_triage import fast_lane_verdict, is_compliance_noise
+
+# Limita quantos eventos passam pela análise de IA (LangGraph + Ollama) ao
+# mesmo tempo. Ollama neste ambiente é um único worker de CPU — disparar
+# dezenas de eventos de uma vez (ex.: rajada de SCA no primeiro scan de um
+# agente novo, ou reprocessamento de backlog após um restart) não paraleliza
+# de verdade, só faz o processo da API competir por memória/conexões e
+# derruba a responsividade de tudo (login incluído, já observado). Isso
+# enfileira: os eventos além do limite esperam a vez em vez de competir.
+_ANALYSIS_CONCURRENCY = asyncio.Semaphore(2)
 
 
 async def _next_incident_code(db) -> str:
@@ -44,6 +57,20 @@ async def run_rules_engine_for_event(event_id: int) -> None:
         event = await db.get(Event, event_id)
         if not event:
             return
+
+        if is_compliance_noise(event.raw or {}):
+            # Via rápida: achado de compliance/inventário (SCA/rootcheck) —
+            # veredito determinístico, sem gastar o único worker de LLM com
+            # algo que não é um comportamento de ataque. Ver event_triage.py.
+            verdict = fast_lane_verdict(event.type)
+            event.rules_engine_verdict = verdict
+            event.matched_skills = []
+            event.rules_engine_status = "informational"
+            event.recommendation = verdict["recommendation"]
+            event.analyzed_at = datetime.now(timezone.utc)
+            await db.commit()
+            return
+
         payload = {
             "type": event.type, "severity": event.severity, "src_ip": event.src_ip,
             "src_port": event.src_port, "dst_ip": event.dst_ip, "dst_port": event.dst_port,
@@ -56,7 +83,8 @@ async def run_rules_engine_for_event(event_id: int) -> None:
     async def on_progress(stage: str, group_verdict: dict) -> None:
         await _persist_progress(event_id, stage, group_verdict)
 
-    verdict = await analyze_event(payload, on_progress=on_progress)
+    async with _ANALYSIS_CONCURRENCY:
+        verdict = await analyze_event(payload, on_progress=on_progress)
 
     async with SessionLocal() as db:
         event = await db.get(Event, event_id)
@@ -66,6 +94,7 @@ async def run_rules_engine_for_event(event_id: int) -> None:
         event.matched_skills = verdict.get("matched_skills") or []
         event.rules_engine_status = "matched" if verdict.get("matched") else "no_match"
         event.recommendation = verdict.get("recommendation")
+        event.analyzed_at = datetime.now(timezone.utc)
         await db.commit()
 
         if verdict.get("matched"):

@@ -5,6 +5,7 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
+import Raw from "./pages/Raw";
 import Connectors from "./pages/Connectors";
 import Chat from "./pages/Chat";
 import Rules from "./pages/Rules";
@@ -23,6 +24,7 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Protected><Dashboard /></Protected>} />
       <Route path="/eventos" element={<Protected><Events /></Protected>} />
+      <Route path="/raw" element={<Protected><Raw /></Protected>} />
       <Route path="/integracoes" element={<Protected><Connectors /></Protected>} />
       <Route path="/usuarios" element={<Protected><Users /></Protected>} />
       <Route path="/chat" element={<Protected><Chat /></Protected>} />

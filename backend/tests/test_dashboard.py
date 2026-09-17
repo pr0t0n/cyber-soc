@@ -116,6 +116,61 @@ async def test_tags_endpoint_lists_distinct_tags(client, auth_headers):
     assert r.json()["tags"] == ["VALID"]
 
 
+async def test_analysis_metrics_before_any_analysis(client, auth_headers):
+    await _ingest_sample(client)
+    r = await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)
+    assert r.status_code == 200
+    body = r.json()
+    assert body["analyzed_by_ai_count"] == 0
+    assert body["efficiency_pct"] is None  # sem amostra ainda, não "100%" nem "0%"
+    assert body["backlog"]["count"] == 1
+    assert body["backlog"]["oldest_seconds"] is not None
+
+
+async def test_analysis_metrics_after_matched_event_computes_speed_and_sla(client, auth_headers, monkeypatch):
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    event_id = await _ingest_sample(client)
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    r = await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)
+    body = r.json()
+    assert body["analyzed_by_ai_count"] == 1
+    assert body["efficiency_pct"] == 100.0  # groups vazio -> nenhum degradado
+    assert body["analysis_speed"]["sample_size"] == 1
+    assert body["analysis_speed"]["median_seconds"] is not None
+    assert body["sla_event_to_incident"]["sample_size"] == 1
+    assert body["backlog"]["count"] == 0
+
+
+async def test_analysis_metrics_counts_degraded_group_against_efficiency(client, auth_headers, monkeypatch):
+    async def _mock_degraded(event: dict, on_progress=None) -> dict:
+        return {
+            "matched": False, "matched_skills": [], "summary": "inconclusivo",
+            "groups": {"attack_defend": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": True}},
+        }
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_degraded)
+    event_id = await _ingest_sample(client)
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    body = (await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)).json()
+    assert body["degraded_count"] == 1
+    assert body["efficiency_pct"] == 0.0
+
+
+async def test_analysis_metrics_fast_lane_excluded_from_ai_efficiency(client, auth_headers):
+    await client.post("/api/ingest/wazuh", json={
+        "rule": {"level": 5, "description": "SCA summary: Score less than 80%", "groups": ["sca"]},
+    })
+    event_id = (await client.get("/api/events", headers=auth_headers)).json()["items"][0]["id"]
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    body = (await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)).json()
+    assert body["fast_lane_count"] == 1
+    assert body["analyzed_by_ai_count"] == 0  # via rápida não conta como "analisado por IA"
+    assert body["backlog"]["count"] == 0
+
+
 async def test_eps_funnel_ends_in_incidents(client, auth_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
     event_id = await _ingest_sample(client)

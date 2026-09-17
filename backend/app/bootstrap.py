@@ -8,9 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .auth.security import hash_password
 from .config import settings
 from .db import SessionLocal
-from .models import Skill, User
+from .models import Event, Skill, User
 from .services import skills_catalog
 from .services.rag import backfill_embeddings
+from .services.rules_engine import run_rules_engine_for_event
 
 
 async def _ensure_admin(db: AsyncSession) -> None:
@@ -62,6 +63,21 @@ async def _backfill_embeddings_forever() -> None:
         await asyncio.sleep(10)
 
 
+async def _requeue_stuck_events(db: AsyncSession) -> int:
+    """`BackgroundTasks` do FastAPI só existe na memória do processo que a
+    agendou — um restart (deploy, crash, `docker compose up --build`) perde
+    silenciosamente qualquer evento ainda `pending`/`analyzing`, que fica
+    "travado" para sempre sem isso. Reagenda no boot; refazer a análise do
+    zero é seguro (idempotente do ponto de vista de negócio) mesmo que o
+    evento já tivesse progresso parcial de uma tentativa anterior."""
+    ids = (
+        await db.execute(select(Event.id).where(Event.rules_engine_status.in_(("pending", "analyzing"))))
+    ).scalars().all()
+    for event_id in ids:
+        asyncio.create_task(run_rules_engine_for_event(event_id))
+    return len(ids)
+
+
 async def bootstrap() -> None:
     async with SessionLocal() as db:
         await _ensure_admin(db)
@@ -69,5 +85,9 @@ async def bootstrap() -> None:
         await db.commit()
         if installed:
             print(f"[bootstrap] {installed} skills reais carregadas (ATT&CK/D3FEND/Suricata/ModSecurity).")
+        if settings.rules_engine_enabled:
+            requeued = await _requeue_stuck_events(db)
+            if requeued:
+                print(f"[bootstrap] {requeued} evento(s) pending/analyzing reagendado(s) após restart.")
     if settings.rules_engine_enabled:
         asyncio.create_task(_backfill_embeddings_forever())

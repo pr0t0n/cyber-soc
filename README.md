@@ -114,6 +114,32 @@ Isso alimenta duas telas que antes eram estáticas:
   incidente no card "Incidentes") linka para o evento de origem em Eventos,
   já expandido na trilha do agente.
 
+### Análise em tempo real de verdade: triagem, concorrência e recuperação
+
+Três problemas reais apareceram quando o agente nativo começou a gerar
+tráfego de verdade (uma rajada de ~60 eventos do primeiro scan SCA):
+
+1. **Ruído de compliance competindo com eventos de segurança**: um scan SCA
+   gera dezenas de "eventos" (achados de auditoria de configuração, não
+   comportamento malicioso) de uma vez, cada um competindo pelo mesmo worker
+   de LLM que uma tentativa de brute force real precisava. Eventos cujas
+   `rule.groups` do Wazuh são só `sca`/`rootcheck` agora tomam uma **via
+   rápida** (`app/services/event_triage.py`): veredito determinístico,
+   nenhuma chamada de IA, quase instantâneo. Status vira `informational`
+   (nunca `no_match`, que implicaria uma análise de IA que não aconteceu).
+2. **Contenção derrubando a responsividade de tudo, não só a análise**:
+   disparar dezenas de eventos ao mesmo tempo contra um Ollama de CPU único
+   não paraleliza — só faz o processo da API competir por memória/conexões
+   (observado: até o `/api/auth/login` travava). Um semáforo
+   (`_ANALYSIS_CONCURRENCY` em `app/services/rules_engine.py`) limita a 2 o
+   número de eventos realmente em análise de IA ao mesmo tempo; o resto
+   enfileira em vez de competir.
+3. **Restart perdia o backlog silenciosamente**: `BackgroundTasks` do FastAPI
+   só existe na memória do processo que agendou — um `docker compose up
+   --build` no meio do processamento perdia todo evento `pending`/`analyzing`
+   para sempre, sem aviso. `bootstrap()` agora reagenda qualquer evento nesse
+   estado ao subir (`_requeue_stuck_events`).
+
 ### Um rótulo da fonte não é uma confirmação
 
 Problema real observado: um evento chegava com `type: "SSHD brute force"` e
@@ -139,6 +165,33 @@ dizia "sem correspondência" enquanto a tela ainda destacava "brute force" e
    grupo também carrega `degraded: bool`: quando o RAG ou a IA não completou
    uma avaliação real, o Supervisor não diz mais "nenhuma ação necessária"
    (uma afirmação forte) — diz "inconclusivo, revisar manualmente".
+
+## Métricas reais de eficiência/velocidade/SLA
+
+`GET /api/dashboard/analysis-metrics` (card "Eficiência do Motor de Regras"
+no Dashboard) — nunca estimado, sempre calculado de timestamps reais de
+banco (`Event.received_at`/`analyzed_at`, `Incident.created_at`):
+
+- **Eficiência (%)**: entre as análises de IA concluídas (`matched`/
+  `no_match`), quantas não tiveram nenhum grupo `degraded` — ou seja,
+  quantas foram uma avaliação real de ponta a ponta, não uma degradação
+  disfarçada de veredito.
+- **Velocidade de análise**: mediana/p95 de `analyzed_at - received_at`
+  entre os eventos que passaram pela IA (a via rápida de compliance não
+  entra nessa conta — é medida à parte, "Via rápida").
+- **SLA evento → incidente**: mediana/p95 de `Incident.created_at -
+  Event.received_at` — quanto tempo realmente leva do evento chegar até um
+  incidente ser aberto.
+- **Fila (backlog)**: quantos eventos ainda estão `pending`/`analyzing`
+  agora, e há quanto tempo o mais antigo deles está esperando.
+
+## Raw (Wazuh/SIEM): dado bruto sem interpretação da IA
+
+`GET /api/events/raw` (página "Raw (Wazuh)" no menu) — lista o payload
+original que a fonte mandou (`Event.raw`), com busca textual livre e filtro
+por fonte, sem nenhuma camada de veredito de IA — para quando o analista
+precisa ver exatamente o que o SIEM relatou, não a interpretação do motor de
+regras sobre isso.
 
 ## Threat intel real: Shodan + AbuseIPDB
 
@@ -316,4 +369,5 @@ usuário; visual executivo, cores simples e minimalistas.
 | Catálogo de skills mais amplo | Suricata/ModSecurity hoje cobrem uma amostra real (scan completo + malware/exploit/XSS/SQLi/RCE parciais), não o ruleset inteiro |
 | Registro no mfe-platform HUB | Deliberadamente adiado, como o `cyber-sdo` também fez |
 | Migrations (Alembic) | Hoje `Base.metadata.create_all()` só cria tabelas novas, nunca altera colunas em tabela já existente — mudança de schema em ambiente já semeado exige `ALTER TABLE` manual (ou recriar o volume, em dev) |
-| Repositório no GitHub | Commit local pronto na `main` (`git log`); a criação do repo remoto via API foi bloqueada pelo classificador de permissões do modo automático — precisa de autorização explícita do usuário para essa chamada específica |
+| Métricas de eventos antigos | `analyzed_at` só existe a partir de quando a coluna foi criada — eventos analisados antes disso não entram em `analysis-metrics` até serem reprocessados (não há backfill retroativo) |
+| Cobertura do agente nativo macOS (ULS) | Hoje cobre `sudo`/`sshd`/`loginwindow`/`screensharingd` — ampliar a query conforme surgir necessidade de outros processos |

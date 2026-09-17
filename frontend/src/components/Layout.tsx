@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../lib/auth";
-import { IconActivity, IconBook, IconChat, IconGrid, IconLogout, IconPlug, IconShield, IconUsers } from "./icons";
+import { IconActivity, IconBook, IconChat, IconGrid, IconLogout, IconPlug, IconShield, IconTerminal, IconUsers } from "./icons";
 
 const NAV = [
   { to: "/", label: "Dashboard", end: true, icon: IconGrid },
   { to: "/eventos", label: "Eventos", icon: IconActivity },
+  { to: "/raw", label: "Raw (Wazuh)", icon: IconTerminal },
   { to: "/chat", label: "Copilot", icon: IconChat },
   { to: "/regras", label: "Regras", icon: IconBook },
   { to: "/integracoes", label: "Integrações", icon: IconPlug },

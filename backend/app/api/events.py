@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,6 +9,51 @@ from ..db import get_db
 from ..models import Event, User
 
 router = APIRouter(prefix="/api/events", tags=["events"])
+
+_RAW_SCAN_WINDOW = 2000
+
+
+@router.get("/raw")
+async def list_raw_events(
+    q: str | None = None,
+    tag: str | None = None,
+    source: str | None = None,
+    limit: int = 50,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(current_user),
+) -> dict:
+    """Acesso direto ao dado bruto do SIEM (Wazuh/Elastic/generic), sem
+    nenhuma camada de interpretação da IA — existe porque o analista às vezes
+    precisa ver exatamente o que a fonte mandou, não o veredito do motor de
+    regras sobre isso. Busca textual (`q`) roda em memória sobre uma janela
+    recente (não em SQL) para funcionar igual em Postgres e SQLite."""
+    stmt = select(Event).order_by(Event.received_at.desc())
+    if tag:
+        stmt = stmt.where(Event.tag == tag)
+    if source:
+        stmt = stmt.where(Event.source == source)
+    rows = (await db.execute(stmt.limit(_RAW_SCAN_WINDOW))).scalars().all()
+    if q:
+        needle = q.lower()
+        rows = [e for e in rows if needle in json.dumps(e.raw, ensure_ascii=False).lower()]
+    total = len(rows)
+    page = rows[offset : offset + limit]
+    return {
+        "total": total,
+        "items": [
+            {
+                "id": e.id, "timestamp": e.timestamp.isoformat(), "received_at": e.received_at.isoformat(),
+                "source": e.source, "tag": e.tag,
+                "rule_id": (e.raw.get("rule") or {}).get("id"),
+                "rule_level": (e.raw.get("rule") or {}).get("level"),
+                "rule_groups": (e.raw.get("rule") or {}).get("groups"),
+                "full_log": e.raw.get("full_log"),
+                "rules_engine_status": e.rules_engine_status,
+            }
+            for e in page
+        ],
+    }
 
 
 @router.get("")
@@ -39,7 +86,7 @@ async def list_events(
                 "country": e.country, "city": e.city,
                 "hit_count": e.hit_count, "rule_ref": e.rule_ref,
                 "rules_engine_status": e.rules_engine_status, "matched_skills": e.matched_skills,
-                "recommendation": e.recommendation,
+                "recommendation": e.recommendation, "analyzed_at": e.analyzed_at.isoformat() if e.analyzed_at else None,
                 "stages_done": (e.rules_engine_verdict or {}).get("stages_done", 0),
                 "stages_total": (e.rules_engine_verdict or {}).get("stages_total", 3),
                 "current_stage": (e.rules_engine_verdict or {}).get("stage"),
@@ -64,4 +111,5 @@ async def get_event(event_id: int, db: AsyncSession = Depends(get_db), _: User =
         "hit_count": event.hit_count, "rule_ref": event.rule_ref,
         "rules_engine_status": event.rules_engine_status, "matched_skills": event.matched_skills,
         "rules_engine_verdict": event.rules_engine_verdict, "recommendation": event.recommendation,
+        "analyzed_at": event.analyzed_at.isoformat() if event.analyzed_at else None,
     }

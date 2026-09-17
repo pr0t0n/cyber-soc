@@ -66,3 +66,7 @@ class Event(Base):
     # Recomendação acionável do Supervisor para o analista N1 (próximo passo,
     # citando a skill/contramedida casada) — "hidratação + recomendação" pedidas.
     recommendation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Quando o veredito virou terminal (matched/no_match/informational) — base
+    # real para métricas de velocidade/SLA (received_at -> analyzed_at), não
+    # uma estimativa. Nulo enquanto pending/analyzing.
+    analyzed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, index=True)

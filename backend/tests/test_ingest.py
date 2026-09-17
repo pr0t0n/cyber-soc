@@ -95,3 +95,34 @@ async def test_event_detail(client, auth_headers):
 async def test_event_not_found(client, auth_headers):
     r = await client.get("/api/events/999999", headers=auth_headers)
     assert r.status_code == 404
+
+
+async def test_raw_events_lists_source_data_untouched_by_ai(client, auth_headers):
+    await client.post("/api/ingest/wazuh", json={
+        "rule": {"id": "5720", "level": 12, "description": "SSHD brute force", "groups": ["authentication_failed"]},
+        "data": {"srcip": "185.220.101.8"},
+        "full_log": "Failed password for root from 185.220.101.8",
+    })
+    r = await client.get("/api/events/raw", headers=auth_headers)
+    assert r.status_code == 200
+    body = r.json()
+    assert body["total"] == 1
+    item = body["items"][0]
+    assert item["rule_id"] == "5720"
+    assert item["rule_level"] == 12
+    assert item["rule_groups"] == ["authentication_failed"]
+    assert "Failed password" in item["full_log"]
+
+
+async def test_raw_events_full_text_search_matches_raw_json(client, auth_headers):
+    await client.post("/api/ingest/wazuh", json={
+        "rule": {"level": 5, "description": "SCA summary"},
+        "data": {"srcip": "1.2.3.4"},
+    })
+    await client.post("/api/ingest/generic", json={"type": "Outro evento", "severity": "info"})
+
+    found = await client.get("/api/events/raw?q=1.2.3.4", headers=auth_headers)
+    assert found.json()["total"] == 1
+
+    not_found = await client.get("/api/events/raw?q=9.9.9.9", headers=auth_headers)
+    assert not_found.json()["total"] == 0

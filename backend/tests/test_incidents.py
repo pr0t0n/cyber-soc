@@ -47,6 +47,46 @@ async def test_rules_engine_no_match_does_not_open_incident(client, auth_headers
     assert r.json() == []
 
 
+async def test_terminal_verdict_sets_analyzed_at(client, auth_headers, monkeypatch):
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_no_match())
+    created = await client.post("/api/ingest/generic", json={"type": "healthcheck", "severity": "info"})
+    event_id = created.json()["id"]
+    detail_before = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail_before["analyzed_at"] is None
+
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    detail_after = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail_after["analyzed_at"] is not None
+
+
+async def test_compliance_noise_takes_fast_lane_and_skips_the_llm(client, auth_headers, monkeypatch):
+    """Um achado de SCA/rootcheck nunca deve chegar a chamar analyze_event
+    (o LLM/LangGraph real) — a via rápida é puramente determinística."""
+    called = False
+
+    async def _fail_if_called(event: dict, on_progress=None) -> dict:
+        nonlocal called
+        called = True
+        raise AssertionError("compliance noise não deveria chamar o motor de IA")
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _fail_if_called)
+    created = await client.post("/api/ingest/wazuh", json={
+        "rule": {"level": 5, "description": "SCA summary: Score less than 80%", "groups": ["sca"]},
+    })
+    event_id = created.json()["id"]
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    assert called is False
+    detail = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail["rules_engine_status"] == "informational"
+    assert detail["analyzed_at"] is not None
+    assert detail["rules_engine_verdict"]["fast_lane"] is True
+
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    assert incidents == []
+
+
 async def test_update_incident_status(client, auth_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched())
     created = await client.post("/api/ingest/wazuh", json={

@@ -218,6 +218,84 @@ async def incidents_status(tag: str | None = None, db: AsyncSession = Depends(ge
     }
 
 
+def _duration_stats(seconds: list[float]) -> dict:
+    if not seconds:
+        return {"avg_seconds": None, "median_seconds": None, "p95_seconds": None, "sample_size": 0}
+    ordered = sorted(seconds)
+    n = len(ordered)
+    p95 = ordered[min(n - 1, int(n * 0.95))]
+    mid = n // 2
+    median = ordered[mid] if n % 2 else (ordered[mid - 1] + ordered[mid]) / 2
+    return {
+        "avg_seconds": round(sum(ordered) / n, 1),
+        "median_seconds": round(median, 1),
+        "p95_seconds": round(p95, 1),
+        "sample_size": n,
+    }
+
+
+@router.get("/analysis-metrics")
+async def analysis_metrics(tag: str | None = None, db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
+    """Eficiência, velocidade e SLA reais do motor de regras — calculados a
+    partir de timestamps de banco (received_at/analyzed_at/created_at), nunca
+    estimados. Existe porque "qual a %", "qual a velocidade" e "qual o SLA"
+    são perguntas concretas que a plataforma precisa responder com dado real,
+    não só mostrar o veredito de cada evento isoladamente."""
+    now = datetime.now(timezone.utc)
+
+    analyzed_stmt = _tag_filter(
+        select(Event.received_at, Event.analyzed_at, Event.rules_engine_verdict), tag
+    ).where(Event.rules_engine_status.in_(("matched", "no_match")), Event.analyzed_at.is_not(None))
+    analyzed_rows = (await db.execute(analyzed_stmt)).all()
+
+    speed_seconds: list[float] = []
+    degraded_count = 0
+    for received_at, analyzed_at, verdict in analyzed_rows:
+        received = received_at if received_at.tzinfo else received_at.replace(tzinfo=timezone.utc)
+        analyzed = analyzed_at if analyzed_at.tzinfo else analyzed_at.replace(tzinfo=timezone.utc)
+        speed_seconds.append((analyzed - received).total_seconds())
+        groups = (verdict or {}).get("groups") or {}
+        if any(g.get("degraded") for g in groups.values()):
+            degraded_count += 1
+
+    total_analyzed = len(analyzed_rows)
+    efficiency_pct = round((total_analyzed - degraded_count) * 100 / total_analyzed, 1) if total_analyzed else None
+
+    fast_lane_stmt = _tag_filter(select(func.count(Event.id)), tag).where(Event.rules_engine_status == "informational")
+    fast_lane_count = int((await db.execute(fast_lane_stmt)).scalar() or 0)
+
+    incident_stmt = select(Event.received_at, Incident.created_at).join(Incident, Incident.event_id == Event.id)
+    if tag:
+        incident_stmt = incident_stmt.where(Event.tag == tag)
+    incident_rows = (await db.execute(incident_stmt)).all()
+    sla_seconds = []
+    for received_at, created_at in incident_rows:
+        received = received_at if received_at.tzinfo else received_at.replace(tzinfo=timezone.utc)
+        created = created_at if created_at.tzinfo else created_at.replace(tzinfo=timezone.utc)
+        sla_seconds.append((created - received).total_seconds())
+
+    backlog_stmt = _tag_filter(select(Event.received_at), tag).where(
+        Event.rules_engine_status.in_(("pending", "analyzing"))
+    )
+    backlog_rows = (await db.execute(backlog_stmt)).all()
+    backlog_count = len(backlog_rows)
+    oldest_backlog_seconds = None
+    if backlog_rows:
+        oldest = min(r for (r,) in backlog_rows)
+        oldest = oldest if oldest.tzinfo else oldest.replace(tzinfo=timezone.utc)
+        oldest_backlog_seconds = round((now - oldest).total_seconds(), 1)
+
+    return {
+        "efficiency_pct": efficiency_pct,
+        "degraded_count": degraded_count,
+        "analyzed_by_ai_count": total_analyzed,
+        "fast_lane_count": fast_lane_count,
+        "analysis_speed": _duration_stats(speed_seconds),
+        "sla_event_to_incident": _duration_stats(sla_seconds),
+        "backlog": {"count": backlog_count, "oldest_seconds": oldest_backlog_seconds},
+    }
+
+
 @router.get("/agent-activity")
 async def agent_activity(tag: str | None = None, db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
     """Feed de atividade do agente (Supervisor LangGraph) — o que a IA está

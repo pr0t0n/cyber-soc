@@ -54,10 +54,34 @@ interface AgentActivityItem {
 
 const RULES_STATUS_LABEL: Record<string, string> = {
   pending: "Na fila", analyzing: "Analisando…", matched: "Skill casada", no_match: "Sem correspondência",
+  informational: "Informativo (via rápida)",
 };
 const RULES_STATUS_COLOR: Record<string, string> = {
-  pending: "#94a3b8", analyzing: "#22d3ee", matched: "#f43f5e", no_match: "#34d399",
+  pending: "#94a3b8", analyzing: "#22d3ee", matched: "#f43f5e", no_match: "#34d399", informational: "#64748b",
 };
+
+interface DurationStats {
+  avg_seconds: number | null;
+  median_seconds: number | null;
+  p95_seconds: number | null;
+  sample_size: number;
+}
+interface AnalysisMetrics {
+  efficiency_pct: number | null;
+  degraded_count: number;
+  analyzed_by_ai_count: number;
+  fast_lane_count: number;
+  analysis_speed: DurationStats;
+  sla_event_to_incident: DurationStats;
+  backlog: { count: number; oldest_seconds: number | null };
+}
+
+function fmtDuration(seconds: number | null): string {
+  if (seconds == null) return "—";
+  if (seconds < 60) return `${Math.round(seconds)}s`;
+  if (seconds < 3600) return `${Math.round(seconds / 60)}min`;
+  return `${(seconds / 3600).toFixed(1)}h`;
+}
 const STAGE_LABEL: Record<string, string> = {
   attack_defend: "ATT&CK/D3FEND", network_signature: "Assinaturas de Rede", web_application: "Aplicação Web/WAF",
 };
@@ -73,6 +97,7 @@ function useDashboardData(tag: string) {
   const [worldMap, setWorldMap] = useState<WorldMapPoint[] | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [activity, setActivity] = useState<AgentActivityItem[] | null>(null);
+  const [metrics, setMetrics] = useState<AnalysisMetrics | null>(null);
 
   useEffect(() => {
     const loadSlow = () => {
@@ -87,6 +112,7 @@ function useDashboardData(tag: string) {
     const loadFast = () => {
       api.get<EpsData>(`/dashboard/eps${qs}`).then(setEps);
       api.get<{ items: AgentActivityItem[] }>(`/dashboard/agent-activity${qs}`).then((r) => setActivity(r.items));
+      api.get<AnalysisMetrics>(`/dashboard/analysis-metrics${qs}`).then(setMetrics);
     };
     loadSlow();
     loadFast();
@@ -98,7 +124,7 @@ function useDashboardData(tag: string) {
     };
   }, [qs]);
 
-  return { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity };
+  return { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics };
 }
 
 function riskColor(v: number) {
@@ -117,7 +143,7 @@ function mitreColor(count: number, max: number) {
 
 export default function Dashboard() {
   const [tag, setTag] = useState("");
-  const { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity } = useDashboardData(tag);
+  const { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics } = useDashboardData(tag);
 
   async function updateIncidentStatus(id: number, status: string) {
     const updated = await api.patch<{ id: number; status: string }>(`/incidents/${id}`, { status });
@@ -217,10 +243,18 @@ export default function Dashboard() {
           )}
         </Card>
 
-        <Card title="Incidentes" subtitle="Tratativa interna (BackLog / Em Andamento / Concluído)">
+        <Card title="Incidentes" subtitle="Pipeline completo: Sendo Analisados → BackLog → Em Andamento → Concluído">
           {incidents && (
             <>
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-4 gap-3 mb-4">
+                <div className="text-center rounded-lg py-3" style={{ background: "var(--surface-2)" }}>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                    Sendo Analisados
+                  </p>
+                  <p className="text-2xl font-bold mt-1" style={{ color: "#22d3ee" }}>
+                    {metrics?.backlog.count ?? "…"}
+                  </p>
+                </div>
                 {(["backlog", "em_andamento", "concluido"] as const).map((s) => (
                   <div key={s} className="text-center rounded-lg py-3" style={{ background: "var(--surface-2)" }}>
                     <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
@@ -265,6 +299,48 @@ export default function Dashboard() {
           )}
         </Card>
       </div>
+
+      <Card title="Eficiência do Motor de Regras" subtitle="% sem degradação, velocidade de análise e SLA evento → incidente — calculados dos timestamps reais">
+        {metrics && (
+          <div className="grid grid-cols-5 gap-3">
+            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Eficiência</p>
+              <p className="text-xl font-bold mt-1" style={{ color: (metrics.efficiency_pct ?? 100) >= 80 ? "#34d399" : "#facc15" }}>
+                {metrics.efficiency_pct != null ? `${metrics.efficiency_pct}%` : "—"}
+              </p>
+              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                {metrics.analyzed_by_ai_count} análise(s) de IA{metrics.degraded_count > 0 ? `, ${metrics.degraded_count} degradada(s)` : ""}
+              </p>
+            </div>
+            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Velocidade (mediana)</p>
+              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{fmtDuration(metrics.analysis_speed.median_seconds)}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                p95 {fmtDuration(metrics.analysis_speed.p95_seconds)} · {metrics.analysis_speed.sample_size} evento(s)
+              </p>
+            </div>
+            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>SLA evento → incidente</p>
+              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{fmtDuration(metrics.sla_event_to_incident.median_seconds)}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                p95 {fmtDuration(metrics.sla_event_to_incident.p95_seconds)} · {metrics.sla_event_to_incident.sample_size} incidente(s)
+              </p>
+            </div>
+            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Fila (backlog)</p>
+              <p className="text-xl font-bold mt-1" style={{ color: metrics.backlog.count > 20 ? "#f43f5e" : "var(--text)" }}>{metrics.backlog.count}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                mais antigo há {fmtDuration(metrics.backlog.oldest_seconds)}
+              </p>
+            </div>
+            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Via rápida (compliance)</p>
+              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{metrics.fast_lane_count}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>SCA/rootcheck, sem IA</p>
+            </div>
+          </div>
+        )}
+      </Card>
 
       <Card title="Atividade do Agente" subtitle="O que o Supervisor (LangGraph + RAG) está analisando agora, evento a evento">
         {activity && activity.length === 0 && (

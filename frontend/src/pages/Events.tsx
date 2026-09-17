@@ -60,6 +60,7 @@ const RULES_STATUS: Record<string, { label: string; color: string }> = {
   analyzing: { label: "Analisando…", color: "#22d3ee" },
   matched: { label: "Skill casada", color: "#f43f5e" },
   no_match: { label: "Sem correspondência", color: "#34d399" },
+  informational: { label: "Informativo (via rápida)", color: "#64748b" },
 };
 const STAGES: { key: string; label: string }[] = [
   { key: "attack_defend", label: "ATT&CK / D3FEND" },
