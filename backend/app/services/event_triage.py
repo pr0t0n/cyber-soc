@@ -17,10 +17,17 @@ from __future__ import annotations
 from typing import Any
 
 _COMPLIANCE_RULE_GROUPS = frozenset({"sca", "rootcheck"})
+# "ossec" é um grupo genérico que o Wazuh adiciona a praticamente toda regra
+# própria, sem sinal discriminante nenhum — sem descartá-lo antes de comparar,
+# um achado real de rootcheck (`groups=["ossec","rootcheck"]`) nunca batia
+# como subconjunto de `_COMPLIANCE_RULE_GROUPS` e a via rápida nunca disparava
+# para o tipo de evento mais comum do próprio agente (bug real: só o `sca`
+# "puro" — sem o wrapper "ossec" — estava sendo pego).
+_GENERIC_WRAPPER_GROUPS = frozenset({"ossec"})
 
 
 def is_compliance_noise(raw: dict[str, Any]) -> bool:
-    groups = set((raw.get("rule") or {}).get("groups") or [])
+    groups = set((raw.get("rule") or {}).get("groups") or []) - _GENERIC_WRAPPER_GROUPS
     return bool(groups) and groups.issubset(_COMPLIANCE_RULE_GROUPS)
 
 

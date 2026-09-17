@@ -25,6 +25,26 @@ def test_no_groups_is_not_noise():
     assert is_compliance_noise({}) is False
 
 
+def test_rootcheck_with_generic_ossec_wrapper_is_still_noise():
+    """Bug real corrigido: o Wazuh SEMPRE inclui o grupo genérico "ossec"
+    junto de "rootcheck" em alertas reais (`groups=["ossec","rootcheck"]`) —
+    sem descartar esse wrapper antes de comparar, nenhum achado real de
+    rootcheck era pego pela via rápida (só o "sca" puro, sem wrapper, era)."""
+    assert is_compliance_noise({"rule": {"groups": ["ossec", "rootcheck"]}}) is True
+
+
+def test_syscheck_with_generic_ossec_wrapper_is_not_noise():
+    """Mudança de arquivo (syscheck) é relevante de verdade para segurança —
+    não deve virar via rápida só porque carrega o wrapper genérico "ossec"."""
+    assert is_compliance_noise({"rule": {"groups": ["ossec", "syscheck", "syscheck_file"]}}) is False
+
+
+def test_generic_wrapper_alone_is_not_noise():
+    """"ossec" sozinho (ex.: comando netstat monitorado) não tem sinal
+    discriminante nenhum — não deve virar via rápida por exclusão."""
+    assert is_compliance_noise({"rule": {"groups": ["ossec"]}}) is False
+
+
 def test_fast_lane_verdict_is_explicit_about_skipping_ai():
     verdict = fast_lane_verdict("SCA summary: Score less than 80%")
     assert verdict["matched"] is False
