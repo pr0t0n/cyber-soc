@@ -40,6 +40,16 @@ services:
       - wazuh_wodles:/var/ossec/wodles
       - filebeat_etc:/etc/filebeat
       - filebeat_var:/var/lib/filebeat
+      - suricata_logs:/var/log/suricata:ro
+      # NIDS real sobre a interface de rede de verdade do Mac (en7) — via
+      # Suricata nativo (brew, fora do Docker), não outro container: Docker
+      # Desktop no macOS nunca expõe a NIC real do host a um container (raiz
+      # de tudo isso — ver comentário do wazuh.agent acima para a mesma
+      # limitação com logs nativos). Roda fora do docker-compose porque
+      # captura de pacote (`-i en7`) exige acesso a interface real, que só
+      # existe fora da VM do Docker Desktop. Ver README/wazuh/ para o comando
+      # (`sudo suricata ...`) — só o usuário consegue rodar, exige senha.
+      - ./host-suricata-logs:/var/log/suricata-host:ro
       - ./config/wazuh_indexer_ssl_certs/root-ca-manager.pem:/etc/ssl/root-ca.pem
       - ./config/wazuh_indexer_ssl_certs/wazuh.manager.pem:/etc/ssl/filebeat.pem
       - ./config/wazuh_indexer_ssl_certs/wazuh.manager-key.pem:/etc/ssl/filebeat.key
@@ -122,6 +132,82 @@ services:
     links:
       - wazuh.manager:wazuh.manager
 
+  # ATENÇÃO — `network_mode: service:wazuh.manager` prende este container ao
+  # ID do container do manager NO MOMENTO EM QUE ESTE SOBE, não ao serviço
+  # por nome: um `docker compose up -d wazuh.manager`/`restart` que troque o
+  # ID por baixo (recreate) deixa este container preso a um namespace de
+  # rede órfão — ele sobe normal, mas só enxerga `lo` (bug real observado:
+  # ficou "capturando" nada por um bom tempo sem erro nenhum). Sempre que
+  # `wazuh.manager` for recriado, recrie este também: `docker compose stop
+  # suricata && docker compose rm -f suricata && docker compose up -d
+  # suricata` (um `restart` sozinho não resolve, porque não troca o
+  # `network_mode` já resolvido). Verificação rápida: `docker compose exec
+  # suricata cat /proc/net/dev` tem que listar `eth0`, não só `lo`.
+  #
+  # NIDS real sobre o tráfego do wazuh.manager (registro/keepalive de agentes
+  # em 1514/1515, syslog em 514, consultas à API em 55000) — sem isso, "Wazuh
+  # não está analisando tráfego de rede" era literal: os 378 alertas mais
+  # recentes eram 100% SCA/rootcheck/syscheck (host), nenhum trazia
+  # srcip/dstip. Wazuh puro é HIDS, nunca observou um pacote/conexão de
+  # verdade. Compartilha o namespace de rede do wazuh.manager
+  # (`network_mode: service:`) porque é a única interface que um container
+  # consegue capturar sem tocar o host (Docker Desktop no macOS não expõe a
+  # NIC real do laptop — mesma limitação documentada no comentário do
+  # wazuh.agent acima para logs nativos do macOS). Ruleset real (ET-Open via
+  # `suricata-update`, não fabricado); saída eve.json lida pelo Wazuh via o
+  # decoder/ruleset padrão que ele já traz
+  # (ruleset/rules/0475-suricata_rules.xml, decoded_as=json) — ver
+  # <localfile> em config/wazuh_cluster/wazuh_manager.conf. O `sed` abaixo
+  # remove o tipo `stats` do eve-log (contador de performance interno do
+  # Suricata, não um evento de segurança) — a versão flatten dele tem tantos
+  # campos que o decoder JSON do wazuh-analysisd rejeitava a linha inteira
+  # ("Too many fields for JSON decoder"), derrubando também os eventos reais
+  # (alert/flow/dns/tls) que vinham no mesmo arquivo. `-k none` desliga a
+  # validação de checksum na captura (flag documentada do Suricata) — mas as
+  # regras "SURICATA {TCP,UDP,ICMP}v{4,6} invalid checksum" (decoder-events.
+  # rules, SIDs 2200073-2200079) são assinaturas de verdade, carregadas como
+  # qualquer outra, então `-k` sozinho não as desliga; ver
+  # config/suricata/disable.conf. Sem isso, eram a esmagadora maioria dos
+  # "alertas" (checksum real só é calculado pela NIC/driver do host depois
+  # que o Suricata já capturou o pacote na veth — todo pacote de saída
+  # aparenta "errado" mesmo sendo tráfego 100% normal; chegou a 600+ no
+  # mesmo par de IPs em minutos).
+  suricata:
+    image: jasonish/suricata:latest
+    restart: unless-stopped
+    network_mode: "service:wazuh.manager"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_NICE
+    entrypoint: >
+      /bin/sh -c "
+      mkdir -p /etc/suricata &&
+      cp -an /etc/suricata.dist/* /etc/suricata/ &&
+      sed -i '/^        - stats:$/,/^        # bi-directional flows$/{/^        # bi-directional flows$/!d}' /etc/suricata/suricata.yaml &&
+      (suricata-update --no-test || echo 'suricata-update falhou, seguindo com o ruleset padrão da imagem') &&
+      cat /var/lib/suricata/rules/local.rules >> /var/lib/suricata/rules/suricata.rules &&
+      exec /docker-entrypoint.sh -i eth0 -k none not host 192.168.65.254
+      "
+    volumes:
+      - suricata_logs:/var/log/suricata
+      - suricata_rules:/var/lib/suricata
+      - suricata_etc:/etc/suricata
+      # Sem `:ro`: o /docker-entrypoint.sh da imagem roda `chown -R
+      # suricata:suricata /etc/suricata` (fix_perms) sob `set -e` — montado
+      # somente-leitura, o chown falha e derruba o container inteiro num
+      # crash loop (observado). O arquivo em si só é lido pelo
+      # suricata-update; permissão de escrita no mount não muda o arquivo
+      # real no host.
+      - ./config/suricata/disable.conf:/etc/suricata/disable.conf
+      # Regra autoral de varredura de portas (config/suricata/local.rules) —
+      # `suricata-update` nunca toca `local.rules` (só reescreve o
+      # `suricata.rules` gerenciado), então persiste sem novo `-an` a cada
+      # restart; ver o `sed` acima que a registra em `rule-files:`.
+      - ./config/suricata/local.rules:/var/lib/suricata/rules/local.rules
+    depends_on:
+      - wazuh.manager
+
 volumes:
   wazuh_api_configuration:
   wazuh_etc:
@@ -131,6 +217,9 @@ volumes:
   wazuh_integrations:
   wazuh_active_response:
   wazuh_agentless:
+  suricata_logs:
+  suricata_rules:
+  suricata_etc:
   wazuh_wodles:
   filebeat_etc:
   filebeat_var:
