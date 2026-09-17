@@ -23,6 +23,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama
 
 from ..config import settings
+from ..services.correlation import CORRELATION_WINDOW_MINUTES
 from .mcp_client import get_skill_tools
 from .prompts import (
     ATTACK_DEFEND_GROUP_PROMPT,
@@ -44,6 +45,13 @@ class GroupVerdict(TypedDict):
     # "não corresponde" degradado com o mesmo tom de confiança de um
     # "não corresponde" real, avaliado de ponta a ponta.
     degraded: bool
+    # True quando `matched` veio de _exact_id_matches (fato objetivo: a fonte
+    # já reportou essa técnica e o catálogo tem a skill), não de uma inferência
+    # do LLM — nesse caso nem o grupo nem o Supervisor precisam gastar uma
+    # chamada de LLM (segundos a minutos em CPU) para "confirmar" o óbvio. É a
+    # diferença entre um SOC de verdade (toca o óbvio na hora, investiga só o
+    # que é ambíguo) e tratar todo evento com o mesmo processo lento.
+    deterministic: bool
 
 
 OnProgress = Callable[[str, GroupVerdict], Awaitable[None]]
@@ -104,6 +112,12 @@ def _event_summary(event: dict[str, Any]) -> str:
         parts.append("tentativas/repetições relatadas pela fonte=não informado")
     if event.get("rule_ref"):
         parts.append(f"regra de origem={event['rule_ref']}")
+    correlated = event.get("correlated_count")
+    if correlated and correlated > 1:
+        parts.append(
+            f"correlação: esta mesma origem gerou {correlated} evento(s) nos últimos "
+            f"{CORRELATION_WINDOW_MINUTES} minutos (não é um evento isolado)"
+        )
     reasons = ((event.get("enrichment") or {}).get("assessment") or {}).get("reasons") or []
     if reasons:
         parts.append("threat intel do IP de origem: " + " ".join(reasons))
@@ -150,12 +164,22 @@ async def _run_group(state: RulesEngineState, tool_name: str, system_prompt: str
     if not candidates:
         return {
             "matched": False, "skills": [], "reasoning": "Sem skills candidatas retornadas pelo RAG.",
-            "candidates_considered": 0, "degraded": True,
+            "candidates_considered": 0, "degraded": True, "deterministic": False,
         }
 
     forced = _exact_id_matches(state["event"], candidates)
     forced_ids = [c["external_id"] for c in forced]
     forced_names = [c["name"] for c in forced]
+
+    if forced:
+        # Correspondência objetiva (fato, não opinião) — não gasta uma chamada
+        # de LLM (a parte lenta) para "confirmar" o que já é certo. Um SOC de
+        # verdade também bate o óbvio na hora.
+        return {
+            "matched": True, "skills": forced_ids,
+            "reasoning": f"Correspondência exata de técnica já reportada pela fonte com o catálogo: {forced_names}.",
+            "candidates_considered": len(candidates), "degraded": False, "deterministic": True,
+        }
 
     prompt = (
         f"Evento:\n{state['event_summary']}\n\n"
@@ -163,36 +187,23 @@ async def _run_group(state: RulesEngineState, tool_name: str, system_prompt: str
     )
     content = await _invoke_llm_with_retry(system_prompt, prompt)
     if content is None:
-        reasoning = "IA indisponível para este grupo."
-        if forced:
-            reasoning = f"IA indisponível, mas ID de técnica já reportado pela fonte casa exatamente com o catálogo: {forced_names}."
         return {
-            "matched": bool(forced), "skills": forced_ids, "reasoning": reasoning,
-            "candidates_considered": len(candidates), "degraded": not forced,
+            "matched": False, "skills": [], "reasoning": "IA indisponível para este grupo.",
+            "candidates_considered": len(candidates), "degraded": True, "deterministic": False,
         }
     parsed = _parse_json(content)
     if not parsed:
-        reasoning = "IA não respondeu em JSON válido."
-        if forced:
-            reasoning = f"IA não respondeu em JSON válido, mas ID de técnica já reportado pela fonte casa exatamente com o catálogo: {forced_names}."
         return {
-            "matched": bool(forced), "skills": forced_ids, "reasoning": reasoning,
-            "candidates_considered": len(candidates), "degraded": not forced,
+            "matched": False, "skills": [], "reasoning": "IA não respondeu em JSON válido.",
+            "candidates_considered": len(candidates), "degraded": True, "deterministic": False,
         }
-    matched = bool(parsed.get("matched")) or bool(forced)
-    skills = list(dict.fromkeys((list(parsed.get("skills") or [])) + forced_ids))
-    reasoning = str(parsed.get("reasoning") or "")
-    if forced and not parsed.get("matched"):
-        reasoning = (
-            f"Correspondência exata de ID de técnica confirmada independente do julgamento da IA "
-            f"({forced_names}). {reasoning}"
-        ).strip()
     return {
-        "matched": matched,
-        "skills": skills,
-        "reasoning": reasoning,
+        "matched": bool(parsed.get("matched")),
+        "skills": list(parsed.get("skills") or []),
+        "reasoning": str(parsed.get("reasoning") or ""),
         "candidates_considered": len(candidates),
         "degraded": False,
+        "deterministic": False,
     }
 
 
@@ -227,6 +238,35 @@ async def web_application_node(state: RulesEngineState) -> dict:
     return {"web_application": verdict}
 
 
+def _deterministic_consolidation(groups: dict[str, GroupVerdict], *, reason: str) -> dict:
+    """OR determinístico dos 3 grupos — nunca perde um match real que algum
+    grupo já tinha encontrado. Usado tanto quando o Supervisor (LLM) não
+    responde (fallback reativo) quanto, no caminho rápido, quando já não há
+    nada de fato para o LLM decidir (fast path proativo)."""
+    all_skills = groups["attack_defend"]["skills"] + groups["network_signature"]["skills"] + groups["web_application"]["skills"]
+    matched = any(g["matched"] for g in groups.values())
+    any_degraded = any(g["degraded"] for g in groups.values())
+    if matched:
+        recommendation = "Revisar manualmente — skill(s) casada(s) mas o Supervisor (IA) não consolidou o resumo."
+    elif any_degraded:
+        # Distinção importante: isto NÃO é "analisado e não encontrado" —
+        # pelo menos um grupo não completou uma avaliação real (RAG ou IA
+        # indisponível), então "sem skill correspondente" seria uma
+        # afirmação mais forte do que a evidência sustenta.
+        recommendation = (
+            "Inconclusivo — revisar manualmente. Um ou mais grupos do motor de regras não "
+            "completaram a análise (RAG ou IA indisponível no momento), então a ausência de "
+            "correspondência aqui não é definitiva."
+        )
+    else:
+        recommendation = "Nenhuma ação necessária — sem skill correspondente."
+    return {
+        "matched": matched, "matched_skills": all_skills,
+        "summary": f"Consolidação determinística ({reason}).",
+        "recommendation": recommendation, "groups": groups,
+    }
+
+
 async def supervisor_node(state: RulesEngineState) -> dict:
     # Mesmas chaves usadas por _persist_progress/_notify (nome do nó, não um
     # rótulo em português) — o veredito final (aqui) e o progresso incremental
@@ -237,39 +277,24 @@ async def supervisor_node(state: RulesEngineState) -> dict:
         "network_signature": state["network_signature"],
         "web_application": state["web_application"],
     }
+
+    if any(g["deterministic"] for g in groups.values()):
+        # Fast path proativo: pelo menos um grupo já confirmou por fato
+        # objetivo (técnica reportada pela fonte bate com o catálogo) — pedir
+        # ao Supervisor (LLM) para "opinar" sobre algo já certo só adiciona
+        # minutos de latência de CPU sem agregar confiança nenhuma.
+        return {"verdict": _deterministic_consolidation(groups, reason="técnica confirmada pela fonte, sem chamada de IA")}
+
     prompt = f"Evento:\n{state['event_summary']}\n\nVeredito dos grupos:\n{json.dumps(groups, ensure_ascii=False, indent=1)}"
     content = await _invoke_llm_with_retry(SUPERVISOR_PROMPT, prompt)
     parsed = _parse_json(content) if content else None
     if not parsed:
         # Sem o Supervisor conseguir consolidar (IA indisponível ou resposta
-        # não é JSON), cai para o OR determinístico dos grupos — nunca perde
-        # um match real que algum grupo já tinha encontrado.
-        all_skills = groups["attack_defend"]["skills"] + groups["network_signature"]["skills"] + groups["web_application"]["skills"]
-        matched = any(g["matched"] for g in groups.values())
+        # não é JSON), cai para o OR determinístico dos grupos (fallback
+        # reativo, distinto do fast path acima).
         any_degraded = any(g["degraded"] for g in groups.values())
-        if matched:
-            recommendation = "Revisar manualmente — skill(s) casada(s) mas o Supervisor (IA) não consolidou o resumo."
-        elif any_degraded:
-            # Distinção importante: isto NÃO é "analisado e não encontrado" —
-            # pelo menos um grupo não completou uma avaliação real (RAG ou IA
-            # indisponível), então "sem skill correspondente" seria uma
-            # afirmação mais forte do que a evidência sustenta.
-            recommendation = (
-                "Inconclusivo — revisar manualmente. Um ou mais grupos do motor de regras não "
-                "completaram a análise (RAG ou IA indisponível no momento), então a ausência de "
-                "correspondência aqui não é definitiva."
-            )
-        else:
-            recommendation = "Nenhuma ação necessária — sem skill correspondente."
-        summary = (
-            "Consolidação determinística (IA não respondeu em JSON válido)"
-            + (" — análise parcialmente degradada." if any_degraded else ".")
-        )
-        return {"verdict": {
-            "matched": matched, "matched_skills": all_skills,
-            "summary": summary,
-            "recommendation": recommendation, "groups": groups,
-        }}
+        reason = "IA não respondeu em JSON válido" + (" — análise parcialmente degradada" if any_degraded else "")
+        return {"verdict": _deterministic_consolidation(groups, reason=reason)}
     return {"verdict": {
         "matched": bool(parsed.get("matched")),
         "matched_skills": list(parsed.get("matched_skills") or []),
@@ -317,9 +342,9 @@ async def analyze_event(event: dict[str, Any], on_progress: OnProgress | None = 
     state: RulesEngineState = {
         "event": event,
         "event_summary": _event_summary(event),
-        "attack_defend": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False},
-        "network_signature": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False},
-        "web_application": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False},
+        "attack_defend": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False, "deterministic": False},
+        "network_signature": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False, "deterministic": False},
+        "web_application": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": False, "deterministic": False},
         "verdict": {},
         "on_progress": on_progress,
     }

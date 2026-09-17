@@ -166,6 +166,32 @@ dizia "sem correspondência" enquanto a tela ainda destacava "brute force" e
    uma avaliação real, o Supervisor não diz mais "nenhuma ação necessária"
    (uma afirmação forte) — diz "inconclusivo, revisar manualmente".
 
+### Velocidade: um SOC de verdade resolve o óbvio na hora
+
+Mesmo com o rótulo da fonte + skill real corroborando, o pipeline ainda
+gastava 4 chamadas de LLM sequenciais (3 grupos + Supervisor) — minutos em
+CPU — só para "confirmar" um fato que já era objetivo. Agora, quando
+`_exact_id_matches` encontra uma correspondência determinística, **o grupo
+nem chama o LLM** (retorna na hora com `deterministic: true`); e se qualquer
+grupo já é determinístico, **o Supervisor também pula a própria chamada de
+LLM** e consolida direto (`_deterministic_consolidation` em
+`app/agents/graph.py`). Para o caso mais comum — evento já tagueado pela
+fonte com uma técnica MITRE que o catálogo conhece — o pipeline inteiro
+resolve com **zero chamadas de LLM**, só busca RAG (embedding + pgvector).
+Eventos sem técnica pré-identificada (comportamento a inferir) continuam no
+caminho completo — é o caso genuinamente ambíguo, onde vale a pena gastar o
+tempo de raciocínio da IA.
+
+### Correlação entre eventos: nenhum evento é avaliado isolado
+
+Um analista de SOC nunca julga um evento sozinho — várias ocorrências da
+mesma origem em poucos minutos já é sinal, mesmo que cada evento pareça
+inofensivo isoladamente (ex.: uma varredura de 20 portas vira 20 eventos
+"normais" se avaliados um a um). `app/services/correlation.py` conta quantos
+eventos (qualquer tipo) a mesma origem gerou nos últimos 10 minutos
+(`Event.correlated_count`) e injeta isso no resumo que a IA e as regras de
+correlação (`CSOC-001`/`CSOC-002`) veem — visível também na tela Eventos.
+
 ## Métricas reais de eficiência/velocidade/SLA
 
 `GET /api/dashboard/analysis-metrics` (card "Eficiência do Motor de Regras"

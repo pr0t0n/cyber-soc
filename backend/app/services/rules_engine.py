@@ -12,6 +12,7 @@ from sqlalchemy import func, select
 from ..agents.graph import analyze_event
 from ..db import SessionLocal
 from ..models import Event, Incident
+from .correlation import count_recent_events_from_ip
 from .event_triage import fast_lane_verdict, is_compliance_noise
 
 # Limita quantos eventos passam pela análise de IA (LangGraph + Ollama) ao
@@ -58,6 +59,8 @@ async def run_rules_engine_for_event(event_id: int) -> None:
         if not event:
             return
 
+        event.correlated_count = await count_recent_events_from_ip(db, event.src_ip, before=event.received_at)
+
         if is_compliance_noise(event.raw or {}):
             # Via rápida: achado de compliance/inventário (SCA/rootcheck) —
             # veredito determinístico, sem gastar o único worker de LLM com
@@ -76,6 +79,7 @@ async def run_rules_engine_for_event(event_id: int) -> None:
             "src_port": event.src_port, "dst_ip": event.dst_ip, "dst_port": event.dst_port,
             "protocol": event.protocol, "mitre": event.mitre, "behavior": event.behavior,
             "hit_count": event.hit_count, "rule_ref": event.rule_ref, "enrichment": event.enrichment,
+            "correlated_count": event.correlated_count,
         }
         event.rules_engine_status = "analyzing"
         await db.commit()

@@ -7,7 +7,8 @@
     "requires": {
       "target_port_in": [21, 22, 23, 445, 1433, 3306, 3389, 5900],
       "any_of": [
-        "hit_count >= 5 tentativas na mesma origem/janela",
+        "hit_count >= 5 tentativas relatadas pela fonte",
+        "correlated_count >= 5 eventos da mesma origem nos últimos 10 minutos",
         "IP de origem já confirmado malicioso por AbuseIPDB (score >= 80) ou Shodan (tags de risco/portas de C2)"
       ]
     },
@@ -21,7 +22,7 @@
     "mitre": ["T1595"],
     "requires": {
       "any_of": [
-        "múltiplas portas/destinos distintos da mesma origem em curto intervalo",
+        "correlated_count >= 5 eventos da mesma origem nos últimos 10 minutos (múltiplas portas/destinos em curto intervalo)",
         "IP de origem já confirmado malicioso por AbuseIPDB ou Shodan (tags scanner/botnet/proxy)"
       ]
     },

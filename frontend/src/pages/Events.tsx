@@ -26,6 +26,7 @@ interface EventRow {
   current_stage: string | null;
   hit_count: number | null;
   rule_ref: string | null;
+  correlated_count: number | null;
 }
 
 interface GroupVerdict {
@@ -276,6 +277,11 @@ function EventDetailPanel({ eventId }: { eventId: number }) {
               ? `${detail.hit_count} tentativa(s)/ocorrência(s) relatada(s) pela fonte.`
               : "A fonte não informou uma contagem de tentativas/ocorrências para este evento — o rótulo por si só não comprova volume."}
           </p>
+          {detail.correlated_count != null && detail.correlated_count > 1 && (
+            <p className="text-xs mt-1" style={{ color: "var(--text)" }}>
+              Correlação: esta origem gerou <strong>{detail.correlated_count} evento(s)</strong> nos últimos 10 minutos — não é um evento isolado.
+            </p>
+          )}
           <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
             Severidade "{detail.severity}": {detail.rule_ref ?? "sem referência da regra de origem — classificação recebida sem justificativa detalhada."}
           </p>

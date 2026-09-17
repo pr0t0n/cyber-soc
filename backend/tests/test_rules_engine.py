@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from app.agents import prompts
+from app.agents import graph, prompts
 from app.agents.graph import _event_summary, _exact_id_matches, _parse_json
 
 
@@ -63,6 +63,104 @@ def test_exact_id_matches_finds_candidate_sharing_mitre_id_reported_by_source():
 
 def test_exact_id_matches_empty_when_source_reported_no_mitre_technique():
     assert _exact_id_matches({"mitre": []}, [{"external_id": "T1110", "name": "Brute Force"}]) == []
+
+
+def test_event_summary_flags_correlated_activity_from_same_origin():
+    """Um analista de SOC nunca julga um evento isolado — várias ocorrências
+    da mesma origem em minutos é sinal por si só."""
+    summary = _event_summary({"type": "Port scan", "correlated_count": 12})
+    assert "12 evento(s)" in summary
+    assert "não é um evento isolado" in summary
+
+
+def test_event_summary_silent_about_correlation_when_isolated():
+    summary = _event_summary({"type": "Port scan", "correlated_count": 1})
+    assert "evento(s) nos últimos" not in summary
+
+
+class _FakeTool:
+    def __init__(self, candidates):
+        self._candidates = candidates
+
+    async def ainvoke(self, args):
+        return self._candidates
+
+
+async def test_run_group_skips_llm_when_exact_id_already_matches(monkeypatch):
+    """O caso mais comum e mais importante de acertar rápido: a fonte já
+    reportou a técnica, o catálogo já tem a skill — não há nada para o LLM
+    (lento, em CPU) "decidir" que os fatos já não decidiram."""
+    candidates = [{"source": "attack", "external_id": "T1110", "name": "Brute Force", "category": "x", "yaml": "y"}]
+
+    async def _fake_tools():
+        return {"search_attack_defend": _FakeTool(candidates)}
+
+    llm_called = False
+
+    async def _fake_llm(*_args, **_kwargs):
+        nonlocal llm_called
+        llm_called = True
+        return '{"matched": false, "skills": [], "reasoning": "não deveria nem rodar"}'
+
+    monkeypatch.setattr(graph, "get_skill_tools", _fake_tools)
+    monkeypatch.setattr(graph, "_invoke_llm_with_retry", _fake_llm)
+
+    state = {"event": {"mitre": ["T1110"]}, "event_summary": "resumo", "on_progress": None}
+    verdict = await graph._run_group(state, "search_attack_defend", "prompt qualquer")
+
+    assert verdict == {
+        "matched": True, "skills": ["T1110"],
+        "reasoning": "Correspondência exata de técnica já reportada pela fonte com o catálogo: ['Brute Force'].",
+        "candidates_considered": 1, "degraded": False, "deterministic": True,
+    }
+    assert llm_called is False
+
+
+async def test_run_group_calls_llm_when_no_exact_id_match(monkeypatch):
+    candidates = [{"source": "attack", "external_id": "T1595", "name": "Active Scanning", "category": "x", "yaml": "y"}]
+
+    async def _fake_tools():
+        return {"search_attack_defend": _FakeTool(candidates)}
+
+    async def _fake_llm(*_args, **_kwargs):
+        return '{"matched": true, "skills": ["T1595"], "reasoning": "avaliado pela IA"}'
+
+    monkeypatch.setattr(graph, "get_skill_tools", _fake_tools)
+    monkeypatch.setattr(graph, "_invoke_llm_with_retry", _fake_llm)
+
+    state = {"event": {"mitre": ["T1110"]}, "event_summary": "resumo", "on_progress": None}
+    verdict = await graph._run_group(state, "search_attack_defend", "prompt qualquer")
+
+    assert verdict["deterministic"] is False
+    assert verdict["matched"] is True
+    assert verdict["reasoning"] == "avaliado pela IA"
+
+
+async def test_supervisor_skips_llm_when_any_group_is_deterministic(monkeypatch):
+    llm_called = False
+
+    async def _fake_llm(*_args, **_kwargs):
+        nonlocal llm_called
+        llm_called = True
+        return "{}"
+
+    monkeypatch.setattr(graph, "_invoke_llm_with_retry", _fake_llm)
+
+    state = {
+        "event_summary": "resumo",
+        "attack_defend": {
+            "matched": True, "skills": ["T1110"], "reasoning": "exato", "candidates_considered": 1,
+            "degraded": False, "deterministic": True,
+        },
+        "network_signature": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": True, "deterministic": False},
+        "web_application": {"matched": False, "skills": [], "reasoning": "", "candidates_considered": 0, "degraded": True, "deterministic": False},
+    }
+    result = await graph.supervisor_node(state)
+
+    assert llm_called is False
+    assert result["verdict"]["matched"] is True
+    assert result["verdict"]["matched_skills"] == ["T1110"]
+    assert "sem chamada de IA" in result["verdict"]["summary"]
 
 
 def test_all_group_prompts_and_supervisor_prompt_exist_and_are_non_trivial():

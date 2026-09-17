@@ -29,23 +29,30 @@ async def _ensure_admin(db: AsyncSession) -> None:
     )
 
 
-async def _ensure_skills(db: AsyncSession) -> int:
-    """Idempotente por (source, external_id) — não por contagem total, para que
-    novas fontes adicionadas depois (ex.: sigma, agent_threats) sejam
-    carregadas em instalações já semeadas, sem duplicar as existentes."""
-    existing = set(
-        (await db.execute(select(Skill.source, Skill.external_id))).all()
-    )
-    installed = 0
+async def _ensure_skills(db: AsyncSession) -> tuple[int, int]:
+    """Upsert por (source, external_id) — não só "insere se faltar": conteúdo
+    autoral (`correlation`) muda com frequência normal de desenvolvimento, e
+    uma skill que existe mas está desatualizada silenciosamente nunca se
+    corrigiria sozinha. Conteúdo alterado limpa o embedding para o backfill
+    reidratar (rag.py) — nunca serve uma busca semântica sobre texto velho."""
+    existing = {(s.source, s.external_id): s for s in (await db.execute(select(Skill))).scalars().all()}
+    installed = updated = 0
     for entry in skills_catalog.load_all():
         key = (entry["source"], entry["external_id"])
-        if key in existing:
+        row = existing.get(key)
+        if row is None:
+            db.add(Skill(**entry))
+            installed += 1
             continue
-        db.add(Skill(**entry))
-        existing.add(key)
-        installed += 1
+        if row.yaml_content != entry["yaml_content"] or row.search_text != entry["search_text"]:
+            row.name = entry["name"]
+            row.category = entry["category"]
+            row.yaml_content = entry["yaml_content"]
+            row.search_text = entry["search_text"]
+            row.embedding = None
+            updated += 1
     await db.commit()
-    return installed
+    return installed, updated
 
 
 async def _backfill_embeddings_forever() -> None:
@@ -81,10 +88,12 @@ async def _requeue_stuck_events(db: AsyncSession) -> int:
 async def bootstrap() -> None:
     async with SessionLocal() as db:
         await _ensure_admin(db)
-        installed = await _ensure_skills(db)
+        installed, updated = await _ensure_skills(db)
         await db.commit()
         if installed:
             print(f"[bootstrap] {installed} skills reais carregadas (ATT&CK/D3FEND/Suricata/ModSecurity).")
+        if updated:
+            print(f"[bootstrap] {updated} skill(s) com conteúdo atualizado (embedding será regenerado).")
         if settings.rules_engine_enabled:
             requeued = await _requeue_stuck_events(db)
             if requeued:

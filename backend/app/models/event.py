@@ -41,6 +41,12 @@ class Event(Base):
     # FONTE, não do Cyber SOC; guardamos a referência para poder mostrar isso
     # explicitamente em vez de uma cor/rótulo sem explicação.
     rule_ref: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    # Quantos eventos (qualquer tipo) essa mesma origem gerou nos últimos 10
+    # minutos, calculado na análise (app/services/correlation.py) — um
+    # analista de SOC nunca julga um evento isolado do que a mesma origem fez
+    # em volta; sem isso, uma varredura de 20 portas em 1 minuto aparecia como
+    # 20 eventos desconectados, cada um "normal" sozinho.
+    correlated_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     raw: Mapped[dict] = mapped_column(JSON, default=dict)
     enrichment: Mapped[dict] = mapped_column(JSON, default=dict)
