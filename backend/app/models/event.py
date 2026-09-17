@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import JSON, DateTime, Float, Integer, String, Text, func
+from sqlalchemy import JSON, DateTime, Float, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..db import Base
@@ -47,6 +47,20 @@ class Event(Base):
     # em volta; sem isso, uma varredura de 20 portas em 1 minuto aparecia como
     # 20 eventos desconectados, cada um "normal" sozinho.
     correlated_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    # Alert Fusion (app/services/correlation.py find_open_incident_id): quando
+    # um evento confirmado casa a mesma origem/janela de um incidente já
+    # aberto, ele é anexado a esse incidente em vez de abrir mais um —
+    # `Incident.event_id` continua apontando só para o evento que ABRIU o
+    # incidente (compatibilidade com o SLA evento->incidente já calculado em
+    # app/api/dashboard.py); este campo é o lado "muitos" da relação.
+    # `use_alter`: `incidents.event_id` (a incidência que ABRIU o incidente)
+    # e `events.incident_id` (todo evento fundido nele) formam um ciclo de FK
+    # entre as duas tabelas — sem isso, `create_all`/`drop_all` não consegue
+    # ordenar DROP TABLE (SQLAlchemy cria/derruba este constraint via ALTER
+    # TABLE à parte, fora do ciclo).
+    incident_id: Mapped[int | None] = mapped_column(
+        ForeignKey("incidents.id", use_alter=True, name="fk_events_incident_id"), nullable=True, index=True,
+    )
 
     raw: Mapped[dict] = mapped_column(JSON, default=dict)
     enrichment: Mapped[dict] = mapped_column(JSON, default=dict)

@@ -1,18 +1,83 @@
 """Administração -> Integrações: página de configuração/edição/exclusão (cardápio)."""
 import secrets
 
+import httpx
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..auth.deps import require_role
+from ..config import settings
 from ..db import get_db
 from ..models import Connector, User
 from ..models.connector import CONNECTOR_KINDS
+from ..services import connector_schemas
 from ..services import threat_intel as ti
 
 router = APIRouter(prefix="/api/admin/connectors", tags=["connectors"])
+
+_HTTP_TIMEOUT = 10.0
+
+
+async def _test_wazuh(config: dict) -> dict:
+    """Autenticação real da API REST do Wazuh Manager (não o caminho de
+    ingestão, que é push) — Basic Auth em /security/user/authenticate
+    devolve um JWT quando as credenciais são válidas (documentação oficial:
+    https://documentation.wazuh.com/current/user-manual/api/getting-started.html)."""
+    manager_url = (config.get("manager_url") or "").rstrip("/")
+    if not manager_url:
+        return {
+            "status": "skipped",
+            "detail": "Sem 'URL da API do Manager' configurada — a ingestão continua funcionando "
+                      "normalmente (é o manager que envia pra cá, push), só não há o que testar aqui.",
+        }
+    password = config.get("api_password")
+    if not password:
+        return {"status": "fail", "detail": "Informe a senha da API do Manager para testar a conexão."}
+    username = config.get("api_username") or "wazuh"
+    url = f"{manager_url}/security/user/authenticate?raw=true"
+    try:
+        # verify=False: instalações on-prem do Wazuh usam certificado
+        # autoassinado por padrão (mesmo motivo do `-k` na documentação
+        # oficial) — este teste é sobre validar credenciais, não a cadeia TLS.
+        async with httpx.AsyncClient(timeout=_HTTP_TIMEOUT, verify=False) as client:
+            r = await client.post(url, auth=(username, password))
+        if r.status_code == 200:
+            return {"status": "ok", "detail": "Autenticado na API REST do Wazuh Manager (token JWT obtido)."}
+        if r.status_code in (401, 403):
+            return {"status": "fail", "detail": "Usuário/senha inválidos para a API do Wazuh Manager."}
+        return {"status": "fail", "detail": f"HTTP {r.status_code} ao autenticar na API do Manager."}
+    except httpx.HTTPError as exc:
+        return {"status": "fail", "detail": f"Manager inacessível em '{manager_url}': {exc}"[:200]}
+
+
+async def _test_elastic(config: dict) -> dict:
+    """GET /_cluster/health real contra o Elasticsearch configurado —
+    documentação oficial: https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-health."""
+    es_url = (config.get("es_url") or "").rstrip("/")
+    if not es_url:
+        return {
+            "status": "skipped",
+            "detail": "Sem 'URL do Elasticsearch' configurada — a ingestão continua funcionando "
+                      "normalmente (é push, via webhook/output), só não há o que testar aqui.",
+        }
+    api_key = config.get("api_key")
+    headers = {"Authorization": f"ApiKey {api_key}"} if api_key else {}
+    try:
+        async with httpx.AsyncClient(timeout=_HTTP_TIMEOUT, verify=False) as client:
+            r = await client.get(f"{es_url}/_cluster/health", headers=headers)
+        if r.status_code == 200:
+            data = r.json()
+            return {
+                "status": "ok",
+                "detail": f"Cluster '{data.get('cluster_name', '?')}' respondeu, status={data.get('status', '?')}.",
+            }
+        if r.status_code in (401, 403):
+            return {"status": "fail", "detail": "API Key inválida para o Elasticsearch."}
+        return {"status": "fail", "detail": f"HTTP {r.status_code} ao consultar /_cluster/health."}
+    except httpx.HTTPError as exc:
+        return {"status": "fail", "detail": f"Elasticsearch inacessível em '{es_url}': {exc}"[:200]}
 
 _SECRET_KEYS = ("password", "secret", "token", "api_key", "app_token", "user_token")
 
@@ -27,11 +92,26 @@ def _mask(config: dict) -> dict:
     return out
 
 
-def _public(c: Connector) -> dict:
+def _public(c: Connector, *, reveal_token: str | None = None) -> dict:
+    """`reveal_token`: só passado pelo caminho de criação (POST), onde o token
+    de ingestão real ainda pode ser mostrado em claro (mesma política de
+    'mostrado uma única vez' do `ingest_token` da resposta) — em qualquer
+    outra visualização (GET/list/PATCH), o formato de integração usa um
+    placeholder, nunca o segredo já salvo."""
+    schema = connector_schemas.get_schema(c.kind, c.type) or {}
+    ingest_url = f"<URL pública desta API>/api/ingest/{c.type}" if c.kind == "siem" else None
+    token_for_format = reveal_token if reveal_token is not None else "<token mostrado só na criação da integração>"
     return {
         "id": c.id, "name": c.name, "kind": c.kind, "type": c.type,
         "status": c.status, "config": _mask(c.config or {}), "last_test": c.last_test,
         "created_at": c.created_at.isoformat() if c.created_at else None,
+        "schema_fields": schema.get("fields", []),
+        "docs_url": schema.get("docs_url"),
+        "mode": schema.get("mode"),
+        "test_supported": schema.get("test_supported", False),
+        "integration_format": connector_schemas.render_integration_format(
+            c.kind, c.type, ingest_url=ingest_url, ingest_token=token_for_format,
+        ),
     }
 
 
@@ -68,9 +148,10 @@ async def create_connector(body: ConnectorIn, db: AsyncSession = Depends(get_db)
     db.add(c)
     await db.commit()
     await db.refresh(c)
-    result = _public(c)
+    # Token em claro (gerado agora ou informado neste mesmo request) só nesta
+    # resposta — a partir daqui toda visualização vem mascarada/placeholder.
+    result = _public(c, reveal_token=config.get("token") if body.kind == "siem" else None)
     if generated_token:
-        # Devolvido em claro apenas nesta resposta — a partir daqui vem mascarado.
         result["ingest_token"] = generated_token
         result["ingest_endpoint"] = f"/api/ingest/{c.type}"
     return result
@@ -100,13 +181,34 @@ async def delete_connector(connector_id: int, db: AsyncSession = Depends(get_db)
         await db.commit()
 
 
+@router.get("/schemas")
+async def list_schemas(_: User = Depends(require_role("admin", "gestor"))) -> dict:
+    """Alimenta o formulário de Nova Integração no frontend: campos reais por
+    (kind, type), link da documentação oficial e o formato exato de
+    integração — em vez do textarea de JSON livre sem orientação nenhuma."""
+    return {
+        f"{kind}:{type_}": {
+            "fields": schema.get("fields", []),
+            "docs_url": schema.get("docs_url"),
+            "mode": schema.get("mode"),
+            "test_supported": schema.get("test_supported", False),
+            "integration_format": connector_schemas.render_integration_format(
+                kind, type_, ingest_url=f"<URL pública desta API>/api/ingest/{type_}" if kind == "siem" else None,
+                ingest_token="<gerado ao salvar>",
+            ),
+        }
+        for (kind, type_), schema in connector_schemas.CONNECTOR_SCHEMAS.items()
+    }
+
+
 @router.post("/{connector_id}/test")
 async def test_connector(connector_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role("admin", "gestor"))) -> dict:
     c = await db.get(Connector, connector_id)
     if not c:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Conector não encontrado")
+    config = c.config or {}
     if c.kind == "threatintel" and c.type in ("abuseipdb", "shodan"):
-        key = (c.config or {}).get("api_key")
+        key = config.get("api_key")
         if not key:
             res = {"status": "fail", "detail": "Informe a api_key."}
         else:
@@ -114,6 +216,10 @@ async def test_connector(connector_id: int, db: AsyncSession = Depends(get_db), 
             res = {"status": "ok", "detail": "Credencial válida."} if probe.get("status") == "ok" else {
                 "status": "fail", "detail": probe.get("detail", f"Falha ao consultar {c.type}.")
             }
+    elif c.kind == "siem" and c.type == "wazuh":
+        res = await _test_wazuh(config)
+    elif c.kind == "siem" and c.type == "elastic":
+        res = await _test_elastic(config)
     else:
         res = {"status": "skipped", "detail": f"Teste ao vivo para '{c.type}' ainda não implementado; configuração salva."}
     c.last_test = res

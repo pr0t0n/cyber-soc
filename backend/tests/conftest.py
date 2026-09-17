@@ -15,8 +15,18 @@ import pytest_asyncio  # noqa: E402
 from httpx import ASGITransport, AsyncClient  # noqa: E402
 
 from app.bootstrap import bootstrap  # noqa: E402
-from app.db import Base, engine  # noqa: E402
+from app.db import Base, SessionLocal, engine  # noqa: E402
 from app.main import app  # noqa: E402
+from app.models import Connector  # noqa: E402
+
+# A ingestão só aceita fonte com integração cadastrada+habilitada (ver
+# app/api/ingest.py _authorize_source) — sem isso, todo teste que ingere um
+# evento de teste precisaria criar seu próprio conector via API antes. Em vez
+# de repetir isso em cada teste, o setup do banco já cadastra um conector
+# "de fábrica" habilitado para cada fonte suportada, com este token
+# compartilhado — testes que precisam de um conector com config específica
+# (ex.: client_tag) continuam livres para criar o seu próprio, à parte.
+TEST_INGEST_TOKEN = "test-ingest-token"
 
 
 @pytest_asyncio.fixture(autouse=True)
@@ -26,6 +36,13 @@ async def _setup_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     await bootstrap()
+    async with SessionLocal() as db:
+        for source in ("wazuh", "elastic", "generic"):
+            db.add(Connector(
+                name=f"Teste {source}", kind="siem", type=source, status="enabled",
+                config={"token": TEST_INGEST_TOKEN},
+            ))
+        await db.commit()
     yield
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
@@ -47,3 +64,11 @@ async def auth_headers(client):
     assert resp.status_code == 200, resp.text
     token = resp.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest_asyncio.fixture
+def ingest_headers():
+    """Token do conector 'de fábrica' criado em `_setup_db` — use nos testes
+    que só precisam que a ingestão funcione, sem se importar com qual
+    conector especificamente autenticou a chamada."""
+    return {"Authorization": f"Bearer {TEST_INGEST_TOKEN}"}

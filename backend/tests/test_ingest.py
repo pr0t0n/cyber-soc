@@ -1,5 +1,5 @@
-async def test_ingest_wazuh_normalizes_and_scores(client, auth_headers):
-    r = await client.post("/api/ingest/wazuh", json={
+async def test_ingest_wazuh_normalizes_and_scores(client, auth_headers, ingest_headers):
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "id": "1700000000.1",
         "timestamp": "2026-06-25T14:23:00Z",
         "rule": {"level": 12, "description": "SSHD brute force", "mitre": {"id": ["T1110"]}},
@@ -20,12 +20,12 @@ async def test_ingest_wazuh_normalizes_and_scores(client, auth_headers):
     assert item["dst_port"] == "3389"
 
 
-async def test_ingest_wazuh_extracts_hit_count_and_rule_ref(client, auth_headers):
+async def test_ingest_wazuh_extracts_hit_count_and_rule_ref(client, auth_headers, ingest_headers):
     """Gap corrigido: uma alegação de 'brute force' sem contagem de tentativas
     não é sustentável — `rule.firedtimes` (contador nativo do Wazuh para
     regras de frequência) precisa sobreviver à ingestão, e a severidade
     precisa vir acompanhada da regra de origem que a gerou."""
-    r = await client.post("/api/ingest/wazuh", json={
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "id": "1700000000.2",
         "rule": {"id": "5720", "level": 12, "description": "SSHD brute force", "firedtimes": 9},
         "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "22", "protocol": "TCP"},
@@ -37,8 +37,8 @@ async def test_ingest_wazuh_extracts_hit_count_and_rule_ref(client, auth_headers
     assert "5720" in detail["rule_ref"] and "nível 12" in detail["rule_ref"]
 
 
-async def test_ingest_wazuh_without_firedtimes_leaves_hit_count_null(client, auth_headers):
-    r = await client.post("/api/ingest/wazuh", json={
+async def test_ingest_wazuh_without_firedtimes_leaves_hit_count_null(client, auth_headers, ingest_headers):
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"id": "1", "level": 3, "description": "Evento comum"},
         "data": {"srcip": "10.0.0.9"},
     })
@@ -47,8 +47,32 @@ async def test_ingest_wazuh_without_firedtimes_leaves_hit_count_null(client, aut
     assert detail["hit_count"] is None
 
 
-async def test_ingest_generic_low_risk_traffic(client, auth_headers):
-    r = await client.post("/api/ingest/generic", json={
+async def test_ingest_wazuh_extracts_ip_port_protocol_from_suricata_eve_fields(client, auth_headers, ingest_headers):
+    """Gap corrigido: quando a regra casada vem de uma fonte externa decodada
+    como JSON puro (Suricata via eve.json, ruleset padrão do próprio Wazuh
+    0475-suricata_rules.xml), `data` é o registro original da fonte — com
+    `src_ip`/`dest_ip`/`src_port`/`dest_port`/`proto`, não os nomes nativos
+    do Wazuh (`srcip`/`dstip`/...). Sem o fallback, um alerta de NIDS real
+    chegava sem IP/porta/protocolo nenhum."""
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 3, "description": "Suricata: Alert - ET SCAN Nmap Scripting Engine"},
+        "data": {
+            "src_ip": "203.0.113.9", "src_port": 51000, "dest_ip": "10.0.0.5",
+            "dest_port": 445, "proto": "TCP",
+        },
+    })
+    assert r.status_code == 201, r.text
+    event_id = r.json()["id"]
+    detail = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail["src_ip"] == "203.0.113.9"
+    assert detail["dst_ip"] == "10.0.0.5"
+    assert detail["src_port"] == "51000"
+    assert detail["dst_port"] == "445"
+    assert detail["protocol"] == "TCP"
+
+
+async def test_ingest_generic_low_risk_traffic(client, auth_headers, ingest_headers):
+    r = await client.post("/api/ingest/generic", headers=ingest_headers, json={
         "type": "HTTP request", "severity": "info",
         "src_ip": "10.0.0.5", "dst_ip": "10.0.0.6", "dst_port": "443", "protocol": "TCP",
     })
@@ -61,7 +85,15 @@ async def test_ingest_unsupported_source_rejected(client):
     assert r.status_code == 400
 
 
-async def test_ingest_requires_token_once_siem_connector_configured(client, auth_headers):
+async def test_ingest_rejects_source_never_integrated(client):
+    """Coleta só de plataformas de fato integradas: sem NENHUM conector siem
+    habilitado para essa fonte, a ingestão é recusada — não existe mais um
+    modo aberto/dev. 'crowdstrike' não tem conector nenhum cadastrado."""
+    r = await client.post("/api/ingest/crowdstrike", json={"foo": "bar"})
+    assert r.status_code in (400, 403)
+
+
+async def test_ingest_rejects_missing_or_wrong_token_even_with_connector(client, auth_headers):
     created = await client.post("/api/admin/connectors", headers=auth_headers, json={
         "name": "Wazuh prod", "kind": "siem", "type": "wazuh",
     })
@@ -78,13 +110,9 @@ async def test_ingest_requires_token_once_siem_connector_configured(client, auth
     ok = await client.post("/api/ingest/wazuh", json={"rule": {"level": 1}}, headers={"Authorization": f"Bearer {token}"})
     assert ok.status_code == 201, ok.text
 
-    # Fonte diferente sem conector configurado continua aberta (modo dev).
-    still_open = await client.post("/api/ingest/generic", json={"type": "teste", "severity": "info"})
-    assert still_open.status_code == 201
 
-
-async def test_event_detail(client, auth_headers):
-    created = await client.post("/api/ingest/generic", json={"type": "Teste", "severity": "media"})
+async def test_event_detail(client, auth_headers, ingest_headers):
+    created = await client.post("/api/ingest/generic", headers=ingest_headers, json={"type": "Teste", "severity": "media"})
     event_id = created.json()["id"]
     detail = await client.get(f"/api/events/{event_id}", headers=auth_headers)
     assert detail.status_code == 200
@@ -97,8 +125,8 @@ async def test_event_not_found(client, auth_headers):
     assert r.status_code == 404
 
 
-async def test_raw_events_lists_source_data_untouched_by_ai(client, auth_headers):
-    await client.post("/api/ingest/wazuh", json={
+async def test_raw_events_lists_source_data_untouched_by_ai(client, auth_headers, ingest_headers):
+    await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"id": "5720", "level": 12, "description": "SSHD brute force", "groups": ["authentication_failed"]},
         "data": {"srcip": "185.220.101.8"},
         "full_log": "Failed password for root from 185.220.101.8",
@@ -114,12 +142,12 @@ async def test_raw_events_lists_source_data_untouched_by_ai(client, auth_headers
     assert "Failed password" in item["full_log"]
 
 
-async def test_raw_events_full_text_search_matches_raw_json(client, auth_headers):
-    await client.post("/api/ingest/wazuh", json={
+async def test_raw_events_full_text_search_matches_raw_json(client, auth_headers, ingest_headers):
+    await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"level": 5, "description": "SCA summary"},
         "data": {"srcip": "1.2.3.4"},
     })
-    await client.post("/api/ingest/generic", json={"type": "Outro evento", "severity": "info"})
+    await client.post("/api/ingest/generic", headers=ingest_headers, json={"type": "Outro evento", "severity": "info"})
 
     found = await client.get("/api/events/raw?q=1.2.3.4", headers=auth_headers)
     assert found.json()["total"] == 1

@@ -24,19 +24,25 @@ router = APIRouter(prefix="/api/ingest", tags=["ingest"])
 _SOURCES = ("wazuh", "elastic", "generic")
 
 
-async def _authorize_source(db: AsyncSession, source: str, authorization: str | None) -> Connector | None:
-    """Se algum conector SIEM habilitado para essa fonte tiver `token`
-    configurado, exige `Authorization: Bearer <token>` correspondente e devolve
-    o conector que autenticou a chamada (para herdar `client_tag`). Sem nenhum
-    conector com token, a ingestão segue aberta (modo dev — ver README)."""
+async def _authorize_source(db: AsyncSession, source: str, authorization: str | None) -> Connector:
+    """A plataforma só coleta logs de plataformas de fato integradas — precisa
+    existir um conector SIEM habilitado para esta fonte, com o token
+    apresentado batendo o configurado. Sem conector nenhum (nunca integrado)
+    ou com o conector desabilitado, a ingestão é recusada; não existe mais um
+    "modo aberto" para fontes sem integração cadastrada — isso era o próprio
+    bug relatado (a plataforma aceitava dado de qualquer fonte, integrada ou
+    não)."""
     rows = (
         await db.execute(
             select(Connector).where(Connector.kind == "siem", Connector.type == source, Connector.status == "enabled")
         )
     ).scalars().all()
+    if not rows:
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            f"Nenhuma integração habilitada para '{source}' — configure-a em Administração -> Integrações antes de enviar eventos.",
+        )
     by_token = {c.config.get("token"): c for c in rows if (c.config or {}).get("token")}
-    if not by_token:
-        return None
     presented = (authorization or "").removeprefix("Bearer ").strip()
     matched = by_token.get(presented)
     if not matched:
@@ -83,16 +89,26 @@ def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
     except ValueError:
         ts = datetime.now(timezone.utc)
     level = int(rule.get("level") or 0)
+    # `data` nem sempre vem de um decoder nativo do Wazuh (srcip/dstip/
+    # srcport/dstport/protocol) — quando a regra casada é `decoded_as: json`
+    # sobre uma fonte externa (ex.: Suricata via eve.json, ruleset padrão
+    # 0475-suricata_rules.xml), `data` É o registro original da fonte, com
+    # os nomes de campo DELA (src_ip/dest_ip/src_port/dest_port/proto). Sem
+    # o fallback, um NIDS real conectado ao Wazuh perdia IP/porta/protocolo
+    # na ingestão — o evento chegava sem nenhum dos três sinais que
+    # threat_intel.py e correlation_rules.py precisam para avaliar tráfego.
+    src_port = data.get("srcport") or data.get("src_port")
+    dst_port = data.get("dstport") or data.get("dest_port")
     return {
         "external_id": str(payload.get("id") or ""),
         "timestamp": ts,
         "type": rule.get("description") or "Evento Wazuh",
         "severity": _wazuh_severity(level),
-        "src_ip": data.get("srcip"),
-        "dst_ip": data.get("dstip") or agent.get("ip"),
-        "src_port": str(data.get("srcport")) if data.get("srcport") else None,
-        "dst_port": str(data.get("dstport")) if data.get("dstport") else None,
-        "protocol": data.get("protocol"),
+        "src_ip": data.get("srcip") or data.get("src_ip"),
+        "dst_ip": data.get("dstip") or data.get("dest_ip") or agent.get("ip"),
+        "src_port": str(src_port) if src_port else None,
+        "dst_port": str(dst_port) if dst_port else None,
+        "protocol": data.get("protocol") or data.get("proto"),
         "mitre": list(mitre),
         "behavior": payload.get("full_log"),
         "hit_count": _wazuh_hit_count(rule, data),
@@ -192,7 +208,7 @@ async def ingest(
         risk_score=intel["assessment"]["risk_score"],
         raw=payload,
         enrichment=intel,
-        tag=(connector.config or {}).get("client_tag") if connector else None,
+        tag=(connector.config or {}).get("client_tag"),
         country=(geo or {}).get("country"),
         city=(geo or {}).get("city"),
         lat=(geo or {}).get("lat"),

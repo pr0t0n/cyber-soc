@@ -89,6 +89,24 @@ async def eps(tag: str | None = None, db: AsyncSession = Depends(get_db), _: Use
         incident_count_stmt = incident_count_stmt.where(Incident.tag == tag)
     incidents_total = int((await db.execute(incident_count_stmt)).scalar() or 0)
 
+    # Delay de análise "agora": recebido -> veredito terminal, só dos últimos
+    # 5 minutos (mesma janela do `avg_5m` acima) — reflete a velocidade atual
+    # do pipeline, não uma média histórica que um pico antigo de LLM lento
+    # deixaria enganosamente alta. `None` (não 0) quando não há evento
+    # analisado na janela, para o front distinguir "sem delay" de "sem dado".
+    recent_analyzed_stmt = _tag_filter(select(Event.received_at, Event.analyzed_at), tag).where(
+        Event.analyzed_at.is_not(None), Event.analyzed_at >= now - timedelta(minutes=5)
+    )
+    recent_analyzed = (await db.execute(recent_analyzed_stmt)).all()
+    delay_seconds = None
+    if recent_analyzed:
+        deltas = []
+        for received_at, analyzed_at in recent_analyzed:
+            received = received_at if received_at.tzinfo else received_at.replace(tzinfo=timezone.utc)
+            analyzed = analyzed_at if analyzed_at.tzinfo else analyzed_at.replace(tzinfo=timezone.utc)
+            deltas.append((analyzed - received).total_seconds())
+        delay_seconds = round(sum(deltas) / len(deltas), 2)
+
     funnel = [
         {"stage": "eps", "label": "Total de EPS", "count": total, "pct_of_total": 100.0 if total else 0.0},
         {"stage": "rules_engine", "label": "Motor de Regras (IA)", "count": matched,
@@ -101,6 +119,7 @@ async def eps(tag: str | None = None, db: AsyncSession = Depends(get_db), _: Use
         "eps": {"current": round(count_1m / 60, 2), "avg_5m": round(count_5m / 300, 2)},
         "total_events": total,
         "pending_analysis": pending,
+        "analysis_delay_seconds": delay_seconds,
         "funnel": funnel,
     }
 

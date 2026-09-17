@@ -1,8 +1,8 @@
 from app.services import rules_engine
 
 
-async def _ingest_sample(client):
-    r = await client.post("/api/ingest/wazuh", json={
+async def _ingest_sample(client, ingest_headers):
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "id": "1", "timestamp": "2026-06-25T14:23:00Z",
         "rule": {"level": 12, "description": "SSHD brute force", "mitre": {"id": ["T1110"]}},
         "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "22", "protocol": "TCP"},
@@ -14,8 +14,8 @@ async def _mock_matched(event: dict, on_progress=None) -> dict:
     return {"matched": True, "matched_skills": ["T1110"], "summary": "Força bruta reconhecida.", "groups": {}}
 
 
-async def test_summary(client, auth_headers):
-    await _ingest_sample(client)
+async def test_summary(client, auth_headers, ingest_headers):
+    await _ingest_sample(client, ingest_headers)
     r = await client.get("/api/dashboard/summary", headers=auth_headers)
     assert r.status_code == 200
     body = r.json()
@@ -23,8 +23,8 @@ async def test_summary(client, auth_headers):
     assert body["mitre_coverage_pct"] > 0
 
 
-async def test_eps_and_funnel(client, auth_headers):
-    await _ingest_sample(client)
+async def test_eps_and_funnel(client, auth_headers, ingest_headers):
+    await _ingest_sample(client, ingest_headers)
     r = await client.get("/api/dashboard/eps", headers=auth_headers)
     assert r.status_code == 200
     body = r.json()
@@ -33,14 +33,33 @@ async def test_eps_and_funnel(client, auth_headers):
     assert body["funnel"][0]["pct_of_total"] == 100.0
 
 
-async def test_summary_filters_by_tag(client, auth_headers):
+async def test_eps_has_no_analysis_delay_when_nothing_was_analyzed_yet(client, auth_headers, ingest_headers):
+    await _ingest_sample(client, ingest_headers)
+    body = (await client.get("/api/dashboard/eps", headers=auth_headers)).json()
+    assert body["analysis_delay_seconds"] is None
+
+
+async def test_eps_reports_real_analysis_delay_from_received_to_analyzed(client, auth_headers, ingest_headers, monkeypatch):
+    """`analysis_delay_seconds` (ao lado da caixa de EPS) precisa refletir o
+    tempo real recebido->analisado dos últimos 5 minutos — não um placeholder
+    nem uma média histórica dominada por picos antigos de LLM lento."""
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    event_id = await _ingest_sample(client, ingest_headers)
+    await rules_engine.run_rules_engine_for_event(event_id)
+
+    body = (await client.get("/api/dashboard/eps", headers=auth_headers)).json()
+    assert body["analysis_delay_seconds"] is not None
+    assert 0 <= body["analysis_delay_seconds"] < 300
+
+
+async def test_summary_filters_by_tag(client, auth_headers, ingest_headers):
     created = await client.post("/api/admin/connectors", headers=auth_headers, json={
         "name": "Wazuh VALID", "kind": "siem", "type": "wazuh", "config": {"client_tag": "VALID"},
     })
     token = created.json()["ingest_token"]
     await client.post("/api/ingest/wazuh", json={"rule": {"level": 12}}, headers={"Authorization": f"Bearer {token}"})
-    # Fonte diferente (sem conector/token) para não colidir com o gate de token do wazuh.
-    await client.post("/api/ingest/generic", json={"type": "outro", "severity": "critica"})
+    # Fonte diferente (conector "de fábrica" do conftest, não o Wazuh VALID acima).
+    await client.post("/api/ingest/generic", headers=ingest_headers, json={"type": "outro", "severity": "critica"})
 
     tagged = (await client.get("/api/dashboard/summary?tag=VALID", headers=auth_headers)).json()
     assert tagged["severity_counts"]["critica"] == 1
@@ -48,8 +67,8 @@ async def test_summary_filters_by_tag(client, auth_headers):
     assert all_events["severity_counts"]["critica"] == 2
 
 
-async def test_mitre_heatmap(client, auth_headers):
-    await _ingest_sample(client)
+async def test_mitre_heatmap(client, auth_headers, ingest_headers):
+    await _ingest_sample(client, ingest_headers)
     r = await client.get("/api/dashboard/mitre-heatmap", headers=auth_headers)
     assert r.status_code == 200
     body = r.json()
@@ -58,10 +77,13 @@ async def test_mitre_heatmap(client, auth_headers):
     assert cell["count"] == 1
 
 
-async def test_connectors_status_empty(client, auth_headers):
+async def test_connectors_status_reflects_configured_connectors(client, auth_headers):
+    """O setup de teste (conftest.py) cadastra 3 conectores siem 'de fábrica'
+    (wazuh/elastic/generic) — a ingestão só funciona com integração
+    cadastrada, então "zero conectores" deixou de ser o estado padrão."""
     r = await client.get("/api/dashboard/connectors-status", headers=auth_headers)
     assert r.status_code == 200
-    assert r.json()["total"] == 0
+    assert r.json()["total"] == 3
 
 
 async def test_tickets_status_honest_placeholder(client, auth_headers):
@@ -70,9 +92,9 @@ async def test_tickets_status_honest_placeholder(client, auth_headers):
     assert r.json()["summary"]["total"] == 0
 
 
-async def test_incidents_status_reflects_real_incidents(client, auth_headers, monkeypatch):
+async def test_incidents_status_reflects_real_incidents(client, auth_headers, ingest_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
-    event_id = await _ingest_sample(client)
+    event_id = await _ingest_sample(client, ingest_headers)
     await rules_engine.run_rules_engine_for_event(event_id)  # motor de regras "casou" -> abre incidente em backlog
 
     r = await client.get("/api/dashboard/incidents-status", headers=auth_headers)
@@ -83,10 +105,10 @@ async def test_incidents_status_reflects_real_incidents(client, auth_headers, mo
     assert body["recent"][0]["status"] == "backlog"
 
 
-async def test_risk_heatmap_shape(client, auth_headers):
+async def test_risk_heatmap_shape(client, auth_headers, ingest_headers):
     # _ingest_sample usa uma data fixa fora da janela de 7 dias do heatmap;
     # aqui usamos "agora" para cair dentro da janela.
-    await client.post("/api/ingest/wazuh", json={
+    await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"level": 12, "description": "SSHD brute force"},
         "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "3389", "protocol": "TCP"},
     })
@@ -97,9 +119,9 @@ async def test_risk_heatmap_shape(client, auth_headers):
     assert any(v > 0 for row in body["grid"] for v in row)
 
 
-async def test_world_map_empty_without_geo(client, auth_headers):
+async def test_world_map_empty_without_geo(client, auth_headers, ingest_headers):
     # AUTO_GEO_ON_INGEST=false nos testes -> nenhum evento tem lat/lon.
-    await _ingest_sample(client)
+    await _ingest_sample(client, ingest_headers)
     r = await client.get("/api/dashboard/world-map", headers=auth_headers)
     assert r.status_code == 200
     assert r.json()["points"] == []
@@ -116,8 +138,8 @@ async def test_tags_endpoint_lists_distinct_tags(client, auth_headers):
     assert r.json()["tags"] == ["VALID"]
 
 
-async def test_analysis_metrics_before_any_analysis(client, auth_headers):
-    await _ingest_sample(client)
+async def test_analysis_metrics_before_any_analysis(client, auth_headers, ingest_headers):
+    await _ingest_sample(client, ingest_headers)
     r = await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)
     assert r.status_code == 200
     body = r.json()
@@ -127,9 +149,9 @@ async def test_analysis_metrics_before_any_analysis(client, auth_headers):
     assert body["backlog"]["oldest_seconds"] is not None
 
 
-async def test_analysis_metrics_after_matched_event_computes_speed_and_sla(client, auth_headers, monkeypatch):
+async def test_analysis_metrics_after_matched_event_computes_speed_and_sla(client, auth_headers, ingest_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
-    event_id = await _ingest_sample(client)
+    event_id = await _ingest_sample(client, ingest_headers)
     await rules_engine.run_rules_engine_for_event(event_id)
 
     r = await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)
@@ -142,7 +164,7 @@ async def test_analysis_metrics_after_matched_event_computes_speed_and_sla(clien
     assert body["backlog"]["count"] == 0
 
 
-async def test_analysis_metrics_counts_degraded_group_against_efficiency(client, auth_headers, monkeypatch):
+async def test_analysis_metrics_counts_degraded_group_against_efficiency(client, auth_headers, ingest_headers, monkeypatch):
     async def _mock_degraded(event: dict, on_progress=None) -> dict:
         return {
             "matched": False, "matched_skills": [], "summary": "inconclusivo",
@@ -150,7 +172,7 @@ async def test_analysis_metrics_counts_degraded_group_against_efficiency(client,
         }
 
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_degraded)
-    event_id = await _ingest_sample(client)
+    event_id = await _ingest_sample(client, ingest_headers)
     await rules_engine.run_rules_engine_for_event(event_id)
 
     body = (await client.get("/api/dashboard/analysis-metrics", headers=auth_headers)).json()
@@ -158,8 +180,8 @@ async def test_analysis_metrics_counts_degraded_group_against_efficiency(client,
     assert body["efficiency_pct"] == 0.0
 
 
-async def test_analysis_metrics_fast_lane_excluded_from_ai_efficiency(client, auth_headers):
-    await client.post("/api/ingest/wazuh", json={
+async def test_analysis_metrics_fast_lane_excluded_from_ai_efficiency(client, auth_headers, ingest_headers):
+    await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"level": 5, "description": "SCA summary: Score less than 80%", "groups": ["sca"]},
     })
     event_id = (await client.get("/api/events", headers=auth_headers)).json()["items"][0]["id"]
@@ -171,9 +193,9 @@ async def test_analysis_metrics_fast_lane_excluded_from_ai_efficiency(client, au
     assert body["backlog"]["count"] == 0
 
 
-async def test_eps_funnel_ends_in_incidents(client, auth_headers, monkeypatch):
+async def test_eps_funnel_ends_in_incidents(client, auth_headers, ingest_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
-    event_id = await _ingest_sample(client)
+    event_id = await _ingest_sample(client, ingest_headers)
 
     before = await client.get("/api/dashboard/eps", headers=auth_headers)
     assert before.json()["pending_analysis"] == 1  # motor de regras ainda não rodou

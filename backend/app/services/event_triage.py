@@ -45,3 +45,49 @@ def fast_lane_verdict(event_type: str) -> dict[str, Any]:
         "groups": {},
         "fast_lane": True,
     }
+
+
+def is_network_traffic(*, src_ip: str | None, dst_ip: str | None) -> bool:
+    """Escopo do produto: esta plataforma analisa TRÁFEGO DE REDE, não
+    telemetria de host em geral. O sinal mínimo objetivo de que um evento
+    descreve alguma comunicação de rede observada é a própria fonte ter
+    relatado pelo menos um IP (origem ou destino) envolvido — FIM (syscheck),
+    rootcheck, SCA, inventário (syscollector), ciclo de vida do agente,
+    sudo/tela bloqueada (macOS) nunca carregam IP nenhum, porque não
+    descrevem tráfego algum, só estado local do host."""
+    return bool(src_ip or dst_ip)
+
+
+def non_network_fast_lane_verdict(event_type: str) -> dict[str, Any]:
+    return {
+        "matched": False,
+        "matched_skills": [],
+        "summary": "Telemetria de host sem sinal de rede (sem IP de origem/destino) — via rápida, sem IA.",
+        "recommendation": (
+            f'"{event_type}" não relata nenhum IP de origem/destino — não descreve tráfego de rede. '
+            "Esta plataforma analisa tráfego de rede; achados puramente locais (inventário, FIM, "
+            "compliance, ciclo de vida do agente) não passam pelo motor de IA. Consulte a aba Raw "
+            "para o evento completo."
+        ),
+        "groups": {},
+        "fast_lane": True,
+    }
+
+
+def deterministic_verdict(matches: list[dict[str, Any]]) -> dict[str, Any]:
+    """Formato comum do veredito da via rápida determinística — usado por
+    `correlation_rules.py` (CSOC-00x, evidência quantitativa/reputação) e por
+    `skill_signature_match.py` (SID Suricata / regra ModSecurity já
+    catalogada) para o Supervisor e a UI (Eventos) tratarem os dois exatamente
+    igual: confirmação por fato objetivo já presente no catálogo real de
+    skills, nunca opinião de LLM. Cada `match` é
+    `{id, mitre, title, description, recommendation}`."""
+    return {
+        "matched": True,
+        "matched_skills": [m["id"] for m in matches],
+        "summary": "Correspondência determinística confirmada: " + "; ".join(m["title"] for m in matches) + ".",
+        "recommendation": " | ".join(f"{m['id']}: {m['recommendation']}" for m in matches),
+        "groups": {},
+        "fast_lane": True,
+        "deterministic": True,
+    }

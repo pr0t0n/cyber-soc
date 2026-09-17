@@ -1,4 +1,9 @@
-from app.services.event_triage import fast_lane_verdict, is_compliance_noise
+from app.services.event_triage import (
+    fast_lane_verdict,
+    is_compliance_noise,
+    is_network_traffic,
+    non_network_fast_lane_verdict,
+)
 
 
 def test_sca_only_groups_are_compliance_noise():
@@ -50,3 +55,24 @@ def test_fast_lane_verdict_is_explicit_about_skipping_ai():
     assert verdict["matched"] is False
     assert verdict["fast_lane"] is True
     assert "via rápida" in verdict["recommendation"] or "SCA" in verdict["recommendation"]
+
+
+def test_event_with_src_ip_is_network_traffic():
+    assert is_network_traffic(src_ip="185.220.101.8", dst_ip=None) is True
+
+
+def test_event_with_only_dst_ip_is_network_traffic():
+    assert is_network_traffic(src_ip=None, dst_ip="10.0.0.5") is True
+
+
+def test_event_without_any_ip_is_not_network_traffic():
+    """Escopo do produto: FIM, rootcheck, SCA, inventário e ciclo de vida do
+    agente nunca carregam IP — não descrevem tráfego, só estado do host."""
+    assert is_network_traffic(src_ip=None, dst_ip=None) is False
+
+
+def test_non_network_fast_lane_verdict_is_explicit_about_scope():
+    verdict = non_network_fast_lane_verdict("Wazuh agent started")
+    assert verdict["matched"] is False
+    assert verdict["fast_lane"] is True
+    assert "tráfego de rede" in verdict["recommendation"]

@@ -170,13 +170,13 @@ def test_all_group_prompts_and_supervisor_prompt_exist_and_are_non_trivial():
         assert "JSON" in p
 
 
-async def test_persist_progress_updates_event_before_final_verdict(client, auth_headers):
+async def test_persist_progress_updates_event_before_final_verdict(client, auth_headers, ingest_headers):
     """Cobre a visibilidade em tempo real (app/services/rules_engine.py
     _persist_progress): a UI precisa ver o agente "trabalhando" grupo a grupo,
     não só o veredito final depois de até ~900s."""
     from app.services import rules_engine
 
-    created = await client.post("/api/ingest/wazuh", json={
+    created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
         "rule": {"level": 12, "description": "SSHD brute force"},
         "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "3389", "protocol": "TCP"},
     })
