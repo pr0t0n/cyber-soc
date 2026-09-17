@@ -1,0 +1,15 @@
+# Estende a imagem oficial só para copiar (não bind-mount) a integração
+# customizada com ownership/permissão determinísticos.
+#
+# Por quê: bind-mount de ~/.../custom-cyber-soc no Docker Desktop (macOS,
+# virtiofs) reporta ownership inconsistente entre reinícios do container
+# (ora root:root, ora root:wazuh) — quando cai em root:root, o processo
+# wazuh-integratord (roda como usuário `wazuh`) não consegue ler/executar o
+# script e o manager recusa com "wpopenv(): file ... has write permissions"
+# (mensagem genérica do Wazuh para essa família de falha de permissão/
+# ownership). COPY em build time fixa ownership real, sem depender da
+# tradução do bind-mount.
+FROM wazuh/wazuh-manager:4.14.7
+
+COPY --chown=root:wazuh --chmod=750 config/integrations/custom-cyber-soc /var/ossec/integrations/custom-cyber-soc
+COPY --chown=root:wazuh --chmod=750 config/integrations/custom-cyber-soc /var/ossec/integrations/custom-cyber-soc.py

@@ -12,7 +12,7 @@ from mcp.server.fastmcp import FastMCP
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from .config import settings
-from .services.rag import search_skills
+from .services.rag import search_skills_multi
 
 mcp = FastMCP("cyber-soc-skills")
 
@@ -27,11 +27,7 @@ async def search_attack_defend(query: str, limit: int = 5) -> list[dict]:
     contra agentes, referenciam MITRE ATLAS) e regras de correlação internas
     (reputação de IP + volume/evidência) relevantes para o evento."""
     async with _session_factory() as db:
-        attack = await search_skills(db, query, source="attack", limit=limit)
-        d3fend = await search_skills(db, query, source="d3fend", limit=limit)
-        agent_threats = await search_skills(db, query, source="agent_threats", limit=limit)
-        correlation = await search_skills(db, query, source="correlation", limit=limit)
-    return attack + d3fend + agent_threats + correlation
+        return await search_skills_multi(db, query, ["attack", "d3fend", "agent_threats", "correlation"], limit)
 
 
 @mcp.tool()
@@ -40,10 +36,7 @@ async def search_network_signatures(query: str, limit: int = 5) -> list[dict]:
     Threats, regras de detecção Sigma (SigmaHQ + SIEM-Content) e regras de
     correlação internas relevantes para o tráfego/evento descrito."""
     async with _session_factory() as db:
-        suricata = await search_skills(db, query, source="suricata", limit=limit)
-        sigma = await search_skills(db, query, source="sigma", limit=limit)
-        correlation = await search_skills(db, query, source="correlation", limit=limit)
-    return suricata + sigma + correlation
+        return await search_skills_multi(db, query, ["suricata", "sigma", "correlation"], limit)
 
 
 @mcp.tool()
@@ -52,9 +45,7 @@ async def search_web_application_rules(query: str, limit: int = 5) -> list[dict]
     regras de correlação internas relevantes para o payload/comportamento
     descrito."""
     async with _session_factory() as db:
-        modsecurity = await search_skills(db, query, source="modsecurity", limit=limit)
-        correlation = await search_skills(db, query, source="correlation", limit=limit)
-    return modsecurity + correlation
+        return await search_skills_multi(db, query, ["modsecurity", "correlation"], limit)
 
 
 if __name__ == "__main__":
