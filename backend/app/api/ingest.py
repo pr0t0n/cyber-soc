@@ -56,6 +56,22 @@ def _wazuh_severity(level: int) -> str:
     return "info"
 
 
+def _wazuh_hit_count(rule: dict[str, Any], data: dict[str, Any]) -> int | None:
+    """`firedtimes` é o contador nativo do Wazuh de quantas vezes essa regra já
+    casou — para regras de frequência (ex.: brute force, `<frequency>8</frequency>`
+    no XML da regra), é o sinal mais próximo de "quantas tentativas" que o
+    Wazuh expõe nativamente no próprio alerta. `frequency` é o limiar
+    configurado (quantas vezes precisa casar para disparar) quando o
+    `firedtimes` não vier. Sem nenhum dos dois, não inventamos um número."""
+    for value in (rule.get("firedtimes"), rule.get("frequency"), data.get("count")):
+        if value is not None:
+            try:
+                return int(value)
+            except (TypeError, ValueError):
+                continue
+    return None
+
+
 def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
     rule = payload.get("rule") or {}
     data = payload.get("data") or {}
@@ -66,11 +82,12 @@ def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
         ts = datetime.fromisoformat(str(ts_raw).replace("Z", "+00:00")) if ts_raw else datetime.now(timezone.utc)
     except ValueError:
         ts = datetime.now(timezone.utc)
+    level = int(rule.get("level") or 0)
     return {
         "external_id": str(payload.get("id") or ""),
         "timestamp": ts,
         "type": rule.get("description") or "Evento Wazuh",
-        "severity": _wazuh_severity(int(rule.get("level") or 0)),
+        "severity": _wazuh_severity(level),
         "src_ip": data.get("srcip"),
         "dst_ip": data.get("dstip") or agent.get("ip"),
         "src_port": str(data.get("srcport")) if data.get("srcport") else None,
@@ -78,6 +95,8 @@ def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
         "protocol": data.get("protocol"),
         "mitre": list(mitre),
         "behavior": payload.get("full_log"),
+        "hit_count": _wazuh_hit_count(rule, data),
+        "rule_ref": f"Wazuh regra {rule.get('id', '?')}, nível {level}: {rule.get('description', '—')}",
     }
 
 
@@ -102,6 +121,10 @@ def _translate_elastic(payload: dict[str, Any]) -> dict[str, Any]:
         "protocol": (source.get("network") or {}).get("protocol"),
         "mitre": (source.get("threat") or {}).get("technique", {}).get("id", []) or [],
         "behavior": source.get("message"),
+        # ECS não tem um campo padrão de "número de repetições" — sem um
+        # contador real informado pela regra, não inventamos um.
+        "hit_count": event.get("count"),
+        "rule_ref": f"Elastic — severidade da regra: {event.get('severity')}" if event.get("severity") else None,
     }
 
 
@@ -123,6 +146,8 @@ def _translate_generic(payload: dict[str, Any]) -> dict[str, Any]:
         "protocol": payload.get("protocol"),
         "mitre": payload.get("mitre") or [],
         "behavior": payload.get("behavior"),
+        "hit_count": payload.get("hit_count"),
+        "rule_ref": payload.get("rule_ref"),
     }
 
 
@@ -162,6 +187,8 @@ async def ingest(
         protocol=canonical["protocol"],
         mitre=canonical["mitre"],
         behavior=canonical["behavior"],
+        hit_count=canonical.get("hit_count"),
+        rule_ref=canonical.get("rule_ref"),
         risk_score=intel["assessment"]["risk_score"],
         raw=payload,
         enrichment=intel,

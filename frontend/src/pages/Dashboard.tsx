@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import WorldMap, { type WorldMapPoint } from "../components/WorldMap";
 
@@ -34,8 +35,32 @@ interface ConnectorsStatus {
 }
 interface IncidentsStatus {
   summary: { backlog: number; em_andamento: number; concluido: number; total: number };
-  recent: { id: number; code: string; title: string; status: string; severity: string }[];
+  recent: { id: number; code: string; title: string; status: string; severity: string; event_id: number | null }[];
 }
+interface AgentActivityItem {
+  event_id: number;
+  type: string;
+  severity: string;
+  src_ip: string | null;
+  tag: string | null;
+  rules_engine_status: string;
+  matched_skills: string[];
+  recommendation: string | null;
+  stages_done: number;
+  stages_total: number;
+  current_stage: string | null;
+  received_at: string | null;
+}
+
+const RULES_STATUS_LABEL: Record<string, string> = {
+  pending: "Na fila", analyzing: "Analisando…", matched: "Skill casada", no_match: "Sem correspondência",
+};
+const RULES_STATUS_COLOR: Record<string, string> = {
+  pending: "#94a3b8", analyzing: "#22d3ee", matched: "#f43f5e", no_match: "#34d399",
+};
+const STAGE_LABEL: Record<string, string> = {
+  attack_defend: "ATT&CK/D3FEND", network_signature: "Assinaturas de Rede", web_application: "Aplicação Web/WAF",
+};
 
 function useDashboardData(tag: string) {
   const qs = tag ? `?tag=${encodeURIComponent(tag)}` : "";
@@ -47,19 +72,33 @@ function useDashboardData(tag: string) {
   const [incidents, setIncidents] = useState<IncidentsStatus | null>(null);
   const [worldMap, setWorldMap] = useState<WorldMapPoint[] | null>(null);
   const [tags, setTags] = useState<string[]>([]);
+  const [activity, setActivity] = useState<AgentActivityItem[] | null>(null);
 
   useEffect(() => {
-    api.get<Summary>(`/dashboard/summary${qs}`).then(setSummary);
-    api.get<EpsData>(`/dashboard/eps${qs}`).then(setEps);
-    api.get<HeatmapData>(`/dashboard/mitre-heatmap${qs}`).then(setHeatmap);
-    api.get<RiskHeatmap>(`/dashboard/risk-heatmap${qs}`).then(setRiskHeatmap);
-    api.get<ConnectorsStatus>("/dashboard/connectors-status").then(setConnectors);
-    api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then(setIncidents);
-    api.get<{ points: WorldMapPoint[] }>(`/dashboard/world-map${qs}`).then((r) => setWorldMap(r.points));
-    api.get<{ tags: string[] }>("/dashboard/tags").then((r) => setTags(r.tags));
+    const loadSlow = () => {
+      api.get<Summary>(`/dashboard/summary${qs}`).then(setSummary);
+      api.get<HeatmapData>(`/dashboard/mitre-heatmap${qs}`).then(setHeatmap);
+      api.get<RiskHeatmap>(`/dashboard/risk-heatmap${qs}`).then(setRiskHeatmap);
+      api.get<ConnectorsStatus>("/dashboard/connectors-status").then(setConnectors);
+      api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then(setIncidents);
+      api.get<{ points: WorldMapPoint[] }>(`/dashboard/world-map${qs}`).then((r) => setWorldMap(r.points));
+      api.get<{ tags: string[] }>("/dashboard/tags").then((r) => setTags(r.tags));
+    };
+    const loadFast = () => {
+      api.get<EpsData>(`/dashboard/eps${qs}`).then(setEps);
+      api.get<{ items: AgentActivityItem[] }>(`/dashboard/agent-activity${qs}`).then((r) => setActivity(r.items));
+    };
+    loadSlow();
+    loadFast();
+    const slowTimer = setInterval(loadSlow, 20000);
+    const fastTimer = setInterval(loadFast, 5000);
+    return () => {
+      clearInterval(slowTimer);
+      clearInterval(fastTimer);
+    };
   }, [qs]);
 
-  return { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags };
+  return { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity };
 }
 
 function riskColor(v: number) {
@@ -78,7 +117,7 @@ function mitreColor(count: number, max: number) {
 
 export default function Dashboard() {
   const [tag, setTag] = useState("");
-  const { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags } = useDashboardData(tag);
+  const { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity } = useDashboardData(tag);
 
   async function updateIncidentStatus(id: number, status: string) {
     const updated = await api.patch<{ id: number; status: string }>(`/incidents/${id}`, { status });
@@ -196,7 +235,18 @@ export default function Dashboard() {
               <div className="flex flex-col gap-1.5">
                 {incidents.recent.map((inc) => (
                   <div key={inc.id} className="flex items-center justify-between text-xs py-1.5" style={{ borderBottom: "1px solid var(--border)" }}>
-                    <span style={{ color: "var(--text)" }} className="truncate pr-2">{inc.code} · {inc.title}</span>
+                    {inc.event_id ? (
+                      <Link
+                        to={`/eventos?event=${inc.event_id}`}
+                        className="truncate pr-2 hover:underline"
+                        style={{ color: "var(--text)" }}
+                        title="Ver evento de origem, trilha do agente e threat intel"
+                      >
+                        {inc.code} · {inc.title}
+                      </Link>
+                    ) : (
+                      <span style={{ color: "var(--text)" }} className="truncate pr-2">{inc.code} · {inc.title}</span>
+                    )}
                     <select
                       value={inc.status}
                       onChange={(e) => updateIncidentStatus(inc.id, e.target.value)}
@@ -215,6 +265,49 @@ export default function Dashboard() {
           )}
         </Card>
       </div>
+
+      <Card title="Atividade do Agente" subtitle="O que o Supervisor (LangGraph + RAG) está analisando agora, evento a evento">
+        {activity && activity.length === 0 && (
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Nenhum evento processado pelo motor de regras ainda.</p>
+        )}
+        {activity && activity.length > 0 && (
+          <div className="flex flex-col gap-1.5">
+            {activity.map((a) => {
+              const inFlight = a.rules_engine_status === "pending" || a.rules_engine_status === "analyzing";
+              return (
+                <Link
+                  to={`/eventos?event=${a.event_id}`}
+                  key={a.event_id}
+                  className="flex items-center justify-between text-xs py-1.5 gap-3 hover:opacity-80"
+                  style={{ borderBottom: "1px solid var(--border)" }}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    {inFlight && (
+                      <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse shrink-0" style={{ background: RULES_STATUS_COLOR[a.rules_engine_status] }} />
+                    )}
+                    <span style={{ color: "var(--text)" }} className="truncate">
+                      {a.type} <span style={{ color: "var(--text-muted)" }}>· {a.src_ip ?? "origem desconhecida"}</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {a.recommendation && !inFlight && (
+                      <span className="truncate max-w-[220px]" style={{ color: "var(--text-muted)" }} title={a.recommendation}>
+                        → {a.recommendation}
+                      </span>
+                    )}
+                    {inFlight && a.current_stage && (
+                      <span style={{ color: "var(--text-muted)" }}>{STAGE_LABEL[a.current_stage] ?? a.current_stage} ({a.stages_done}/{a.stages_total})</span>
+                    )}
+                    <span className="font-medium" style={{ color: RULES_STATUS_COLOR[a.rules_engine_status] ?? "var(--text-muted)" }}>
+                      {RULES_STATUS_LABEL[a.rules_engine_status] ?? a.rules_engine_status}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </Card>
 
       <Card title="World Map" subtitle="Origem geográfica dos eventos, por volume e severidade">
         {worldMap && <WorldMap points={worldMap} />}

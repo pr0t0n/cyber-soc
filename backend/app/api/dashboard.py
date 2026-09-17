@@ -79,7 +79,9 @@ async def eps(tag: str | None = None, db: AsyncSession = Depends(get_db), _: Use
     total = int((await db.execute(_tag_filter(select(func.count(Event.id)), tag))).scalar() or 0)
     matched_stmt = _tag_filter(select(func.count(Event.id)), tag).where(Event.rules_engine_status == "matched")
     matched = int((await db.execute(matched_stmt)).scalar() or 0)
-    pending_stmt = _tag_filter(select(func.count(Event.id)), tag).where(Event.rules_engine_status == "pending")
+    pending_stmt = _tag_filter(select(func.count(Event.id)), tag).where(
+        Event.rules_engine_status.in_(("pending", "analyzing"))
+    )
     pending = int((await db.execute(pending_stmt)).scalar() or 0)
 
     incident_count_stmt = select(func.count(Incident.id))
@@ -210,10 +212,39 @@ async def incidents_status(tag: str | None = None, db: AsyncSession = Depends(ge
             "total": sum(by_status.values()),
         },
         "recent": [
-            {"id": i.id, "code": i.code, "title": i.title, "status": i.status, "severity": i.severity}
+            {"id": i.id, "code": i.code, "title": i.title, "status": i.status, "severity": i.severity, "event_id": i.event_id}
             for i in recent
         ],
     }
+
+
+@router.get("/agent-activity")
+async def agent_activity(tag: str | None = None, db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
+    """Feed de atividade do agente (Supervisor LangGraph) — o que a IA está
+    fazendo/decidindo agora, evento a evento. Existe para dar visibilidade
+    real do processo (RAG + grupos + Supervisor), não só o veredito final."""
+    stmt = _tag_filter(
+        select(
+            Event.id, Event.type, Event.severity, Event.src_ip, Event.tag,
+            Event.rules_engine_status, Event.matched_skills, Event.recommendation,
+            Event.rules_engine_verdict, Event.received_at,
+        ),
+        tag,
+    ).order_by(Event.received_at.desc()).limit(12)
+    rows = (await db.execute(stmt)).all()
+
+    items = []
+    for eid, etype, severity, src_ip, etag, rstatus, skills, rec, verdict, received_at in rows:
+        verdict = verdict or {}
+        groups = verdict.get("groups") or {}
+        items.append({
+            "event_id": eid, "type": etype, "severity": severity, "src_ip": src_ip, "tag": etag,
+            "rules_engine_status": rstatus, "matched_skills": skills or [], "recommendation": rec,
+            "stages_done": verdict.get("stages_done", len(groups)), "stages_total": verdict.get("stages_total", 3),
+            "current_stage": verdict.get("stage"),
+            "received_at": received_at.isoformat() if received_at else None,
+        })
+    return {"items": items}
 
 
 @router.get("/tickets-status")

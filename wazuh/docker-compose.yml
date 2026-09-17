@@ -98,9 +98,13 @@ services:
       - wazuh.indexer:wazuh.indexer
       - wazuh.manager:wazuh.manager
 
-  # Agente local: se auto-registra no manager (authd, porta 1515) e roda o
-  # wodle syscollector (network=yes, já habilitado por padrão na imagem)
-  # para reportar a topologia/tráfego de rede local do ambiente Docker.
+  # Agente local: se auto-registra no manager (authd, porta 1515), roda o
+  # wodle syscollector (network=yes, já habilitado por padrão na imagem) para
+  # reportar a topologia/tráfego de rede local do ambiente Docker, e monitora
+  # arquivos REAIS da máquina do usuário (macOS) via bind mount read-only —
+  # não é possível ler o log de auth/sistema nativo do macOS (unified
+  # logging não é um arquivo texto acessível de dentro de um container Linux;
+  # exigiria um agente nativo instalado no host, fora do escopo do Docker).
   wazuh.agent:
     image: wazuh/wazuh-agent:4.14.7
     hostname: cyber-soc-local-net
@@ -109,6 +113,10 @@ services:
       - WAZUH_MANAGER_SERVER=wazuh.manager
       - WAZUH_AGENT_NAME=cyber-soc-local-net
       - WAZUH_REGISTRATION_SERVER=wazuh.manager
+    volumes:
+      - ./config/wazuh_agent/ossec.conf:/wazuh-config-mount/etc/ossec.conf
+      - ${HOME}/Library/Logs:/host-mac-logs:ro
+      - ${HOME}/.zsh_history:/host-mac-history/.zsh_history:ro
     depends_on:
       - wazuh.manager
     links:

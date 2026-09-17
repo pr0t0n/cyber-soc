@@ -1,0 +1,70 @@
+[
+  {
+    "id": "CSOC-001",
+    "title": "Força bruta de credenciais confirmada por reputação + volume",
+    "category": "credential-access",
+    "mitre": ["T1110"],
+    "requires": {
+      "target_port_in": [21, 22, 23, 445, 1433, 3306, 3389, 5900],
+      "any_of": [
+        "hit_count >= 5 tentativas na mesma origem/janela",
+        "IP de origem já confirmado malicioso por AbuseIPDB (score >= 80) ou Shodan (tags de risco/portas de C2)"
+      ]
+    },
+    "description": "Um rótulo de 'brute force' vindo da fonte (Wazuh/Elastic) só deve ser tratado como confirmado quando há evidência quantitativa (contagem de tentativas repetidas contra um serviço de autenticação exposto) OU a reputação do IP de origem já é conhecida como maliciosa via threat intel real. Sem nenhum dos dois, é apenas um rótulo não corroborado e deve ser tratado como inconclusivo, não como incidente confirmado.",
+    "recommendation": "Bloquear o IP de origem no firewall/WAF, revisar política de lockout de conta para o serviço afetado, e verificar se houve autenticação bem-sucedida após as tentativas (indicaria comprometimento, não só tentativa)."
+  },
+  {
+    "id": "CSOC-002",
+    "title": "Varredura de portas de IP com reputação maliciosa confirmada",
+    "category": "reconnaissance",
+    "mitre": ["T1595"],
+    "requires": {
+      "any_of": [
+        "múltiplas portas/destinos distintos da mesma origem em curto intervalo",
+        "IP de origem já confirmado malicioso por AbuseIPDB ou Shodan (tags scanner/botnet/proxy)"
+      ]
+    },
+    "description": "Varredura de portas por si só é ruído comum na internet; o que eleva a confiança de que é reconhecimento hostil (não um scanner de pesquisa/monitoramento benigno) é a combinação com reputação de IP já confirmada maliciosa.",
+    "recommendation": "Bloquear o IP na borda, revisar quais serviços responderam à varredura e se algum deveria estar exposto."
+  },
+  {
+    "id": "CSOC-003",
+    "title": "Ataque de aplicação web de IP com reputação maliciosa confirmada",
+    "category": "web-application",
+    "mitre": ["T1190"],
+    "requires": {
+      "any_of": [
+        "payload com padrão de SQLi/XSS/RCE no comportamento/full_log",
+        "IP de origem já confirmado malicioso por AbuseIPDB ou Shodan"
+      ]
+    },
+    "description": "Um payload suspeito (SQLi/XSS/RCE) vindo de um IP com reputação já confirmada maliciosa tem confiança muito maior de ser exploração real do que o mesmo payload isolado, que pode ser um scanner de segurança legítimo ou falso positivo do WAF.",
+    "recommendation": "Confirmar regra de bloqueio ativa no WAF/ModSecurity para o payload observado, revisar logs da aplicação por sinais de sucesso (erro 500, dump de dados, shell), e bloquear o IP de origem."
+  },
+  {
+    "id": "CSOC-004",
+    "title": "Possível beacon de C2 por porta suspeita com reputação maliciosa confirmada",
+    "category": "command-and-control",
+    "mitre": ["T1071", "T1043"],
+    "requires": {
+      "target_port_in": [1080, 1443, 3333, 4443, 4444, 4445, 5555, 6666, 6667, 7777, 8443, 8888, 9001, 9050],
+      "any_of": [
+        "IP de destino/origem já confirmado malicioso (Tor, botnet, C2) por Shodan/AbuseIPDB"
+      ]
+    },
+    "description": "Tráfego para/de uma porta historicamente associada a C2/RAT/Tor, combinado com um IP já sinalizado por threat intel real, é evidência objetiva de possível canal de comando e controle — não apenas 'porta incomum'.",
+    "recommendation": "Isolar o host envolvido da rede, coletar memória/processo para triagem forense (DFIR), e bloquear o IP/porta na borda."
+  },
+  {
+    "id": "CSOC-005",
+    "title": "Rótulo da fonte sem corroboração de assinatura/skill (revisão manual obrigatória)",
+    "category": "triage-guidance",
+    "mitre": [],
+    "requires": {
+      "condition": "o `type`/`rule.description` do evento nomeia uma técnica (ex.: 'brute force', 'SQL injection', 'port scan') mas nenhuma skill real (ATT&CK/D3FEND/Suricata/Sigma/ModSecurity/correlation) e nenhuma reputação de threat intel corrobora"
+    },
+    "description": "Quando a única evidência de um evento é a própria descrição que a fonte (SIEM) deu a ele — sem contagem de tentativas, sem reputação de IP, sem assinatura de rede/WAF correspondente — o rótulo é uma alegação não verificada, não um fato confirmado. Isso é comum e esperado (SIEMs relatam heurísticas próprias), mas o analista N1/N2 não deve tratar o rótulo como confirmação de comprometimento.",
+    "recommendation": "Classificar como inconclusivo, não fechar automaticamente como falso positivo nem abrir como incidente confirmado — revisar manualmente os logs brutos (raw) e, se possível, correlacionar com outros eventos da mesma origem antes de decidir."
+  }
+]

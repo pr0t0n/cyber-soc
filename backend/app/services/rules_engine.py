@@ -16,6 +16,29 @@ async def _next_incident_code(db) -> str:
     return f"INC-{count + 1:04d}"
 
 
+_STAGE_ORDER = ("attack_defend", "network_signature", "web_application")
+
+
+async def _persist_progress(event_id: int, stage: str, group_verdict: dict) -> None:
+    """Callback do grafo (app/agents/graph.py) — grava o veredito de cada grupo
+    assim que ele termina, para a tela Eventos poder mostrar o agente
+    trabalhando em tempo real (em vez de só no fim, até ~900s depois)."""
+    async with SessionLocal() as db:
+        event = await db.get(Event, event_id)
+        if not event or event.rules_engine_status not in ("pending", "analyzing"):
+            return
+        trace = dict(event.rules_engine_verdict or {})
+        groups = dict(trace.get("groups") or {})
+        groups[stage] = group_verdict
+        trace["groups"] = groups
+        trace["stage"] = stage
+        trace["stages_done"] = len(groups)
+        trace["stages_total"] = len(_STAGE_ORDER)
+        event.rules_engine_verdict = trace
+        event.rules_engine_status = "analyzing"
+        await db.commit()
+
+
 async def run_rules_engine_for_event(event_id: int) -> None:
     async with SessionLocal() as db:
         event = await db.get(Event, event_id)
@@ -25,9 +48,20 @@ async def run_rules_engine_for_event(event_id: int) -> None:
             "type": event.type, "severity": event.severity, "src_ip": event.src_ip,
             "src_port": event.src_port, "dst_ip": event.dst_ip, "dst_port": event.dst_port,
             "protocol": event.protocol, "mitre": event.mitre, "behavior": event.behavior,
+            "hit_count": event.hit_count, "rule_ref": event.rule_ref, "enrichment": event.enrichment,
         }
-        verdict = await analyze_event(payload)
+        event.rules_engine_status = "analyzing"
+        await db.commit()
 
+    async def on_progress(stage: str, group_verdict: dict) -> None:
+        await _persist_progress(event_id, stage, group_verdict)
+
+    verdict = await analyze_event(payload, on_progress=on_progress)
+
+    async with SessionLocal() as db:
+        event = await db.get(Event, event_id)
+        if not event:
+            return
         event.rules_engine_verdict = verdict
         event.matched_skills = verdict.get("matched_skills") or []
         event.rules_engine_status = "matched" if verdict.get("matched") else "no_match"

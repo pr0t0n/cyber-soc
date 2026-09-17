@@ -158,7 +158,9 @@ async def get_providers(db: AsyncSession) -> list[Connector]:
 
 
 async def _cache_get(db: AsyncSession, indicator: str) -> dict | None:
-    row = (await db.execute(select(IocCache).where(IocCache.indicator == indicator))).scalar_one_or_none()
+    row = (
+        await db.execute(select(IocCache).where(IocCache.indicator == indicator, IocCache.indicator_type == "ip"))
+    ).scalar_one_or_none()
     if not row:
         return None
     checked = row.checked_at
@@ -170,7 +172,9 @@ async def _cache_get(db: AsyncSession, indicator: str) -> dict | None:
 
 
 async def _cache_put(db: AsyncSession, indicator: str, kind: str, result: dict) -> None:
-    row = (await db.execute(select(IocCache).where(IocCache.indicator == indicator))).scalar_one_or_none()
+    row = (
+        await db.execute(select(IocCache).where(IocCache.indicator == indicator, IocCache.indicator_type == kind))
+    ).scalar_one_or_none()
     if row:
         row.result = result
         row.checked_at = datetime.now(timezone.utc)

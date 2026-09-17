@@ -32,6 +32,16 @@ class Event(Base):
     risk_score: Mapped[int] = mapped_column(Integer, default=0, index=True)  # 0-100
     behavior: Mapped[str | None] = mapped_column(Text, nullable=True)
 
+    # Contagem de repetição/tentativas relatada pela fonte (ex.: Wazuh
+    # rule.firedtimes numa regra de frequência) — sem isso, uma alegação de
+    # "brute force"/scan não tem como ser sustentada com evidência quantitativa.
+    hit_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    # Identificação da regra de origem que gerou a severidade (ex.: "Wazuh
+    # rule 5720, nível 12: SSHD brute force") — a severidade é um julgamento da
+    # FONTE, não do Cyber SOC; guardamos a referência para poder mostrar isso
+    # explicitamente em vez de uma cor/rótulo sem explicação.
+    rule_ref: Mapped[str | None] = mapped_column(String(300), nullable=True)
+
     raw: Mapped[dict] = mapped_column(JSON, default=dict)
     enrichment: Mapped[dict] = mapped_column(JSON, default=dict)
     status: Mapped[str] = mapped_column(String(20), default="new", index=True)  # new|triaging|closed

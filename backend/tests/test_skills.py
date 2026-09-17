@@ -3,10 +3,10 @@ import yaml
 from app.services import skills_catalog
 
 
-ALL_SOURCES = {"attack", "d3fend", "suricata", "modsecurity", "sigma", "agent_threats"}
+ALL_SOURCES = {"attack", "d3fend", "suricata", "modsecurity", "sigma", "agent_threats", "correlation"}
 
 
-def test_load_all_returns_real_data_from_all_six_sources():
+def test_load_all_returns_real_data_from_all_seven_sources():
     items = skills_catalog.load_all()
     sources = {i["source"] for i in items}
     assert sources == ALL_SOURCES
@@ -42,6 +42,18 @@ def test_sigma_rules_have_real_uuids_and_mitre_tags():
     assert len(items) > 300
     with_mitre = [i for i in items if "mitre=" in i["search_text"] and not i["search_text"].endswith("mitre=")]
     assert with_mitre, "pelo menos algumas regras Sigma reais devem ter técnicas MITRE mapeadas"
+
+
+def test_correlation_brute_force_skill_requires_evidence_not_just_label():
+    """Cobre o gap identificado: um rótulo de 'brute force' da fonte sozinho
+    não deve virar correspondência confirmada — a skill precisa declarar a
+    evidência exigida (contagem de tentativas OU reputação de IP)."""
+    items = [i for i in skills_catalog.load_all() if i["source"] == "correlation" and i["external_id"] == "CSOC-001"]
+    assert items, "CSOC-001 (força bruta por reputação+volume) deveria existir no catálogo de correlação"
+    parsed = yaml.safe_load(items[0]["yaml_content"])
+    assert "T1110" in parsed["mitre"]
+    assert "requires" in parsed and parsed["requires"]
+    assert parsed["recommendation"]
 
 
 def test_agent_threat_rules_have_real_atr_ids_and_owasp_refs():

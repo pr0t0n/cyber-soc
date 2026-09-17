@@ -88,11 +88,81 @@ para o analista N1, citando a skill/contramedida que casou (ex.: a
 contramedida D3FEND de uma técnica ATT&CK, ou a ação de contenção de uma
 assinatura de rede/WAF) — visível na coluna "Motor de Regras" da tela Eventos.
 
+### Visibilidade em tempo real do agente
+
+Antes, o evento ficava em `pending` sem nenhum sinal até o grafo inteiro
+terminar (até ~900s no pior caso) — parecia uma caixa-preta. Cada nó do grafo
+agora reporta o próprio veredito assim que termina
+(`app/services/rules_engine.py:_persist_progress`), então `rules_engine_status`
+passa por um estágio intermediário real, `analyzing`, com
+`rules_engine_verdict.groups` sendo preenchido grupo a grupo:
+
+```
+pending -> analyzing (1/3 grupos) -> analyzing (2/3) -> analyzing (3/3) -> matched | no_match
+```
+
+Isso alimenta duas telas que antes eram estáticas:
+
+- **Eventos**: cada linha é expansível (clique na linha) e mostra a
+  **trilha do agente** — os 3 grupos + Supervisor com status ao vivo
+  (⚪ aguardando / ⏳ rodando / ✅ concluído), o motivo que cada grupo deu, a
+  reputação real de threat intel do IP de origem (Shodan/AbuseIPDB) e o evento
+  bruto original. A lista também re-consulta a API a cada poucos segundos
+  sozinha — sem precisar dar F5.
+- **Dashboard**: card "Atividade do Agente" — feed dos últimos eventos com o
+  estágio atual do Supervisor, que também atualiza sozinho. Cada linha (e cada
+  incidente no card "Incidentes") linka para o evento de origem em Eventos,
+  já expandido na trilha do agente.
+
+### Um rótulo da fonte não é uma confirmação
+
+Problema real observado: um evento chegava com `type: "SSHD brute force"` e
+severidade "crítica" (herdada do `rule.level` do Wazuh), mas sem nenhuma
+contagem de tentativas e sem nenhuma skill corroborando — o motor de regras
+dizia "sem correspondência" enquanto a tela ainda destacava "brute force" e
+"crítico" como se fossem fatos confirmados. Três correções:
+
+1. **`Event.hit_count`**: extraído de `rule.firedtimes`/`rule.frequency`
+   (Wazuh) quando disponível — sem contagem real, o campo fica `null` e a UI
+   diz isso explicitamente ("sem contagem de tentativas"), em vez de deixar o
+   rótulo sem contexto.
+2. **`Event.rule_ref`**: guarda a regra de origem que gerou a severidade (ex.:
+   `"Wazuh regra 5720, nível 12: SSHD brute force"`) — a severidade é um
+   julgamento da FONTE, não do Cyber SOC, e agora isso fica explícito na tela
+   em vez de só uma cor.
+3. **Correspondência exata de técnica + veredito honesto sobre degradação**:
+   se a fonte já tagueia o evento com uma técnica MITRE (`event.mitre`) que
+   bate com o `external_id` de uma skill real do catálogo, isso vira
+   correspondência confirmada independente do julgamento do LLM local
+   (`qwen2.5:1.5b`, pequeno, ocasionalmente falha/degrada sob contenção de
+   CPU) — ver `_exact_id_matches` em `app/agents/graph.py`. Cada veredito de
+   grupo também carrega `degraded: bool`: quando o RAG ou a IA não completou
+   uma avaliação real, o Supervisor não diz mais "nenhuma ação necessária"
+   (uma afirmação forte) — diz "inconclusivo, revisar manualmente".
+
+## Threat intel real: Shodan + AbuseIPDB
+
+Cadastrados como conectores `kind=threatintel` em Administração → Integrações
+(`type=shodan` / `type=abuseipdb`, com a `api_key` real), testados via
+"Testar credencial" na própria tela. A partir daí, todo evento com IP de
+origem público passa a ser enriquecido de verdade na ingestão
+(`app/services/threat_intel.py:analyze_traffic`) — reputação, portas
+expostas, CVEs, nó Tor — e isso entra na nota de risco (`risk_score`), na
+trilha do agente (Eventos) e no contexto do Copilot quando a pergunta cita um
+IP (ex.: "o que é o IP 185.220.101.8?").
+
+Bug corrigido nesta fase: `IocCache` (cache de reputação/geo) tinha
+unicidade só em `indicator`, então o cache de geolocalização de um IP
+"vazava" como se fosse cache (vazio) de threat intel para o mesmo IP —
+Shodan/AbuseIPDB nunca eram chamados de verdade para um IP que já tinha
+passado pelo world map. A chave agora é `(indicator, indicator_type)`.
+
 ## Página Regras: skills reais em YAML
 
-Abaixo do Copilot no menu — catálogo real baixado de 6 fontes públicas (ver
-`app/services/skills_catalog.py` e `scripts/fetch_skills.py`), servido como
-YAML (`GET /api/skills/{id}`) e é a mesma base usada pelo RAG acima:
+Abaixo do Copilot no menu — catálogo real baixado de 6 fontes públicas + 1
+fonte interna (ver `app/services/skills_catalog.py` e
+`scripts/fetch_skills.py`), servido como YAML (`GET /api/skills/{id}`) e é a
+mesma base usada pelo RAG acima:
 
 | Fonte | O que é | Como foi obtido |
 |-------|---------|------------------|
@@ -102,6 +172,7 @@ YAML (`GET /api/skills/{id}`) e é a mesma base usada pelo RAG acima:
 | **modsecurity** | Regras de WAF reais (XSS/SQLi/RCE) | OWASP Core Rule Set (`coreruleset/coreruleset`) |
 | **sigma** | Regras de detecção Sigma reais (amostra por categoria: windows/cloud/linux/network/web/...) + regras "zero-day" recentes | SigmaHQ/sigma oficial + abdulmyid-cyber/SIEM-Content |
 | **agent_threats** | Regras reais de ameaça a agentes de IA (prompt injection, tool poisoning, data poisoning, ...), com referências a OWASP LLM/Agentic e MITRE ATLAS | Agent-Threat-Rule/agent-threat-rules (MIT) |
+| **correlation** | **Não é externa** — regras de correlação autorais desta plataforma (`app/skills_data/correlation.json`): um rótulo de "brute force"/"port scan"/"ataque web" da fonte só vira correspondência confirmada com evidência real (contagem de tentativas OU reputação de IP já confirmada) | Escrita internamente, rotulada como tal (nunca disfarçada de feed externo) |
 
 `GET /api/skills/sources` mostra quantas skills de cada fonte já têm
 embedding gerado (`hydration_pct`) — o backfill roda em background após o
@@ -165,6 +236,21 @@ docker compose up -d
   (herdada do conector) e passa pelo mesmo motor de regras (skills + RAG +
   Supervisor) descrito acima — visível em Eventos/Dashboard filtrando por
   essa tag.
+- **Logs reais da máquina do usuário** (`config/wazuh_agent/ossec.conf`): o
+  agente monta, **read-only**, `~/Library/Logs` (`/host-mac-logs`) e
+  `~/.zsh_history` (`/host-mac-history/.zsh_history`) — arquivos reais do
+  macOS do usuário, via `${HOME}` no `docker-compose.yml`. O `localfile` lê o
+  conteúdo (`wazuh-logcollector`, confirmado monitorando arquivos reais como
+  `Claude/*.log`) e o `syscheck` (`realtime="yes"`) detecta mudanças nesses
+  arquivos quase em tempo real. **Limitação honesta**: isto NÃO é o log de
+  autenticação/segurança nativo do macOS — o unified logging (`log show`/
+  `log stream`) não é um arquivo texto acessível de dentro de um container
+  Linux, e o Docker Desktop não expõe `/var/log` do host real (só caminhos
+  dentro do diretório do usuário). Para eventos de autenticação/segurança do
+  próprio SO (não só arquivos), a única forma real é um agente Wazuh nativo
+  instalado no macOS (fora do Docker) — deliberadamente não feito sem
+  confirmação explícita, por instalar software persistente com acesso a logs
+  do sistema na máquina do usuário.
 
 ## Testes
 

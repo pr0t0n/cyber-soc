@@ -23,32 +23,38 @@ _session_factory = async_sessionmaker(_engine, expire_on_commit=False)
 @mcp.tool()
 async def search_attack_defend(query: str, limit: int = 5) -> list[dict]:
     """Busca por similaridade (RAG) técnicas MITRE ATT&CK, contramedidas MITRE
-    D3FEND e regras de ameaça a agentes de IA (Agent Threat Rules — TTPs
-    contra agentes, referenciam MITRE ATLAS) relevantes para o evento."""
+    D3FEND, regras de ameaça a agentes de IA (Agent Threat Rules — TTPs
+    contra agentes, referenciam MITRE ATLAS) e regras de correlação internas
+    (reputação de IP + volume/evidência) relevantes para o evento."""
     async with _session_factory() as db:
         attack = await search_skills(db, query, source="attack", limit=limit)
         d3fend = await search_skills(db, query, source="d3fend", limit=limit)
         agent_threats = await search_skills(db, query, source="agent_threats", limit=limit)
-    return attack + d3fend + agent_threats
+        correlation = await search_skills(db, query, source="correlation", limit=limit)
+    return attack + d3fend + agent_threats + correlation
 
 
 @mcp.tool()
 async def search_network_signatures(query: str, limit: int = 5) -> list[dict]:
     """Busca por similaridade (RAG) assinaturas de rede Suricata/Emerging
-    Threats e regras de detecção Sigma (SigmaHQ + SIEM-Content) relevantes
-    para o tráfego/evento descrito."""
+    Threats, regras de detecção Sigma (SigmaHQ + SIEM-Content) e regras de
+    correlação internas relevantes para o tráfego/evento descrito."""
     async with _session_factory() as db:
         suricata = await search_skills(db, query, source="suricata", limit=limit)
         sigma = await search_skills(db, query, source="sigma", limit=limit)
-    return suricata + sigma
+        correlation = await search_skills(db, query, source="correlation", limit=limit)
+    return suricata + sigma + correlation
 
 
 @mcp.tool()
 async def search_web_application_rules(query: str, limit: int = 5) -> list[dict]:
-    """Busca por similaridade (RAG) regras de WAF ModSecurity/OWASP CRS
-    relevantes para o payload/comportamento descrito."""
+    """Busca por similaridade (RAG) regras de WAF ModSecurity/OWASP CRS e
+    regras de correlação internas relevantes para o payload/comportamento
+    descrito."""
     async with _session_factory() as db:
-        return await search_skills(db, query, source="modsecurity", limit=limit)
+        modsecurity = await search_skills(db, query, source="modsecurity", limit=limit)
+        correlation = await search_skills(db, query, source="correlation", limit=limit)
+    return modsecurity + correlation
 
 
 if __name__ == "__main__":

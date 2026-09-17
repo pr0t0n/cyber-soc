@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from ..db import Base
 from .types import FlexibleVector
 
-SKILL_SOURCES = ("attack", "d3fend", "suricata", "modsecurity", "sigma", "agent_threats")
+SKILL_SOURCES = ("attack", "d3fend", "suricata", "modsecurity", "sigma", "agent_threats", "correlation")
 
 
 class Skill(Base):

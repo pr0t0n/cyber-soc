@@ -7,13 +7,13 @@ from app.services import rules_engine
 
 
 def _mock_matched(skills=("T1110",)):
-    async def _fake(event: dict) -> dict:
+    async def _fake(event: dict, on_progress=None) -> dict:
         return {"matched": True, "matched_skills": list(skills), "summary": "Padrão de força bruta reconhecido.", "groups": {}}
     return _fake
 
 
 def _mock_no_match():
-    async def _fake(event: dict) -> dict:
+    async def _fake(event: dict, on_progress=None) -> dict:
         return {"matched": False, "matched_skills": [], "summary": "Nenhuma skill correspondente.", "groups": {}}
     return _fake
 

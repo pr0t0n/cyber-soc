@@ -37,8 +37,12 @@ async def list_events(
                 "dst_port": e.dst_port, "protocol": e.protocol, "mitre": e.mitre,
                 "risk_score": e.risk_score, "status": e.status, "tag": e.tag,
                 "country": e.country, "city": e.city,
+                "hit_count": e.hit_count, "rule_ref": e.rule_ref,
                 "rules_engine_status": e.rules_engine_status, "matched_skills": e.matched_skills,
                 "recommendation": e.recommendation,
+                "stages_done": (e.rules_engine_verdict or {}).get("stages_done", 0),
+                "stages_total": (e.rules_engine_verdict or {}).get("stages_total", 3),
+                "current_stage": (e.rules_engine_verdict or {}).get("stage"),
             }
             for e in rows
         ],
@@ -57,6 +61,7 @@ async def get_event(event_id: int, db: AsyncSession = Depends(get_db), _: User =
         "mitre": event.mitre, "risk_score": event.risk_score, "behavior": event.behavior,
         "status": event.status, "enrichment": event.enrichment, "raw": event.raw,
         "tag": event.tag, "country": event.country, "city": event.city,
+        "hit_count": event.hit_count, "rule_ref": event.rule_ref,
         "rules_engine_status": event.rules_engine_status, "matched_skills": event.matched_skills,
         "rules_engine_verdict": event.rules_engine_verdict, "recommendation": event.recommendation,
     }

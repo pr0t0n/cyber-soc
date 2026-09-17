@@ -20,6 +20,33 @@ async def test_ingest_wazuh_normalizes_and_scores(client, auth_headers):
     assert item["dst_port"] == "3389"
 
 
+async def test_ingest_wazuh_extracts_hit_count_and_rule_ref(client, auth_headers):
+    """Gap corrigido: uma alegação de 'brute force' sem contagem de tentativas
+    não é sustentável — `rule.firedtimes` (contador nativo do Wazuh para
+    regras de frequência) precisa sobreviver à ingestão, e a severidade
+    precisa vir acompanhada da regra de origem que a gerou."""
+    r = await client.post("/api/ingest/wazuh", json={
+        "id": "1700000000.2",
+        "rule": {"id": "5720", "level": 12, "description": "SSHD brute force", "firedtimes": 9},
+        "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "22", "protocol": "TCP"},
+    })
+    assert r.status_code == 201, r.text
+    event_id = r.json()["id"]
+    detail = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail["hit_count"] == 9
+    assert "5720" in detail["rule_ref"] and "nível 12" in detail["rule_ref"]
+
+
+async def test_ingest_wazuh_without_firedtimes_leaves_hit_count_null(client, auth_headers):
+    r = await client.post("/api/ingest/wazuh", json={
+        "rule": {"id": "1", "level": 3, "description": "Evento comum"},
+        "data": {"srcip": "10.0.0.9"},
+    })
+    event_id = r.json()["id"]
+    detail = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail["hit_count"] is None
+
+
 async def test_ingest_generic_low_risk_traffic(client, auth_headers):
     r = await client.post("/api/ingest/generic", json={
         "type": "HTTP request", "severity": "info",

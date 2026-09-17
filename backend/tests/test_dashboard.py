@@ -10,7 +10,7 @@ async def _ingest_sample(client):
     return r.json()["id"]
 
 
-async def _mock_matched(event: dict) -> dict:
+async def _mock_matched(event: dict, on_progress=None) -> dict:
     return {"matched": True, "matched_skills": ["T1110"], "summary": "Força bruta reconhecida.", "groups": {}}
 
 
