@@ -1,7 +1,9 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import WorldMap, { type WorldMapPoint } from "../components/WorldMap";
+import TriageFunnel from "../components/TriageFunnel";
+import Gauge from "../components/Gauge";
 
 const SEV_LABEL: Record<string, string> = { critica: "Crítica", alta: "Alta", media: "Média", baixa: "Baixa", info: "Info" };
 const SEV_COLOR: Record<string, string> = { critica: "#f43f5e", alta: "#fb923c", media: "#facc15", baixa: "#38bdf8", info: "#64748b" };
@@ -19,6 +21,7 @@ interface EpsData {
   eps: { current: number; avg_5m: number };
   total_events: number;
   pending_analysis: number;
+  analysis_delay_seconds: number | null;
   funnel: { stage: string; label: string; count: number; pct_of_total: number }[];
 }
 interface HeatmapData {
@@ -98,6 +101,8 @@ function useDashboardData(tag: string) {
   const [tags, setTags] = useState<string[]>([]);
   const [activity, setActivity] = useState<AgentActivityItem[] | null>(null);
   const [metrics, setMetrics] = useState<AnalysisMetrics | null>(null);
+  const [newIncidentAlert, setNewIncidentAlert] = useState<{ id: number; code: string; title: string; severity: string } | null>(null);
+  const seenIncidentIds = useRef<Set<number> | null>(null);
 
   useEffect(() => {
     const loadSlow = () => {
@@ -105,7 +110,17 @@ function useDashboardData(tag: string) {
       api.get<HeatmapData>(`/dashboard/mitre-heatmap${qs}`).then(setHeatmap);
       api.get<RiskHeatmap>(`/dashboard/risk-heatmap${qs}`).then(setRiskHeatmap);
       api.get<ConnectorsStatus>("/dashboard/connectors-status").then(setConnectors);
-      api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then(setIncidents);
+      api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then((data) => {
+        setIncidents(data);
+        const ids = new Set(data.recent.map((i) => i.id));
+        // Primeira carga só estabelece a base — sem isso, TODO incidente já
+        // existente apareceria como "novo" assim que a página abre.
+        if (seenIncidentIds.current !== null) {
+          const fresh = data.recent.find((i) => !seenIncidentIds.current!.has(i.id));
+          if (fresh) setNewIncidentAlert(fresh);
+        }
+        seenIncidentIds.current = ids;
+      });
       api.get<{ points: WorldMapPoint[] }>(`/dashboard/world-map${qs}`).then((r) => setWorldMap(r.points));
       api.get<{ tags: string[] }>("/dashboard/tags").then((r) => setTags(r.tags));
     };
@@ -124,7 +139,10 @@ function useDashboardData(tag: string) {
     };
   }, [qs]);
 
-  return { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics };
+  return {
+    summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics,
+    newIncidentAlert, dismissIncidentAlert: () => setNewIncidentAlert(null),
+  };
 }
 
 function riskColor(v: number) {
@@ -143,7 +161,16 @@ function mitreColor(count: number, max: number) {
 
 export default function Dashboard() {
   const [tag, setTag] = useState("");
-  const { summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics } = useDashboardData(tag);
+  const {
+    summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics,
+    newIncidentAlert, dismissIncidentAlert,
+  } = useDashboardData(tag);
+
+  useEffect(() => {
+    if (!newIncidentAlert) return;
+    const timer = setTimeout(dismissIncidentAlert, 15000);
+    return () => clearTimeout(timer);
+  }, [newIncidentAlert, dismissIncidentAlert]);
 
   async function updateIncidentStatus(id: number, status: string) {
     const updated = await api.patch<{ id: number; status: string }>(`/incidents/${id}`, { status });
@@ -162,6 +189,48 @@ export default function Dashboard() {
 
   return (
     <div className="p-8 flex flex-col gap-5 max-w-[1400px]">
+      {newIncidentAlert && (
+        <div
+          className="toast-in fixed top-5 right-5 z-50 w-80 rounded-xl p-4 shadow-2xl"
+          style={{
+            background: "var(--surface)",
+            borderTop: "1px solid var(--border)",
+            borderRight: "1px solid var(--border)",
+            borderBottom: "1px solid var(--border)",
+            borderLeft: `4px solid ${SEV_COLOR[newIncidentAlert.severity] ?? "var(--accent)"}`,
+          }}
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0">
+              <p
+                className="text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5"
+                style={{ color: SEV_COLOR[newIncidentAlert.severity] ?? "var(--text-muted)" }}
+              >
+                <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "currentColor" }} />
+                Novo incidente · {SEV_LABEL[newIncidentAlert.severity] ?? newIncidentAlert.severity}
+              </p>
+              <Link
+                to="/incidentes"
+                onClick={dismissIncidentAlert}
+                className="text-sm font-medium mt-1 block truncate hover:underline"
+                style={{ color: "var(--text)" }}
+                title={newIncidentAlert.title}
+              >
+                {newIncidentAlert.code} · {newIncidentAlert.title}
+              </Link>
+            </div>
+            <button
+              onClick={dismissIncidentAlert}
+              className="shrink-0 text-xs leading-none rounded-full w-5 h-5 flex items-center justify-center hover:bg-white/10"
+              style={{ color: "var(--text-muted)" }}
+              aria-label="Dispensar"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight" style={{ color: "var(--text)" }}>
@@ -203,39 +272,32 @@ export default function Dashboard() {
       )}
 
       {summary && (
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <Stat label="Eventos hoje" value={summary.events_today} />
-          <Stat label="Risco médio" value={summary.avg_risk_score} accent />
-          <Stat label="Cobertura MITRE" value={`${summary.mitre_coverage_pct}%`} />
           <Stat label="EPS agora" value={eps ? eps.eps.current : "…"} />
+          <Stat
+            label="Delay de análise"
+            value={eps ? formatDelay(eps.analysis_delay_seconds) : "…"}
+            valueColor={eps ? delayColor(eps.analysis_delay_seconds) : undefined}
+          />
+        </div>
+      )}
+
+      {summary && (
+        <div className="glass-card rounded-xl p-4 flex items-center justify-around flex-wrap gap-4">
+          <Gauge value={summary.avg_risk_score} label="Risco médio" />
+          <Gauge value={summary.mitre_coverage_pct} label="Cobertura MITRE" suffix="%" invert />
+          <Gauge value={metrics?.efficiency_pct ?? 100} label="Eficiência do motor" suffix="%" invert />
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-4">
-        <Card title="Funil de Triagem" subtitle="Total de EPS → Motor de Regras (IA) → Incidentes">
+        <Card title="Funil de Triagem" subtitle="Total de EPS → Motor de Regras (IA) → Incidentes" className="self-start">
           {eps && (
             <>
-              <div className="flex flex-col gap-3">
-                {eps.funnel.map((f, i) => (
-                  <div key={f.stage} className="grid grid-cols-[130px_1fr_90px] items-center gap-3">
-                    <span className="text-xs" style={{ color: "var(--text-muted)" }}>{f.label}</span>
-                    <div className="h-3.5 rounded-full overflow-hidden" style={{ background: "var(--surface-2)" }}>
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${f.pct_of_total}%`,
-                          background: i === 0 ? "linear-gradient(90deg, var(--accent), var(--accent-2))" : i === 1 ? "#fb923c" : "#f43f5e",
-                        }}
-                      />
-                    </div>
-                    <span className="text-xs text-right" style={{ color: "var(--text-muted)" }}>
-                      {f.count} <span className="opacity-60">({f.pct_of_total}%)</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <TriageFunnel stages={eps.funnel} />
               {eps.pending_analysis > 0 && (
-                <p className="text-[10px] mt-3" style={{ color: "var(--text-muted)" }}>
+                <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
                   {eps.pending_analysis} evento(s) ainda em análise pelo motor de regras (Supervisor + RAG em background).
                 </p>
               )}
@@ -459,20 +521,39 @@ export default function Dashboard() {
   );
 }
 
-function Stat({ label, value, accent }: { label: string; value: string | number; accent?: boolean }) {
+function Stat({ label, value, accent, valueColor }: { label: string; value: string | number; accent?: boolean; valueColor?: string }) {
   return (
     <div className="glass-card rounded-xl p-4">
       <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{label}</p>
-      <p className={`text-2xl font-bold mt-1.5 ${accent ? "text-gradient" : ""}`} style={{ color: accent ? undefined : "var(--text)" }}>
+      <p
+        className={`text-2xl font-bold mt-1.5 ${accent && !valueColor ? "text-gradient" : ""}`}
+        style={{ color: valueColor ?? (accent ? undefined : "var(--text)") }}
+      >
         {value}
       </p>
     </div>
   );
 }
 
-function Card({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
+// `analysis_delay_seconds` (app/api/dashboard.py /eps) é recebido->analisado
+// real dos últimos 5 minutos, não uma estimativa — `null` significa "nada
+// analisado ainda nessa janela", distinto de "delay zero".
+function formatDelay(seconds: number | null): string {
+  if (seconds === null) return "sem dado";
+  if (seconds < 1) return `${Math.round(seconds * 1000)}ms`;
+  return `${seconds.toFixed(1)}s`;
+}
+
+function delayColor(seconds: number | null): string | undefined {
+  if (seconds === null) return "var(--text-muted)";
+  if (seconds <= 5) return "#34d399";
+  if (seconds <= 30) return "#facc15";
+  return "#f43f5e";
+}
+
+function Card({ title, subtitle, children, className = "" }: { title: string; subtitle?: string; children: ReactNode; className?: string }) {
   return (
-    <div className="glass-card rounded-xl p-5">
+    <div className={`glass-card rounded-xl p-5 ${className}`}>
       <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{title}</p>
       {subtitle && <p className="text-sm font-medium mb-4 mt-0.5" style={{ color: "var(--text)" }}>{subtitle}</p>}
       {children}

@@ -5,11 +5,13 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
+import Incidents from "./pages/Incidents";
 import Raw from "./pages/Raw";
 import Connectors from "./pages/Connectors";
 import Chat from "./pages/Chat";
 import Rules from "./pages/Rules";
 import Users from "./pages/Users";
+import Resposta from "./pages/Resposta";
 
 function Protected({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -24,6 +26,8 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Protected><Dashboard /></Protected>} />
       <Route path="/eventos" element={<Protected><Events /></Protected>} />
+      <Route path="/incidentes" element={<Protected><Incidents /></Protected>} />
+      <Route path="/resposta" element={<Protected><Resposta /></Protected>} />
       <Route path="/raw" element={<Protected><Raw /></Protected>} />
       <Route path="/integracoes" element={<Protected><Connectors /></Protected>} />
       <Route path="/usuarios" element={<Protected><Users /></Protected>} />

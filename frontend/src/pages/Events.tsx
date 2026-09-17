@@ -70,6 +70,13 @@ const STAGES: { key: string; label: string }[] = [
   { key: "supervisor", label: "Supervisor (consolidação)" },
 ];
 const IN_FLIGHT = new Set(["pending", "analyzing"]);
+const DECISION_BY_STATUS: Record<string, { label: string; color: string }> = {
+  matched: { label: "INCIDENTE CONFIRMADO", color: "#f43f5e" },
+  no_match: { label: "SEM CORRESPONDÊNCIA", color: "#34d399" },
+  informational: { label: "INFORMATIVO — SEM ANÁLISE DE IA", color: "var(--text-muted)" },
+  pending: { label: "NA FILA…", color: "#94a3b8" },
+  analyzing: { label: "ANALISANDO…", color: "#22d3ee" },
+};
 
 export default function Events() {
   const [items, setItems] = useState<EventRow[]>([]);
@@ -264,9 +271,18 @@ function EventDetailPanel({ eventId }: { eventId: number }) {
   const abuse = detail.enrichment?.abuseipdb;
   const shodan = detail.enrichment?.shodan;
   const assessment = detail.enrichment?.assessment;
+  const decision = DECISION_BY_STATUS[detail.rules_engine_status] ?? { label: detail.rules_engine_status.toUpperCase(), color: "var(--text-muted)" };
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="flex flex-col gap-4">
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>Decisão</p>
+        <p className="text-xl font-bold mt-0.5" style={{ color: decision.color }}>{decision.label}</p>
+        <p className="text-xs mt-1 max-w-2xl" style={{ color: "var(--text-muted)" }}>
+          {detail.rules_engine_verdict?.summary || (finished ? "Sem resumo do Supervisor para este veredito." : "Análise em andamento…")}
+        </p>
+      </div>
+      <div className="grid grid-cols-2 gap-6">
       <div>
         <div className="rounded-lg px-3 py-2 mb-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
           <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
@@ -372,6 +388,7 @@ function EventDetailPanel({ eventId }: { eventId: number }) {
             {JSON.stringify(detail.raw, null, 1)}
           </pre>
         </div>
+      </div>
       </div>
     </div>
   );

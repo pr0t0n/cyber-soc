@@ -1,16 +1,27 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../lib/auth";
-import { IconActivity, IconBook, IconChat, IconGrid, IconLogout, IconPlug, IconShield, IconTerminal, IconUsers } from "./icons";
+import {
+  IconActivity, IconAlertTriangle, IconBook, IconChat, IconGrid, IconLogout,
+  IconPlug, IconSend, IconSettings, IconShield, IconTerminal, IconUsers,
+} from "./icons";
 
 const NAV = [
   { to: "/", label: "Dashboard", end: true, icon: IconGrid },
-  { to: "/eventos", label: "Eventos", icon: IconActivity },
+  { to: "/incidentes", label: "Incidentes", icon: IconAlertTriangle },
+  { to: "/resposta", label: "Resposta", icon: IconSend },
+  { to: "/eventos", label: "Análises", icon: IconActivity },
   { to: "/raw", label: "Raw (Wazuh)", icon: IconTerminal },
   { to: "/chat", label: "Copilot", icon: IconChat },
-  { to: "/regras", label: "Regras", icon: IconBook },
-  { to: "/integracoes", label: "Integrações", icon: IconPlug },
   { to: "/usuarios", label: "Usuários", icon: IconUsers },
+];
+
+// "Sistema": integração (fontes de dados) e regras (Detection Studio) não são
+// operação do dia a dia do analista N1/N2 — são configuração/engenharia da
+// plataforma, então ficam agrupadas à parte da lista de navegação principal.
+const SYSTEM_NAV = [
+  { to: "/integracoes", label: "Integrações", icon: IconPlug },
+  { to: "/regras", label: "Regras", icon: IconBook },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -39,12 +50,38 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <nav className="flex-1 py-4 px-3 flex flex-col gap-1">
+        <nav className="flex-1 py-4 px-3 flex flex-col gap-1 overflow-y-auto">
           {NAV.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.end}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive ? "text-white" : "hover:bg-white/[0.03]"
+                }`
+              }
+              style={({ isActive }) => ({
+                background: isActive ? "linear-gradient(90deg, rgba(34,211,238,0.14), rgba(99,102,241,0.08))" : "transparent",
+                color: isActive ? "var(--text)" : "var(--text-muted)",
+                borderLeft: isActive ? "2px solid var(--accent)" : "2px solid transparent",
+              })}
+            >
+              <item.icon />
+              {item.label}
+            </NavLink>
+          ))}
+
+          <div className="flex items-center gap-2 px-3.5 pt-4 pb-1.5">
+            <IconSettings className="w-3.5 h-3.5" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+              Sistema
+            </span>
+          </div>
+          {SYSTEM_NAV.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive ? "text-white" : "hover:bg-white/[0.03]"

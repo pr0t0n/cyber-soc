@@ -58,3 +58,11 @@ body {
   stroke-width: 0.6;
   transition: fill 0.2s;
 }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.toast-in {
+  animation: toast-in 0.25s ease-out;
+}
