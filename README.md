@@ -355,11 +355,13 @@ usuário; visual executivo, cores simples e minimalistas.
 - Ingestão Wazuh/Elastic/genérica → schema canônico com tags MITRE.
 - Nota de risco por tráfego (porta/protocolo sempre; + AbuseIPDB/Shodan quando
   configurados) — `app/services/threat_intel.py`.
-- **Ingestão protegida por fonte**: ao cadastrar um conector `kind=siem` (ex.:
-  Wazuh), a API gera um `ingest_token` (devolvido em claro uma única vez, na
-  criação) e passa a exigir `Authorization: Bearer <token>` em
-  `POST /api/ingest/{esse tipo}`. Sem nenhum conector daquele tipo, a fonte
-  segue aberta (modo dev).
+- **Ingestão só de plataformas integradas**: `POST /api/ingest/{fonte}` exige
+  um conector `kind=siem` habilitado para essa fonte, com `Authorization:
+  Bearer <token>` batendo o `ingest_token` gerado na criação do conector (ver
+  Administração -> Integrações). Sem conector algum daquele tipo — nunca
+  integrado — a fonte é recusada (`403`); com conector mas token errado/
+  ausente, `401`. Não existe mais um modo aberto/dev para fontes sem
+  integração cadastrada.
 - **Motor de regras de IA** (Supervisor LangGraph + MCP + RAG, ver seção
   acima): decide se o evento casa com uma skill real; quando casa, abre um
   Incidente com status **BackLog → Em Andamento → Concluído**
