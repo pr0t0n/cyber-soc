@@ -18,6 +18,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .mitre import MODSECURITY_CATEGORY_TO_MITRE as _MODSECURITY_CATEGORY_MITRE
+from .mitre import SURICATA_CLASSTYPE_TO_MITRE as _SURICATA_CLASSTYPE_MITRE
+
 _DATA_DIR = Path(__file__).parent.parent / "skills_data"
 
 
@@ -62,7 +65,7 @@ def evaluate(raw: dict[str, Any]) -> list[dict[str, Any]]:
     skill = _SURICATA_BY_SID.get(sid) if sid else None
     if skill:
         matches.append({
-            "id": sid, "mitre": [],
+            "id": sid, "mitre": _SURICATA_CLASSTYPE_MITRE.get(skill.get("classtype") or "", []),
             "title": skill["msg"],
             "description": (
                 f"Assinatura Suricata/ET-Open catalogada: {skill['msg']} "
@@ -78,7 +81,7 @@ def evaluate(raw: dict[str, Any]) -> list[dict[str, Any]]:
     skill = _MODSECURITY_BY_ID.get(rule_id) if rule_id else None
     if skill:
         matches.append({
-            "id": rule_id, "mitre": [],
+            "id": rule_id, "mitre": _MODSECURITY_CATEGORY_MITRE.get(skill.get("category") or "", []),
             "title": skill["msg"],
             "description": (
                 f"Regra ModSecurity/OWASP CRS catalogada: {skill['msg']} "

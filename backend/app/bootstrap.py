@@ -1,6 +1,7 @@
 """Bootstrap: admin inicial + catálogo real de skills (sem dados mockados).
 Idempotente — cada parte só roda se ainda não houver o que criaria."""
 import asyncio
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,16 +30,22 @@ async def _ensure_admin(db: AsyncSession) -> None:
     )
 
 
-async def _ensure_skills(db: AsyncSession) -> tuple[int, int]:
+async def _ensure_skills(db: AsyncSession) -> tuple[int, int, int]:
     """Upsert por (source, external_id) — não só "insere se faltar": conteúdo
     autoral (`correlation`) muda com frequência normal de desenvolvimento, e
     uma skill que existe mas está desatualizada silenciosamente nunca se
     corrigiria sozinha. Conteúdo alterado limpa o embedding para o backfill
-    reidratar (rag.py) — nunca serve uma busca semântica sobre texto velho."""
+    reidratar (rag.py) — nunca serve uma busca semântica sobre texto velho.
+    Também remove skills cuja chave não existe mais no catálogo gerado — sem
+    isso, uma mudança de fonte/organização (ex.: `source` "suricata" virando
+    "network_signature") deixaria as linhas antigas órfãs para sempre na
+    tabela, aparecendo na página Regras junto do catálogo novo."""
     existing = {(s.source, s.external_id): s for s in (await db.execute(select(Skill))).scalars().all()}
+    seen_keys: set[tuple[str, str]] = set()
     installed = updated = 0
     for entry in skills_catalog.load_all():
         key = (entry["source"], entry["external_id"])
+        seen_keys.add(key)
         row = existing.get(key)
         if row is None:
             db.add(Skill(**entry))
@@ -51,8 +58,13 @@ async def _ensure_skills(db: AsyncSession) -> tuple[int, int]:
             row.search_text = entry["search_text"]
             row.embedding = None
             updated += 1
+    removed = 0
+    for key, row in existing.items():
+        if key not in seen_keys:
+            await db.delete(row)
+            removed += 1
     await db.commit()
-    return installed, updated
+    return installed, updated, removed
 
 
 async def _backfill_embeddings_forever() -> None:
@@ -68,6 +80,42 @@ async def _backfill_embeddings_forever() -> None:
             except Exception:  # noqa: BLE001 — nunca derruba o processo da API
                 pass
         await asyncio.sleep(10)
+
+
+_ORPHAN_SWEEP_INTERVAL_SECONDS = 300.0
+_ORPHAN_THRESHOLD_MINUTES = 25
+"""Folga sobre `_EVENT_PROCESSING_HARD_CEILING_SECONDS` (20min) em rules_engine.py:
+nenhum evento legítimo fica pending/analyzing por mais tempo que o teto, então um
+achado mais velho que isso é sempre órfão — nunca trabalho real em andamento."""
+
+
+async def _sweep_orphaned_events_forever() -> None:
+    """Rede de segurança independente de `run_rules_engine_for_event`: mesmo com o
+    teto de tempo e o handler de exceção que marca o evento como falha técnica, a
+    PRÓPRIA escrita de limpeza pode falhar silenciosamente (ex.: pool de conexões
+    também esgotado no exato momento da falha), deixando o evento "analyzing" para
+    sempre sem nenhum erro visível — observado ao vivo em cargas de ~80 eventos,
+    onde uma pequena fração (5-7) ficava travada mesmo com o teto em vigor. Varre
+    periodicamente por pending/analyzing mais velhos que a folga e reagenda."""
+    while True:
+        await asyncio.sleep(_ORPHAN_SWEEP_INTERVAL_SECONDS)
+        try:
+            threshold = datetime.now(timezone.utc) - timedelta(minutes=_ORPHAN_THRESHOLD_MINUTES)
+            async with SessionLocal() as db:
+                ids = (
+                    await db.execute(
+                        select(Event.id).where(
+                            Event.rules_engine_status.in_(("pending", "analyzing")),
+                            Event.received_at < threshold,
+                        )
+                    )
+                ).scalars().all()
+            for event_id in ids:
+                asyncio.create_task(run_rules_engine_for_event(event_id))
+            if ids:
+                print(f"[bootstrap] {len(ids)} evento(s) órfão(s) (travado(s) há mais de {_ORPHAN_THRESHOLD_MINUTES}min) reagendado(s).")
+        except Exception:  # noqa: BLE001 — nunca derruba o processo da API
+            pass
 
 
 async def _requeue_stuck_events(db: AsyncSession) -> int:
@@ -88,15 +136,18 @@ async def _requeue_stuck_events(db: AsyncSession) -> int:
 async def bootstrap() -> None:
     async with SessionLocal() as db:
         await _ensure_admin(db)
-        installed, updated = await _ensure_skills(db)
+        installed, updated, removed = await _ensure_skills(db)
         await db.commit()
         if installed:
             print(f"[bootstrap] {installed} skills reais carregadas (ATT&CK/D3FEND/Suricata/ModSecurity).")
         if updated:
             print(f"[bootstrap] {updated} skill(s) com conteúdo atualizado (embedding será regenerado).")
+        if removed:
+            print(f"[bootstrap] {removed} skill(s) órfã(s) removida(s) (fonte/organização mudou).")
         if settings.rules_engine_enabled:
             requeued = await _requeue_stuck_events(db)
             if requeued:
                 print(f"[bootstrap] {requeued} evento(s) pending/analyzing reagendado(s) após restart.")
     if settings.rules_engine_enabled:
         asyncio.create_task(_backfill_embeddings_forever())
+        asyncio.create_task(_sweep_orphaned_events_forever())

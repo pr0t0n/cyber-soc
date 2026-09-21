@@ -140,3 +140,51 @@ async def test_elastic_test_connection_skips_when_url_not_configured(client, aut
     cid = created.json()["id"]
     r = await client.post(f"/api/admin/connectors/{cid}/test", headers=auth_headers)
     assert r.json()["status"] == "skipped"
+
+
+async def test_glpi_schema_declares_test_supported(client, auth_headers):
+    # Achado real: GLPI caía no fallback genérico "teste ainda não
+    # implementado" mesmo com credenciais reais configuradas — mostrava
+    # "não testado" na tela de Integrações mesmo com a integração
+    # funcionando de verdade (validado com ticket real no GLPI).
+    schemas = (await client.get("/api/admin/connectors/schemas", headers=auth_headers)).json()
+    assert schemas["notification:glpi"]["test_supported"] is True
+
+
+async def test_glpi_test_connection_ok_with_valid_credentials(client, auth_headers, monkeypatch):
+    monkeypatch.setattr(
+        connectors_module.httpx, "AsyncClient",
+        lambda *a, **k: _FakeAsyncClient(get_response=_FakeResponse(200, {"session_token": "sess123"})),
+    )
+    created = await client.post("/api/admin/connectors", headers=auth_headers, json={
+        "name": "GLPI prod", "kind": "notification", "type": "glpi",
+        "config": {"base_url": "https://glpi.exemplo.com/apirest.php", "app_token": "app1", "user_token": "user1"},
+    })
+    cid = created.json()["id"]
+    r = await client.post(f"/api/admin/connectors/{cid}/test", headers=auth_headers)
+    body = r.json()
+    assert body["status"] == "ok"
+
+
+async def test_glpi_test_connection_fails_on_invalid_tokens(client, auth_headers, monkeypatch):
+    monkeypatch.setattr(
+        connectors_module.httpx, "AsyncClient",
+        lambda *a, **k: _FakeAsyncClient(get_response=_FakeResponse(401)),
+    )
+    created = await client.post("/api/admin/connectors", headers=auth_headers, json={
+        "name": "GLPI prod", "kind": "notification", "type": "glpi",
+        "config": {"base_url": "https://glpi.exemplo.com/apirest.php", "app_token": "app1", "user_token": "invalido"},
+    })
+    cid = created.json()["id"]
+    r = await client.post(f"/api/admin/connectors/{cid}/test", headers=auth_headers)
+    assert r.json()["status"] == "fail"
+
+
+async def test_glpi_test_connection_fails_when_credentials_missing(client, auth_headers):
+    created = await client.post("/api/admin/connectors", headers=auth_headers, json={
+        "name": "GLPI incompleto", "kind": "notification", "type": "glpi",
+        "config": {"base_url": "https://glpi.exemplo.com/apirest.php"},
+    })
+    cid = created.json()["id"]
+    r = await client.post(f"/api/admin/connectors/{cid}/test", headers=auth_headers)
+    assert r.json()["status"] == "fail"

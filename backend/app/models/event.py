@@ -90,3 +90,15 @@ class Event(Base):
     # real para métricas de velocidade/SLA (received_at -> analyzed_at), não
     # uma estimativa. Nulo enquanto pending/analyzing.
     analyzed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, index=True)
+
+    # Reclassificação humana do veredito do motor de regras — "true_positive"/
+    # "false_positive"/"true_negative"/"false_negative", ou `None` enquanto
+    # ninguém revisou. Existe só pra medir a QUALIDADE real do motor contra
+    # decisão humana (matriz de confusão real, Precisão/Recall/F1/Acurácia —
+    # ver dashboard.py /confusion-matrix), nunca pra sobrescrever o veredito
+    # em si (`rules_engine_status`/`matched_skills` continuam sendo o que o
+    # motor decidiu). Fica em `Event`, não só em `Incident`, de propósito:
+    # um analista pode revisar tanto um "matched" (era mesmo ameaça?) quanto
+    # um "no_match"/"suspicious" (será que passou uma ameaça de verdade?) —
+    # sem isso nunca teríamos Recall/FN, só Precisão.
+    analyst_verdict: Mapped[str | None] = mapped_column(String(20), nullable=True, index=True)

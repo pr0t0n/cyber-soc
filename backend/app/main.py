@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
+from .agents.mcp_client import close_skill_tools
 from .api import auth, chat, connectors, dashboard, events, health, incidents, ingest, skills
 from .bootstrap import bootstrap
 from .config import settings
@@ -17,6 +18,10 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     await bootstrap()
     yield
+    # Sessão MCP é persistente pelo processo inteiro (app/agents/mcp_client.py)
+    # — sem isso, o subprocesso `python -m app.mcp_server` ficaria órfão a
+    # cada restart/deploy.
+    await close_skill_tools()
 
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)

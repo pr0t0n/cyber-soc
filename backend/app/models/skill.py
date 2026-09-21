@@ -6,15 +6,21 @@ from sqlalchemy.orm import Mapped, mapped_column
 from ..db import Base
 from .types import FlexibleVector
 
-SKILL_SOURCES = ("attack", "d3fend", "suricata", "modsecurity", "sigma", "agent_threats", "correlation")
+SKILL_SOURCES = ("attack_defend", "network_signature", "web_application")
 
 
 class Skill(Base):
-    """Uma skill = uma unidade de conhecimento real baixada de uma fonte
-    pública (MITRE ATT&CK, MITRE D3FEND, Suricata/Emerging Threats, OWASP
-    ModSecurity CRS, SigmaHQ + SIEM-Content, Agent Threat Rules), servida como
-    YAML na página Regras e usada como base de RAG pelo motor de regras
-    (app/agents/)."""
+    """Uma skill = uma unidade de conhecimento real, unificada por técnica
+    MITRE ATT&CK e organizada pelo grupo do LangGraph que a consome
+    (`source`): `attack_defend` (técnica ATT&CK + contramedidas D3FEND +
+    Agent Threat Rules + correlação interna), `network_signature` (técnica
+    ATT&CK enriquecida com as assinaturas Suricata/Emerging Threats e regras
+    Sigma reais que a evidenciam) e `web_application` (técnica ATT&CK
+    enriquecida com as regras ModSecurity/OWASP CRS reais que a evidenciam).
+    Suricata não roda mais como processo/serviço separado na plataforma — é
+    só uma das fontes usadas para gerar estas skills (ver
+    app/services/skills_catalog.py). Servida como YAML na página Regras e
+    usada como base de RAG pelo motor de regras (app/agents/)."""
 
     __tablename__ = "skills"
 

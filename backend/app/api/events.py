@@ -1,6 +1,7 @@
 import json
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,6 +12,15 @@ from ..models import Event, User
 router = APIRouter(prefix="/api/events", tags=["events"])
 
 _RAW_SCAN_WINDOW = 2000
+
+# Reclassificação humana pra matriz de confusão real (dashboard.py
+# /confusion-matrix) — nunca sobrescreve o veredito do motor, só registra se
+# um analista concorda ou não com ele.
+ANALYST_VERDICTS = ("true_positive", "false_positive", "true_negative", "false_negative")
+
+
+class VerdictUpdate(BaseModel):
+    verdict: str | None = None
 
 
 @router.get("/raw")
@@ -90,6 +100,7 @@ async def list_events(
                 "stages_done": (e.rules_engine_verdict or {}).get("stages_done", 0),
                 "stages_total": (e.rules_engine_verdict or {}).get("stages_total", 3),
                 "current_stage": (e.rules_engine_verdict or {}).get("stage"),
+                "analyst_verdict": e.analyst_verdict,
             }
             for e in rows
         ],
@@ -112,4 +123,22 @@ async def get_event(event_id: int, db: AsyncSession = Depends(get_db), _: User =
         "rules_engine_status": event.rules_engine_status, "matched_skills": event.matched_skills,
         "rules_engine_verdict": event.rules_engine_verdict, "recommendation": event.recommendation,
         "analyzed_at": event.analyzed_at.isoformat() if event.analyzed_at else None,
+        "analyst_verdict": event.analyst_verdict,
     }
+
+
+@router.patch("/{event_id}/verdict")
+async def update_analyst_verdict(
+    event_id: int, body: VerdictUpdate, db: AsyncSession = Depends(get_db), _: User = Depends(current_user),
+) -> dict:
+    """Reclassificação humana pra matriz de confusão real — `null` limpa a
+    revisão (volta pra "não revisado"), nunca altera o veredito do motor em
+    si (`rules_engine_status`)."""
+    if body.verdict is not None and body.verdict not in ANALYST_VERDICTS:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"verdict inválido: {body.verdict}")
+    event = await db.get(Event, event_id)
+    if not event:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Evento não encontrado")
+    event.analyst_verdict = body.verdict
+    await db.commit()
+    return {"id": event.id, "analyst_verdict": event.analyst_verdict}

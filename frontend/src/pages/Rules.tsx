@@ -20,17 +20,17 @@ interface SourceSummary {
 }
 
 const SOURCE_LABEL: Record<string, string> = {
-  attack: "MITRE ATT&CK", d3fend: "MITRE D3FEND", suricata: "Suricata", modsecurity: "ModSecurity",
-  sigma: "Sigma", agent_threats: "Agent Threats", correlation: "Correlação (interna)",
+  attack_defend: "ATT&CK + D3FEND",
+  network_signature: "Assinaturas de Rede (Suricata + Sigma)",
+  web_application: "Regras Web (ModSecurity)",
 };
 const SOURCE_COLOR: Record<string, string> = {
-  attack: "#f43f5e", d3fend: "#22d3ee", suricata: "#a78bfa", modsecurity: "#fb923c",
-  sigma: "#34d399", agent_threats: "#f472b6", correlation: "#facc15",
+  attack_defend: "#f43f5e", network_signature: "#a78bfa", web_application: "#fb923c",
 };
 
 export default function Rules() {
   const [summary, setSummary] = useState<SourceSummary | null>(null);
-  const [source, setSource] = useState<string>("attack");
+  const [source, setSource] = useState<string>("attack_defend");
   const [q, setQ] = useState("");
   const [items, setItems] = useState<SkillListItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -65,7 +65,7 @@ export default function Rules() {
       </div>
 
       {summary && (
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {summary.sources.map((s) => (
             <button
               key={s.source}

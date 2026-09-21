@@ -71,6 +71,25 @@ async def test_ingest_wazuh_extracts_ip_port_protocol_from_suricata_eve_fields(c
     assert detail["protocol"] == "TCP"
 
 
+async def test_ingest_wazuh_host_telemetry_never_gets_agent_ip_as_dst_ip(client, auth_headers, ingest_headers):
+    """Achado real (auditoria de incidentes falsos): telemetria pura de host
+    (FIM/"Integrity checksum changed", netstat, sudo, tela bloqueada) nunca
+    tem `data.dstip`/`data.dest_ip` de verdade — `agent.ip` (o host que
+    RELATOU o evento, não um destino de tráfego) não pode ser usado como
+    fallback, senão `is_network_traffic` trata telemetria local como se
+    fosse tráfego de rede de verdade."""
+    r = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 7, "description": "Integrity checksum changed."},
+        "agent": {"id": "003", "name": "host.local", "ip": "172.22.0.2"},
+        "data": {},
+    })
+    assert r.status_code == 201, r.text
+    event_id = r.json()["id"]
+    detail = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
+    assert detail["src_ip"] is None
+    assert detail["dst_ip"] is None
+
+
 async def test_ingest_generic_low_risk_traffic(client, auth_headers, ingest_headers):
     r = await client.post("/api/ingest/generic", headers=ingest_headers, json={
         "type": "HTTP request", "severity": "info",

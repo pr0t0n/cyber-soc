@@ -1,9 +1,37 @@
 from app.services.event_triage import (
+    deterministic_verdict,
     fast_lane_verdict,
     is_compliance_noise,
     is_network_traffic,
     non_network_fast_lane_verdict,
 )
+
+
+def test_deterministic_verdict_aggregates_mitre_from_matches_without_duplicates():
+    matches = [
+        {"id": "9000001", "mitre": ["T1595"], "title": "Port scan", "recommendation": "..."},
+        {"id": "CSOC-002", "mitre": ["T1595", "T1046"], "title": "Correlação", "recommendation": "..."},
+    ]
+    verdict = deterministic_verdict(matches)
+    assert verdict["mitre"] == ["T1595", "T1046"]
+
+
+def test_deterministic_verdict_mitre_empty_when_no_match_carries_technique():
+    matches = [{"id": "999", "mitre": [], "title": "Sem técnica mapeada", "recommendation": "..."}]
+    assert deterministic_verdict(matches)["mitre"] == []
+
+
+def test_deterministic_verdict_deduplicates_matches_with_the_same_id():
+    """Mesma classe de achado real do dedup em graph.py: `matched_skills`
+    duplicado (ex.: "T1110, T1110") num ticket confunde o analista — o mesmo
+    id nunca deveria aparecer duas vezes no veredito determinístico."""
+    matches = [
+        {"id": "9000001", "mitre": ["T1595"], "title": "Port scan", "recommendation": "Bloquear."},
+        {"id": "9000001", "mitre": ["T1595"], "title": "Port scan", "recommendation": "Bloquear."},
+    ]
+    verdict = deterministic_verdict(matches)
+    assert verdict["matched_skills"] == ["9000001"]
+    assert verdict["recommendation"] == "9000001: Bloquear."
 
 
 def test_sca_only_groups_are_compliance_noise():
@@ -69,6 +97,21 @@ def test_event_without_any_ip_is_not_network_traffic():
     """Escopo do produto: FIM, rootcheck, SCA, inventário e ciclo de vida do
     agente nunca carregam IP — não descrevem tráfego, só estado do host."""
     assert is_network_traffic(src_ip=None, dst_ip=None) is False
+
+
+def test_loopback_only_dst_ip_is_not_network_traffic():
+    # Achado real: `_translate_wazuh` usa `agent.ip` como fallback de dst_ip
+    # para telemetria pura de host (netstat) — isso virava "127.0.0.1", que
+    # não é destino de tráfego nenhum, só o agente relatando a si mesmo.
+    assert is_network_traffic(src_ip=None, dst_ip="127.0.0.1") is False
+    assert is_network_traffic(src_ip=None, dst_ip="::1") is False
+
+
+def test_loopback_dst_ip_with_real_src_ip_is_still_network_traffic():
+    # Uma origem de verdade se conectando a localhost (ex.: proxy/tunnel
+    # local) ainda é tráfego real — só o CASO PURO "só loopback, sem
+    # origem nenhuma" é excluído.
+    assert is_network_traffic(src_ip="185.220.101.8", dst_ip="127.0.0.1") is True
 
 
 def test_non_network_fast_lane_verdict_is_explicit_about_scope():

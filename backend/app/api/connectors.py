@@ -79,6 +79,30 @@ async def _test_elastic(config: dict) -> dict:
     except httpx.HTTPError as exc:
         return {"status": "fail", "detail": f"Elasticsearch inacessível em '{es_url}': {exc}"[:200]}
 
+async def _test_glpi(config: dict) -> dict:
+    """GET /initSession real contra o GLPI configurado — mesmo fluxo de
+    duas etapas que `notify.py`/`sync_all_glpi_statuses` usam pra valer
+    (não um teste separado e diferente do caminho real). Documentação
+    oficial: https://github.com/glpi-project/glpi/blob/main/apirest.md."""
+    base_url = (config.get("base_url") or "").rstrip("/")
+    app_token, user_token = config.get("app_token"), config.get("user_token")
+    if not (base_url and app_token and user_token):
+        return {"status": "fail", "detail": "Informe URL do GLPI, App-Token e User-Token para testar a conexão."}
+    try:
+        async with httpx.AsyncClient(timeout=_HTTP_TIMEOUT, verify=False) as client:
+            r = await client.get(
+                f"{base_url}/initSession",
+                headers={"Authorization": f"user_token {user_token}", "App-Token": app_token},
+            )
+        if r.status_code == 200 and (r.json() or {}).get("session_token"):
+            return {"status": "ok", "detail": "Sessão GLPI aberta com sucesso (App-Token/User-Token válidos)."}
+        if r.status_code in (401, 403):
+            return {"status": "fail", "detail": "App-Token/User-Token inválidos para o GLPI."}
+        return {"status": "fail", "detail": f"HTTP {r.status_code} ao abrir sessão no GLPI."}
+    except httpx.HTTPError as exc:
+        return {"status": "fail", "detail": f"GLPI inacessível em '{base_url}': {exc}"[:200]}
+
+
 _SECRET_KEYS = ("password", "secret", "token", "api_key", "app_token", "user_token")
 
 
@@ -220,6 +244,8 @@ async def test_connector(connector_id: int, db: AsyncSession = Depends(get_db), 
         res = await _test_wazuh(config)
     elif c.kind == "siem" and c.type == "elastic":
         res = await _test_elastic(config)
+    elif c.kind == "notification" and c.type == "glpi":
+        res = await _test_glpi(config)
     else:
         res = {"status": "skipped", "detail": f"Teste ao vivo para '{c.type}' ainda não implementado; configuração salva."}
     c.last_test = res

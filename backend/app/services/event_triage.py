@@ -47,6 +47,9 @@ def fast_lane_verdict(event_type: str) -> dict[str, Any]:
     }
 
 
+_LOOPBACK_IPS = {"127.0.0.1", "::1", "0.0.0.0"}
+
+
 def is_network_traffic(*, src_ip: str | None, dst_ip: str | None) -> bool:
     """Escopo do produto: esta plataforma analisa TRÁFEGO DE REDE, não
     telemetria de host em geral. O sinal mínimo objetivo de que um evento
@@ -54,8 +57,20 @@ def is_network_traffic(*, src_ip: str | None, dst_ip: str | None) -> bool:
     relatado pelo menos um IP (origem ou destino) envolvido — FIM (syscheck),
     rootcheck, SCA, inventário (syscollector), ciclo de vida do agente,
     sudo/tela bloqueada (macOS) nunca carregam IP nenhum, porque não
-    descrevem tráfego algum, só estado local do host."""
-    return bool(src_ip or dst_ip)
+    descrevem tráfego algum, só estado local do host.
+
+    Achado real: `_translate_wazuh` usa `agent.ip` como fallback de `dst_ip`
+    quando a regra não relata nenhum (ingest.py) — para telemetria pura de
+    host (ex.: netstat "portas escutando"), isso vira `dst_ip=127.0.0.1` (o
+    próprio agente relatando a si mesmo), não um destino de tráfego de
+    verdade. Sem esta exclusão, esse achado passava pelo motor de IA como
+    "tráfego de rede" e o Supervisor às vezes "confirmava" a própria
+    descrição do evento como se fosse uma skill (ver correção em
+    `graph.py::supervisor_node`) — poluindo o backlog de incidentes com
+    telemetria local sem risco nenhum."""
+    if src_ip:
+        return True
+    return bool(dst_ip) and dst_ip not in _LOOPBACK_IPS
 
 
 def non_network_fast_lane_verdict(event_type: str) -> dict[str, Any]:
@@ -82,11 +97,19 @@ def deterministic_verdict(matches: list[dict[str, Any]]) -> dict[str, Any]:
     igual: confirmação por fato objetivo já presente no catálogo real de
     skills, nunca opinião de LLM. Cada `match` é
     `{id, mitre, title, description, recommendation}`."""
+    mitre: list[str] = []
+    for m in matches:
+        for technique_id in m.get("mitre") or []:
+            if technique_id not in mitre:
+                mitre.append(technique_id)
+    seen_ids: set[str] = set()
+    matches = [m for m in matches if not (m["id"] in seen_ids or seen_ids.add(m["id"]))]
     return {
         "matched": True,
         "matched_skills": [m["id"] for m in matches],
         "summary": "Correspondência determinística confirmada: " + "; ".join(m["title"] for m in matches) + ".",
         "recommendation": " | ".join(f"{m['id']}: {m['recommendation']}" for m in matches),
+        "mitre": mitre,
         "groups": {},
         "fast_lane": True,
         "deterministic": True,

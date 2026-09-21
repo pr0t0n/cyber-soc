@@ -1,5 +1,8 @@
-"""Página Regras: skills reais (ATT&CK/D3FEND/Suricata/ModSecurity) em YAML —
-a mesma base usada como RAG pelo motor de regras (app/agents/)."""
+"""Página Regras: skills reais, unificadas por técnica MITRE ATT&CK
+(Suricata/ModSecurity/Sigma fundidos na técnica que evidenciam, mais
+D3FEND/Agent Threat Rules/correlação interna — ver
+app/services/skills_catalog.py) em YAML — a mesma base usada como RAG pelo
+motor de regras (app/agents/)."""
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession

@@ -185,7 +185,7 @@ CONNECTOR_SCHEMAS: dict[tuple[str, str], dict[str, Any]] = {
             {"key": "app_token", "label": "App-Token", "type": "password", "required": True, "secret": True},
             {"key": "user_token", "label": "User-Token", "type": "password", "required": True, "secret": True},
         ],
-        "test_supported": False,
+        "test_supported": True,
     },
     ("notification", "email"): {
         "docs_url": None,

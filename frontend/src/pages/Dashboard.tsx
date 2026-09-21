@@ -32,37 +32,10 @@ interface RiskHeatmap {
   days: string[];
   grid: number[][];
 }
-interface ConnectorsStatus {
-  total: number;
-  items: { id: number; name: string; kind: string; type: string; status: string; last_test: { status: string } | null }[];
-}
 interface IncidentsStatus {
   summary: { backlog: number; em_andamento: number; concluido: number; total: number };
-  recent: { id: number; code: string; title: string; status: string; severity: string; event_id: number | null }[];
+  recent: { id: number; code: string; title: string; status: string; severity: string; event_id: number | null; glpi_ticket_id: number | null }[];
 }
-interface AgentActivityItem {
-  event_id: number;
-  type: string;
-  severity: string;
-  src_ip: string | null;
-  tag: string | null;
-  rules_engine_status: string;
-  matched_skills: string[];
-  recommendation: string | null;
-  stages_done: number;
-  stages_total: number;
-  current_stage: string | null;
-  received_at: string | null;
-}
-
-const RULES_STATUS_LABEL: Record<string, string> = {
-  pending: "Na fila", analyzing: "Analisando…", matched: "Skill casada", no_match: "Sem correspondência",
-  informational: "Informativo (via rápida)",
-};
-const RULES_STATUS_COLOR: Record<string, string> = {
-  pending: "#94a3b8", analyzing: "#22d3ee", matched: "#f43f5e", no_match: "#34d399", informational: "#64748b",
-};
-
 interface DurationStats {
   avg_seconds: number | null;
   median_seconds: number | null;
@@ -70,24 +43,50 @@ interface DurationStats {
   sample_size: number;
 }
 interface AnalysisMetrics {
-  efficiency_pct: number | null;
+  stability_pct: number | null;
   degraded_count: number;
+  grounding_rejected_count: number;
+  deterministic_pct: number | null;
+  deterministic_count: number;
   analyzed_by_ai_count: number;
   fast_lane_count: number;
+  hydration_pct: number | null;
+  hydrated_count: number;
+  matched_count: number;
+  suspicious_count: number;
+  learned_patterns_count: number;
   analysis_speed: DurationStats;
   sla_event_to_incident: DurationStats;
   backlog: { count: number; oldest_seconds: number | null };
 }
-
-function fmtDuration(seconds: number | null): string {
-  if (seconds == null) return "—";
-  if (seconds < 60) return `${Math.round(seconds)}s`;
-  if (seconds < 3600) return `${Math.round(seconds / 60)}min`;
-  return `${(seconds / 3600).toFixed(1)}h`;
+interface AttackVectorCell {
+  source: string;
+  category: string;
+  total: number;
+  matched: number;
+  no_match: number;
+  suspicious: number;
+  other: number;
 }
-const STAGE_LABEL: Record<string, string> = {
-  attack_defend: "ATT&CK/D3FEND", network_signature: "Assinaturas de Rede", web_application: "Aplicação Web/WAF",
-};
+interface AttackVectorData {
+  sources: string[];
+  categories: string[];
+  cells: AttackVectorCell[];
+}
+interface ConfusionMatrixData {
+  true_positive: number;
+  false_positive: number;
+  true_negative: number;
+  false_negative: number;
+  reviewed_count: number;
+  total_events: number;
+  accuracy_pct: number | null;
+  precision_pct: number | null;
+  recall_pct: number | null;
+  f1_pct: number | null;
+  false_positive_rate_pct: number | null;
+  false_negative_rate_pct: number | null;
+}
 
 function useDashboardData(tag: string) {
   const qs = tag ? `?tag=${encodeURIComponent(tag)}` : "";
@@ -95,12 +94,12 @@ function useDashboardData(tag: string) {
   const [eps, setEps] = useState<EpsData | null>(null);
   const [heatmap, setHeatmap] = useState<HeatmapData | null>(null);
   const [riskHeatmap, setRiskHeatmap] = useState<RiskHeatmap | null>(null);
-  const [connectors, setConnectors] = useState<ConnectorsStatus | null>(null);
   const [incidents, setIncidents] = useState<IncidentsStatus | null>(null);
   const [worldMap, setWorldMap] = useState<WorldMapPoint[] | null>(null);
   const [tags, setTags] = useState<string[]>([]);
-  const [activity, setActivity] = useState<AgentActivityItem[] | null>(null);
   const [metrics, setMetrics] = useState<AnalysisMetrics | null>(null);
+  const [attackVector, setAttackVector] = useState<AttackVectorData | null>(null);
+  const [confusionMatrix, setConfusionMatrix] = useState<ConfusionMatrixData | null>(null);
   const [newIncidentAlert, setNewIncidentAlert] = useState<{ id: number; code: string; title: string; severity: string } | null>(null);
   const seenIncidentIds = useRef<Set<number> | null>(null);
 
@@ -109,24 +108,30 @@ function useDashboardData(tag: string) {
       api.get<Summary>(`/dashboard/summary${qs}`).then(setSummary);
       api.get<HeatmapData>(`/dashboard/mitre-heatmap${qs}`).then(setHeatmap);
       api.get<RiskHeatmap>(`/dashboard/risk-heatmap${qs}`).then(setRiskHeatmap);
-      api.get<ConnectorsStatus>("/dashboard/connectors-status").then(setConnectors);
-      api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then((data) => {
-        setIncidents(data);
-        const ids = new Set(data.recent.map((i) => i.id));
-        // Primeira carga só estabelece a base — sem isso, TODO incidente já
-        // existente apareceria como "novo" assim que a página abre.
-        if (seenIncidentIds.current !== null) {
-          const fresh = data.recent.find((i) => !seenIncidentIds.current!.has(i.id));
-          if (fresh) setNewIncidentAlert(fresh);
-        }
-        seenIncidentIds.current = ids;
+      // Pedido real: status de incidente com ticket GLPI vem de lá, não de
+      // uma lista suspensa local — sincroniza antes de buscar o estado
+      // atual pra já vir com o status mais recente do ticket nesta mesma
+      // rodada de polling (falha do GLPI aqui nunca trava o dashboard).
+      api.post<{ synced: number; failed: number }>("/incidents/sync-glpi").catch(() => null).finally(() => {
+        api.get<IncidentsStatus>(`/dashboard/incidents-status${qs}`).then((data) => {
+          setIncidents(data);
+          const ids = new Set(data.recent.map((i) => i.id));
+          // Primeira carga só estabelece a base — sem isso, TODO incidente já
+          // existente apareceria como "novo" assim que a página abre.
+          if (seenIncidentIds.current !== null) {
+            const fresh = data.recent.find((i) => !seenIncidentIds.current!.has(i.id));
+            if (fresh) setNewIncidentAlert(fresh);
+          }
+          seenIncidentIds.current = ids;
+        });
       });
       api.get<{ points: WorldMapPoint[] }>(`/dashboard/world-map${qs}`).then((r) => setWorldMap(r.points));
       api.get<{ tags: string[] }>("/dashboard/tags").then((r) => setTags(r.tags));
+      api.get<AttackVectorData>(`/dashboard/attack-vector${qs}`).then(setAttackVector);
+      api.get<ConfusionMatrixData>(`/dashboard/confusion-matrix${qs}`).then(setConfusionMatrix);
     };
     const loadFast = () => {
       api.get<EpsData>(`/dashboard/eps${qs}`).then(setEps);
-      api.get<{ items: AgentActivityItem[] }>(`/dashboard/agent-activity${qs}`).then((r) => setActivity(r.items));
       api.get<AnalysisMetrics>(`/dashboard/analysis-metrics${qs}`).then(setMetrics);
     };
     loadSlow();
@@ -140,8 +145,8 @@ function useDashboardData(tag: string) {
   }, [qs]);
 
   return {
-    summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics,
-    newIncidentAlert, dismissIncidentAlert: () => setNewIncidentAlert(null),
+    summary, eps, heatmap, riskHeatmap, incidents, setIncidents, worldMap, tags, metrics,
+    attackVector, confusionMatrix, newIncidentAlert, dismissIncidentAlert: () => setNewIncidentAlert(null),
   };
 }
 
@@ -159,11 +164,34 @@ function mitreColor(count: number, max: number) {
   return `rgba(244,63,94,${(0.2 + r * 0.7).toFixed(2)})`;
 }
 
+// Attack Vector: cor segue a IDENTIDADE do resultado predominante da célula
+// (confirmado/sem ameaça/suspeito/outro), intensidade segue o VOLUME —
+// nunca as duas coisas misturadas na mesma escala (ver dataviz: "color
+// follows the entity, never its rank").
+const ATTACK_VECTOR_RESULT_RGB: Record<string, string> = {
+  matched: "244,63,94", suspicious: "250,204,21", no_match: "52,211,153", other: "100,116,139",
+};
+const ATTACK_VECTOR_RESULT_LABEL: Record<string, string> = {
+  matched: "Confirmado", suspicious: "Suspeito", no_match: "Sem ameaça", other: "Informativo/em análise",
+};
+function dominantResult(cell: AttackVectorCell): keyof typeof ATTACK_VECTOR_RESULT_RGB {
+  const ranked: [keyof typeof ATTACK_VECTOR_RESULT_RGB, number][] = [
+    ["matched", cell.matched], ["suspicious", cell.suspicious], ["no_match", cell.no_match], ["other", cell.other],
+  ];
+  ranked.sort((a, b) => b[1] - a[1]);
+  return ranked[0][1] > 0 ? ranked[0][0] : "other";
+}
+function attackVectorCellColor(cell: AttackVectorCell | undefined, maxTotal: number): string {
+  if (!cell || !cell.total) return "#131a2c";
+  const r = maxTotal > 0 ? cell.total / maxTotal : 0;
+  return `rgba(${ATTACK_VECTOR_RESULT_RGB[dominantResult(cell)]},${(0.2 + r * 0.7).toFixed(2)})`;
+}
+
 export default function Dashboard() {
   const [tag, setTag] = useState("");
   const {
-    summary, eps, heatmap, riskHeatmap, connectors, incidents, setIncidents, worldMap, tags, activity, metrics,
-    newIncidentAlert, dismissIncidentAlert,
+    summary, eps, heatmap, riskHeatmap, incidents, setIncidents, worldMap, tags, metrics,
+    attackVector, confusionMatrix, newIncidentAlert, dismissIncidentAlert,
   } = useDashboardData(tag);
 
   useEffect(() => {
@@ -210,7 +238,7 @@ export default function Dashboard() {
                 Novo incidente · {SEV_LABEL[newIncidentAlert.severity] ?? newIncidentAlert.severity}
               </p>
               <Link
-                to="/incidentes"
+                to="/resposta?tab=incidentes"
                 onClick={dismissIncidentAlert}
                 className="text-sm font-medium mt-1 block truncate hover:underline"
                 style={{ color: "var(--text)" }}
@@ -287,7 +315,8 @@ export default function Dashboard() {
         <div className="glass-card rounded-xl p-4 flex items-center justify-around flex-wrap gap-4">
           <Gauge value={summary.avg_risk_score} label="Risco médio" />
           <Gauge value={summary.mitre_coverage_pct} label="Cobertura MITRE" suffix="%" invert />
-          <Gauge value={metrics?.efficiency_pct ?? 100} label="Eficiência do motor" suffix="%" invert />
+          <Gauge value={metrics ? metrics.stability_pct : null} label="Estabilidade da IA" suffix="%" invert />
+          <Gauge value={metrics ? metrics.hydration_pct : null} label="Hidratação de dado" suffix="%" invert />
         </div>
       )}
 
@@ -333,7 +362,7 @@ export default function Dashboard() {
                   <div key={inc.id} className="flex items-center justify-between text-xs py-1.5" style={{ borderBottom: "1px solid var(--border)" }}>
                     {inc.event_id ? (
                       <Link
-                        to={`/eventos?event=${inc.event_id}`}
+                        to={`/resposta?tab=analises&event=${inc.event_id}`}
                         className="truncate pr-2 hover:underline"
                         style={{ color: "var(--text)" }}
                         title="Ver evento de origem, trilha do agente e threat intel"
@@ -343,16 +372,26 @@ export default function Dashboard() {
                     ) : (
                       <span style={{ color: "var(--text)" }} className="truncate pr-2">{inc.code} · {inc.title}</span>
                     )}
-                    <select
-                      value={inc.status}
-                      onChange={(e) => updateIncidentStatus(inc.id, e.target.value)}
-                      className="text-[10px] font-medium rounded-full px-2 py-0.5 border-0"
-                      style={{ background: `${INCIDENT_STATUS_COLOR[inc.status]}22`, color: INCIDENT_STATUS_COLOR[inc.status] }}
-                    >
-                      {Object.entries(INCIDENT_STATUS_LABEL).map(([v, l]) => (
-                        <option key={v} value={v} style={{ background: "var(--surface-2)", color: "var(--text)" }}>{l}</option>
-                      ))}
-                    </select>
+                    {inc.glpi_ticket_id != null ? (
+                      <span
+                        className="text-[10px] font-medium rounded-full px-2 py-0.5 shrink-0"
+                        style={{ background: `${INCIDENT_STATUS_COLOR[inc.status]}22`, color: INCIDENT_STATUS_COLOR[inc.status] }}
+                        title={`Sincronizado do ticket GLPI #${inc.glpi_ticket_id} — não editável aqui`}
+                      >
+                        {INCIDENT_STATUS_LABEL[inc.status]} · GLPI #{inc.glpi_ticket_id}
+                      </span>
+                    ) : (
+                      <select
+                        value={inc.status}
+                        onChange={(e) => updateIncidentStatus(inc.id, e.target.value)}
+                        className="text-[10px] font-medium rounded-full px-2 py-0.5 border-0"
+                        style={{ background: `${INCIDENT_STATUS_COLOR[inc.status]}22`, color: INCIDENT_STATUS_COLOR[inc.status] }}
+                      >
+                        {Object.entries(INCIDENT_STATUS_LABEL).map(([v, l]) => (
+                          <option key={v} value={v} style={{ background: "var(--surface-2)", color: "var(--text)" }}>{l}</option>
+                        ))}
+                      </select>
+                    )}
                   </div>
                 ))}
                 {incidents.recent.length === 0 && <p className="text-xs" style={{ color: "var(--text-muted)" }}>Nenhum incidente aberto.</p>}
@@ -362,88 +401,110 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card title="Eficiência do Motor de Regras" subtitle="% sem degradação, velocidade de análise e SLA evento → incidente — calculados dos timestamps reais">
-        {metrics && (
-          <div className="grid grid-cols-5 gap-3">
-            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
-              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Eficiência</p>
-              <p className="text-xl font-bold mt-1" style={{ color: (metrics.efficiency_pct ?? 100) >= 80 ? "#34d399" : "#facc15" }}>
-                {metrics.efficiency_pct != null ? `${metrics.efficiency_pct}%` : "—"}
-              </p>
-              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
-                {metrics.analyzed_by_ai_count} análise(s) de IA{metrics.degraded_count > 0 ? `, ${metrics.degraded_count} degradada(s)` : ""}
-              </p>
-            </div>
-            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
-              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Velocidade (mediana)</p>
-              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{fmtDuration(metrics.analysis_speed.median_seconds)}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
-                p95 {fmtDuration(metrics.analysis_speed.p95_seconds)} · {metrics.analysis_speed.sample_size} evento(s)
-              </p>
-            </div>
-            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
-              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>SLA evento → incidente</p>
-              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{fmtDuration(metrics.sla_event_to_incident.median_seconds)}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
-                p95 {fmtDuration(metrics.sla_event_to_incident.p95_seconds)} · {metrics.sla_event_to_incident.sample_size} incidente(s)
-              </p>
-            </div>
-            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
-              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Fila (backlog)</p>
-              <p className="text-xl font-bold mt-1" style={{ color: metrics.backlog.count > 20 ? "#f43f5e" : "var(--text)" }}>{metrics.backlog.count}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
-                mais antigo há {fmtDuration(metrics.backlog.oldest_seconds)}
-              </p>
-            </div>
-            <div className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
-              <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Via rápida (compliance)</p>
-              <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{metrics.fast_lane_count}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>SCA/rootcheck, sem IA</p>
-            </div>
-          </div>
+      <Card title="Attack Vector" subtitle="Tratamento de eventos por fonte de dado × vetor de ataque (tática MITRE) — resultado predominante em cada célula, não uma matriz de confusão de ML (sem rótulo de verdade fundamental)">
+        {attackVector && attackVector.sources.length === 0 && (
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Nenhum evento analisado ainda.</p>
         )}
+        {attackVector && attackVector.sources.length > 0 && (() => {
+          const cellsByKey = new Map(attackVector.cells.map((c) => [`${c.source}|${c.category}`, c]));
+          const maxTotal = Math.max(...attackVector.cells.map((c) => c.total), 1);
+          return (
+            <div className="overflow-x-auto">
+              <div className="flex flex-col gap-2 min-w-[640px] w-fit">
+                <div className="flex items-center gap-1.5 pl-24">
+                  {attackVector.categories.map((c) => (
+                    <span
+                      key={c}
+                      className="w-20 shrink-0 text-[9px] font-medium text-center truncate"
+                      style={{ color: "var(--text-muted)" }}
+                      title={c}
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </div>
+                {attackVector.sources.map((s) => (
+                  <div key={s} className="flex items-center gap-1.5">
+                    <span className="w-24 shrink-0 text-xs font-medium truncate" style={{ color: "var(--text-muted)" }}>{s}</span>
+                    <div className="flex gap-1.5">
+                      {attackVector.categories.map((c) => {
+                        const cell = cellsByKey.get(`${s}|${c}`);
+                        const tooltip = cell
+                          ? `${s} × ${c}: ${cell.total} evento(s) — ${cell.matched} confirmado(s), ${cell.no_match} sem ameaça, ${cell.suspicious} suspeito(s), ${cell.other} informativo/em análise`
+                          : `${s} × ${c}: sem eventos`;
+                        return (
+                          <div
+                            key={c}
+                            title={tooltip}
+                            className="w-20 h-10 rounded-md flex items-center justify-center"
+                            style={{ background: attackVectorCellColor(cell, maxTotal), border: "1px solid var(--border)" }}
+                          >
+                            <span className="text-[10px] font-semibold" style={{ color: "var(--text)" }}>{cell?.total ?? 0}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-3 mt-3 flex-wrap">
+                {Object.entries(ATTACK_VECTOR_RESULT_LABEL).map(([k, label]) => (
+                  <span key={k} className="flex items-center gap-1.5 text-[10px]" style={{ color: "var(--text-muted)" }}>
+                    <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: `rgb(${ATTACK_VECTOR_RESULT_RGB[k]})` }} />
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </Card>
 
-      <Card title="Atividade do Agente" subtitle="O que o Supervisor (LangGraph + RAG) está analisando agora, evento a evento">
-        {activity && activity.length === 0 && (
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Nenhum evento processado pelo motor de regras ainda.</p>
+      <Card title="Matriz de Confusão" subtitle="Precisão real do motor de regras contra a reclassificação humana (Eventos → revisar) — não confundir com Estabilidade da IA, que só mede infraestrutura">
+        {confusionMatrix && confusionMatrix.reviewed_count === 0 && (
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+            Nenhum evento revisado por um analista ainda ({confusionMatrix.total_events} evento(s) no total) — abra um evento em Eventos e use "Revisão do analista" para começar a medir.
+          </p>
         )}
-        {activity && activity.length > 0 && (
-          <div className="flex flex-col gap-1.5">
-            {activity.map((a) => {
-              const inFlight = a.rules_engine_status === "pending" || a.rules_engine_status === "analyzing";
-              return (
-                <Link
-                  to={`/eventos?event=${a.event_id}`}
-                  key={a.event_id}
-                  className="flex items-center justify-between text-xs py-1.5 gap-3 hover:opacity-80"
-                  style={{ borderBottom: "1px solid var(--border)" }}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    {inFlight && (
-                      <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse shrink-0" style={{ background: RULES_STATUS_COLOR[a.rules_engine_status] }} />
-                    )}
-                    <span style={{ color: "var(--text)" }} className="truncate">
-                      {a.type} <span style={{ color: "var(--text-muted)" }}>· {a.src_ip ?? "origem desconhecida"}</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {a.recommendation && !inFlight && (
-                      <span className="truncate max-w-[220px]" style={{ color: "var(--text-muted)" }} title={a.recommendation}>
-                        → {a.recommendation}
-                      </span>
-                    )}
-                    {inFlight && a.current_stage && (
-                      <span style={{ color: "var(--text-muted)" }}>{STAGE_LABEL[a.current_stage] ?? a.current_stage} ({a.stages_done}/{a.stages_total})</span>
-                    )}
-                    <span className="font-medium" style={{ color: RULES_STATUS_COLOR[a.rules_engine_status] ?? "var(--text-muted)" }}>
-                      {RULES_STATUS_LABEL[a.rules_engine_status] ?? a.rules_engine_status}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+        {confusionMatrix && confusionMatrix.reviewed_count > 0 && (
+          <>
+            <div className="grid grid-cols-4 gap-3 mb-4">
+              <div className="rounded-lg p-3 text-center" style={{ background: "rgba(52,211,153,0.1)" }}>
+                <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Verdadeiro Positivo</p>
+                <p className="text-xl font-bold mt-1" style={{ color: "#34d399" }}>{confusionMatrix.true_positive}</p>
+              </div>
+              <div className="rounded-lg p-3 text-center" style={{ background: "rgba(244,63,94,0.1)" }}>
+                <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Falso Positivo</p>
+                <p className="text-xl font-bold mt-1" style={{ color: "#f43f5e" }}>{confusionMatrix.false_positive}</p>
+              </div>
+              <div className="rounded-lg p-3 text-center" style={{ background: "rgba(52,211,153,0.1)" }}>
+                <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Verdadeiro Negativo</p>
+                <p className="text-xl font-bold mt-1" style={{ color: "#34d399" }}>{confusionMatrix.true_negative}</p>
+              </div>
+              <div className="rounded-lg p-3 text-center" style={{ background: "rgba(244,63,94,0.1)" }}>
+                <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Falso Negativo</p>
+                <p className="text-xl font-bold mt-1" style={{ color: "#f43f5e" }}>{confusionMatrix.false_negative}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {([
+                ["Acurácia", confusionMatrix.accuracy_pct],
+                ["Precisão", confusionMatrix.precision_pct],
+                ["Recall", confusionMatrix.recall_pct],
+                ["F1-Score", confusionMatrix.f1_pct],
+                ["Taxa de Falso Positivo", confusionMatrix.false_positive_rate_pct],
+                ["Taxa de Falso Negativo", confusionMatrix.false_negative_rate_pct],
+              ] as [string, number | null][]).map(([label, value]) => (
+                <div key={label} className="rounded-lg p-3" style={{ background: "var(--surface-2)" }}>
+                  <p className="text-[10px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>{label}</p>
+                  <p className="text-xl font-bold mt-1" style={{ color: "var(--text)" }}>{value != null ? `${value}%` : "—"}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] mt-3" style={{ color: "var(--text-muted)" }}>
+              {confusionMatrix.reviewed_count} de {confusionMatrix.total_events} evento(s) revisado(s) por um analista — amostra pequena pesa menos.
+            </p>
+          </>
         )}
       </Card>
 
@@ -498,25 +559,6 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card title="Integrações" subtitle="Status das plataformas de acesso configuradas">
-        {connectors && connectors.items.length === 0 && (
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Nenhuma integração configurada ainda — veja a página Integrações.</p>
-        )}
-        {connectors && connectors.items.length > 0 && (
-          <div className="flex flex-col gap-1.5">
-            {connectors.items.map((c) => (
-              <div key={c.id} className="flex items-center justify-between text-xs py-1.5" style={{ borderBottom: "1px solid var(--border)" }}>
-                <span style={{ color: "var(--text)" }}>
-                  {c.name} <span style={{ color: "var(--text-muted)" }}>· {c.type}</span>
-                </span>
-                <span style={{ color: c.last_test?.status === "ok" ? "#34d399" : "var(--text-muted)" }}>
-                  {c.last_test?.status ?? "não testado"}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
     </div>
   );
 }

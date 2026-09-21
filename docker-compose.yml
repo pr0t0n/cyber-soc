@@ -25,6 +25,32 @@ services:
       - ollama_data:/root/.ollama
     ports:
       - "11437:11434"
+    # Achado real de teste de carga grave (root cause da alta demora
+    # evento->incidente, nunca isolado com certeza nas investigações
+    # anteriores): sem limite, uma única chamada de inferência do Ollama (CPU
+    # puro, sem GPU) satura ~950-1000% de CPU — praticamente todos os cores do
+    # host (10 no total aqui). Isso NUNCA aparecia como um bug do Postgres ou
+    # do pool de conexões (a hipótese investigada antes) — o processo da API
+    # simplesmente parava de RECEBER tempo de CPU do escalonador do Linux por
+    # dezenas de segundos, então uma sessão aberta (aguardando a PRÓXIMA linha
+    # de código Python rodar) aparecia como "idle in transaction" no Postgres
+    # sem nunca estar de fato travada ali. `docker stats` confirmou ao vivo:
+    # ollama em 955% enquanto TODOS os outros containers (api incluído)
+    # ficavam driblando por CPU. Limitar o Ollama garante que sempre sobre
+    # capacidade real para a API/Postgres processarem sua própria fila
+    # (bookkeeping, fast lane, notificação) mesmo durante uma análise de IA.
+    #
+    # Validado num teste de carga de 80 eventos: um teto de 6 cores (de 10)
+    # eliminou os eventos travados para sempre (antes: 5-7 de ~80 ficavam
+    # presos mesmo após 30+ min; depois: 0/69), mas quase DOBROU o tempo
+    # médio de análise por IA (~700s -> ~1157s) — reduzir demais a CPU do
+    # Ollama piora exatamente o atraso que motivou essa investigação. 9
+    # cores é a reserva mínima (1 core sempre livre pra API/Postgres) que
+    # ainda evita a fome total de CPU sem pagar esse preço de latência.
+    deploy:
+      resources:
+        limits:
+          cpus: "9"
 
   api:
     restart: unless-stopped
@@ -61,6 +87,43 @@ services:
     depends_on:
       - api
 
+  # GLPI real, para validar de ponta a ponta o conector notification:glpi
+  # (`app/services/notify.py`) contra um servidor de verdade em vez de só o
+  # mock dos testes unitários — não faz parte da arquitetura de produção do
+  # SOC em si (GLPI é do lado do CLIENTE, não algo que nós hospedamos), só
+  # existe aqui para laboratório/validação local.
+  glpi-db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: glpi_root
+      MARIADB_DATABASE: glpi
+      MARIADB_USER: glpi
+      MARIADB_PASSWORD: glpi
+    volumes:
+      - glpi_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  glpi:
+    image: glpi/glpi:11.0
+    restart: unless-stopped
+    environment:
+      GLPI_DB_HOST: glpi-db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: glpi
+    ports:
+      - "8090:80"
+    depends_on:
+      glpi-db:
+        condition: service_healthy
+
 volumes:
   pg_data:
   ollama_data:
+  glpi_db_data:

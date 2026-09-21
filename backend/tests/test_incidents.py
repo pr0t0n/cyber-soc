@@ -29,7 +29,7 @@ async def test_rules_engine_match_opens_incident(client, auth_headers, ingest_he
 
     r = await client.get("/api/incidents", headers=auth_headers)
     assert r.status_code == 200
-    incidents = r.json()
+    incidents = r.json()["items"]
     assert len(incidents) == 1
     assert incidents[0]["status"] == "backlog"
     assert incidents[0]["code"] == "INC-0001"
@@ -44,7 +44,7 @@ async def test_rules_engine_no_match_does_not_open_incident(client, auth_headers
     await rules_engine.run_rules_engine_for_event(created.json()["id"])
 
     r = await client.get("/api/incidents", headers=auth_headers)
-    assert r.json() == []
+    assert r.json()["items"] == []
 
 
 async def test_terminal_verdict_sets_analyzed_at(client, auth_headers, ingest_headers, monkeypatch):
@@ -83,7 +83,7 @@ async def test_compliance_noise_takes_fast_lane_and_skips_the_llm(client, auth_h
     assert detail["analyzed_at"] is not None
     assert detail["rules_engine_verdict"]["fast_lane"] is True
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert incidents == []
 
 
@@ -94,7 +94,7 @@ async def test_update_incident_status(client, auth_headers, ingest_headers, monk
         "data": {"srcip": "185.220.101.8", "dstport": "3389", "protocol": "TCP"},
     })
     await rules_engine.run_rules_engine_for_event(created.json()["id"])
-    incident_id = (await client.get("/api/incidents", headers=auth_headers)).json()[0]["id"]
+    incident_id = (await client.get("/api/incidents", headers=auth_headers)).json()["items"][0]["id"]
 
     r = await client.patch(f"/api/incidents/{incident_id}", headers=auth_headers, json={"status": "em_andamento"})
     assert r.status_code == 200
@@ -102,6 +102,35 @@ async def test_update_incident_status(client, auth_headers, ingest_headers, monk
 
     invalid = await client.patch(f"/api/incidents/{incident_id}", headers=auth_headers, json={"status": "nao-existe"})
     assert invalid.status_code == 400
+
+
+async def test_update_status_blocked_once_glpi_ticket_exists(client, auth_headers, ingest_headers, monkeypatch):
+    # Pedido real: uma vez que existe ticket no GLPI, ele é o sistema de
+    # registro — editar o status por aqui faria os dois lados divergirem em
+    # silêncio. `POST /sync-glpi` é o único jeito de mudar o status depois disso.
+    from app.db import SessionLocal
+    from app.models import Incident
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched())
+    created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "Brute force"},
+        "data": {"srcip": "185.220.101.9", "dstport": "3389", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(created.json()["id"])
+    incident_id = (await client.get("/api/incidents", headers=auth_headers)).json()["items"][0]["id"]
+
+    async with SessionLocal() as db:
+        incident = await db.get(Incident, incident_id)
+        incident.glpi_ticket_id = 42
+        await db.commit()
+
+    r = await client.patch(f"/api/incidents/{incident_id}", headers=auth_headers, json={"status": "em_andamento"})
+    assert r.status_code == 409
+
+    detail = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
+    updated = next(i for i in detail if i["id"] == incident_id)
+    assert updated["status"] == "backlog"  # não mudou
+    assert updated["glpi_ticket_id"] == 42
 
 
 async def test_deterministic_correlation_match_skips_the_llm_entirely(client, auth_headers, ingest_headers, monkeypatch):
@@ -139,7 +168,7 @@ async def test_deterministic_correlation_match_skips_the_llm_entirely(client, au
     # mesma nota que teria se nada tivesse casado.
     assert detail["risk_score"] > base_risk_score
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert len(incidents) == 1
     assert incidents[0]["risk_score"] == detail["risk_score"]
 
@@ -162,13 +191,66 @@ async def test_repeated_matches_from_the_same_origin_fuse_into_one_incident(clie
     second_id = await _ingest_ssh_attempt(7)
     await rules_engine.run_rules_engine_for_event(second_id)
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert len(incidents) == 1
 
     first_event = (await client.get(f"/api/events/{first_id}", headers=auth_headers)).json()
     second_event = (await client.get(f"/api/events/{second_id}", headers=auth_headers)).json()
     assert first_event["rules_engine_status"] == "matched"
     assert second_event["rules_engine_status"] == "matched"
+
+
+async def test_incident_code_derives_from_id_not_a_racy_count(client, auth_headers, ingest_headers, monkeypatch):
+    """Achado real de teste de carga: o código antigo lia `COUNT(*) + 1` e só
+    depois tentava inserir — duas análises concorrentes liam a mesma
+    contagem, as duas tentavam criar "INC-00NN" e a segunda falhava com
+    violação de unicidade (`incidents_code_key`). O código agora deriva do
+    `id` (autoincremento atômico do Postgres, nunca colide), então mesmo sem
+    reproduzir a concorrência aqui (SQLite não expõe a mesma race), o valor
+    tem que continuar batendo com o `id` do incidente."""
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched(("T1595",)))
+    created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 10, "description": "Port scan"},
+        "data": {"srcip": "203.0.113.44", "dstip": "10.0.0.9", "dstport": "22", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(created.json()["id"])
+
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
+    assert len(incidents) == 1
+    assert incidents[0]["code"] == f"INC-{incidents[0]['id']:04d}"
+
+
+async def test_fused_event_analysis_is_fed_the_open_incidents_accumulated_context(client, auth_headers, ingest_headers, monkeypatch):
+    # Pedido real ("agent loop"/retro-alimentação): o segundo evento da MESMA
+    # origem, fundido no incidente que o primeiro abriu, não deve ser
+    # analisado como se a história começasse do zero — o Supervisor precisa
+    # saber o que a plataforma já confirmou sobre esta origem.
+    seen_payloads = []
+
+    async def _recording_match(event: dict, on_progress=None) -> dict:
+        seen_payloads.append(event)
+        return {"matched": True, "matched_skills": ["T1110"], "summary": "Padrão de força bruta reconhecido.", "groups": {}}
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _recording_match)
+
+    async def _ingest_ssh_attempt() -> int:
+        created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+            "rule": {"level": 10, "description": "SSHD brute force"},
+            "data": {"srcip": "198.51.100.8", "dstip": "10.0.0.5", "dstport": "22", "protocol": "TCP"},
+        })
+        return created.json()["id"]
+
+    first_id = await _ingest_ssh_attempt()
+    await rules_engine.run_rules_engine_for_event(first_id)
+    second_id = await _ingest_ssh_attempt()
+    await rules_engine.run_rules_engine_for_event(second_id)
+
+    assert len(seen_payloads) == 2
+    assert seen_payloads[0]["incident_context"] is None  # primeiro evento: ainda não existe incidente
+    context = seen_payloads[1]["incident_context"]
+    assert context is not None
+    assert "incidente aberto" in context
+    assert "T1110" in context  # skill do primeiro evento já fundido
 
 
 async def test_cataloged_suricata_sid_skips_the_llm_entirely(client, auth_headers, ingest_headers, monkeypatch):
@@ -201,7 +283,7 @@ async def test_cataloged_suricata_sid_skips_the_llm_entirely(client, auth_header
     assert detail["matched_skills"] == ["2010371"]
     assert detail["rules_engine_verdict"]["deterministic"] is True
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert len(incidents) == 1
 
 
@@ -227,7 +309,7 @@ async def test_event_without_any_ip_skips_the_ai_entirely(client, auth_headers, 
     assert detail["rules_engine_status"] == "informational"
     assert detail["analyzed_at"] is not None
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert incidents == []
 
 
@@ -236,8 +318,8 @@ async def test_new_incident_dispatches_notification_to_matching_connector(client
     conector de notificação configurado para aquela criticidade."""
     sent = []
 
-    async def _fake_dispatch(db, incident):
-        sent.append((incident.code, incident.severity))
+    async def _fake_dispatch(incident_id):
+        sent.append(incident_id)
 
     monkeypatch.setattr(rules_engine, "dispatch_incident_notification", _fake_dispatch)
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched())
@@ -249,7 +331,9 @@ async def test_new_incident_dispatches_notification_to_matching_connector(client
     await rules_engine.run_rules_engine_for_event(created.json()["id"])
 
     assert len(sent) == 1
-    assert sent[0][0] == "INC-0001"
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
+    assert incidents[0]["id"] == sent[0]
+    assert incidents[0]["code"] == "INC-0001"
 
 
 async def test_fused_non_escalating_event_does_not_redispatch(client, auth_headers, ingest_headers, monkeypatch):
@@ -257,7 +341,7 @@ async def test_fused_non_escalating_event_does_not_redispatch(client, auth_heade
     reenviar a mesma notificação/chamado a cada evento fundido."""
     dispatch_count = {"n": 0}
 
-    async def _fake_dispatch(db, incident):
+    async def _fake_dispatch(incident_id):
         dispatch_count["n"] += 1
 
     monkeypatch.setattr(rules_engine, "dispatch_incident_notification", _fake_dispatch)
@@ -279,6 +363,30 @@ async def test_fused_non_escalating_event_does_not_redispatch(client, auth_heade
     assert dispatch_count["n"] == 1  # fusão sem escalada não redispara
 
 
+async def test_incidents_are_paginated(client, auth_headers, ingest_headers, monkeypatch):
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched())
+
+    async def _open_incident(ip: str) -> None:
+        created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+            "rule": {"level": 12, "description": "Brute force"},
+            "data": {"srcip": ip, "dstport": "3389", "protocol": "TCP"},
+        })
+        await rules_engine.run_rules_engine_for_event(created.json()["id"])
+
+    for i in range(3):
+        await _open_incident(f"185.220.101.{i}")
+
+    body = (await client.get("/api/incidents?limit=2", headers=auth_headers)).json()
+    assert body["total"] == 3
+    assert len(body["items"]) == 2
+
+    page2 = (await client.get("/api/incidents?limit=2&offset=2", headers=auth_headers)).json()
+    assert page2["total"] == 3
+    assert len(page2["items"]) == 1
+    # mais recente primeiro — a página 2 tem o incidente mais antigo (o 1º aberto)
+    assert page2["items"][0]["id"] not in [i["id"] for i in body["items"]]
+
+
 async def test_incident_inherits_connector_tag(client, auth_headers, monkeypatch):
     monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched())
     created_connector = await client.post("/api/admin/connectors", headers=auth_headers, json={
@@ -292,7 +400,7 @@ async def test_incident_inherits_connector_tag(client, auth_headers, monkeypatch
     }, headers={"Authorization": f"Bearer {token}"})
     await rules_engine.run_rules_engine_for_event(created_event.json()["id"])
 
-    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()
+    incidents = (await client.get("/api/incidents", headers=auth_headers)).json()["items"]
     assert incidents[0]["tag"] == "VALID"
 
     events = (await client.get("/api/events?tag=VALID", headers=auth_headers)).json()

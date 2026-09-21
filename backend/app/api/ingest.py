@@ -81,7 +81,6 @@ def _wazuh_hit_count(rule: dict[str, Any], data: dict[str, Any]) -> int | None:
 def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
     rule = payload.get("rule") or {}
     data = payload.get("data") or {}
-    agent = payload.get("agent") or {}
     mitre = (rule.get("mitre") or {}).get("id") or []
     ts_raw = payload.get("timestamp")
     try:
@@ -105,7 +104,20 @@ def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
         "type": rule.get("description") or "Evento Wazuh",
         "severity": _wazuh_severity(level),
         "src_ip": data.get("srcip") or data.get("src_ip"),
-        "dst_ip": data.get("dstip") or data.get("dest_ip") or agent.get("ip"),
+        # NUNCA cai para `agent.get("ip")`: isso é o host que RELATOU o
+        # evento, não um destino de tráfego — achado real (auditoria de
+        # incidentes falsos): telemetria pura de host (FIM/"Integrity
+        # checksum changed", netstat, tela bloqueada/desbloqueada, sudo)
+        # nunca tem `data.dstip`/`data.dest_ip` de verdade, então o
+        # fallback preenchia `dst_ip` com o próprio agente (127.0.0.1,
+        # IP interno do container, etc.) — isso fazia `is_network_traffic`
+        # (event_triage.py) tratar essa telemetria como se fosse tráfego de
+        # rede de verdade, e o motor de IA "confirmava" um match sem
+        # nenhuma comunicação de rede por trás. Um NIDS real (Suricata via
+        # eve.json) sempre relata `data.dest_ip` diretamente — este
+        # fallback nunca era necessário para esse caso, só mascarava os
+        # falsos positivos de telemetria de host.
+        "dst_ip": data.get("dstip") or data.get("dest_ip"),
         "src_port": str(src_port) if src_port else None,
         "dst_port": str(dst_port) if dst_port else None,
         "protocol": data.get("protocol") or data.get("proto"),

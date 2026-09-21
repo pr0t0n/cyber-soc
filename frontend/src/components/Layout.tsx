@@ -2,16 +2,14 @@ import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import {
-  IconActivity, IconAlertTriangle, IconBook, IconChat, IconGrid, IconLogout,
-  IconPlug, IconSend, IconSettings, IconShield, IconTerminal, IconUsers,
+  IconBook, IconChat, IconGrid, IconLogout,
+  IconPlug, IconRadar, IconSend, IconSettings, IconShield, IconUsers,
 } from "./icons";
 
 const NAV = [
   { to: "/", label: "Dashboard", end: true, icon: IconGrid },
-  { to: "/incidentes", label: "Incidentes", icon: IconAlertTriangle },
-  { to: "/resposta", label: "Resposta", icon: IconSend },
-  { to: "/eventos", label: "Análises", icon: IconActivity },
-  { to: "/raw", label: "Raw (Wazuh)", icon: IconTerminal },
+  { to: "/operacional", label: "Visão Operacional", icon: IconRadar },
+  { to: "/resposta", label: "Resposta e Investigação", icon: IconSend },
   { to: "/chat", label: "Copilot", icon: IconChat },
   { to: "/usuarios", label: "Usuários", icon: IconUsers },
 ];

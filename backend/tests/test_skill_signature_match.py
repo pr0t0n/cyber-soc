@@ -13,6 +13,16 @@ def test_matches_a_real_cataloged_suricata_sid():
     assert "Amap" in matches[0]["title"]
 
 
+def test_suricata_classtype_maps_to_mitre_technique():
+    # SID 2010371 é classtype "attempted-recon" no catálogo real — sem esse
+    # mapeamento, uma assinatura confirmada ficava com mitre=[] (achado real:
+    # cobertura MITRE travada em ~0% mesmo com milhares de matches
+    # determinísticos confirmados).
+    raw = {"data": {"alert": {"signature_id": "2010371"}}}
+    matches = skill_signature_match.evaluate(raw)
+    assert matches[0]["mitre"] == ["T1595"]
+
+
 def test_unknown_suricata_sid_does_not_match():
     raw = {"data": {"alert": {"signature_id": "999999999"}}}
     assert skill_signature_match.evaluate(raw) == []
@@ -29,6 +39,7 @@ def test_matches_a_real_cataloged_modsecurity_rule_id():
     assert len(matches) == 1
     assert matches[0]["id"] == "941100"
     assert "XSS" in matches[0]["title"]
+    assert matches[0]["mitre"] == ["T1190"]  # categoria "xss" -> Exploit Public-Facing Application
 
 
 def test_matches_modsecurity_rule_id_nested_under_modsecurity_key():
