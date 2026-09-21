@@ -581,6 +581,79 @@ async def test_run_rules_engine_never_leaves_an_event_stuck_after_a_crash(client
         assert event.analyzed_at is not None
 
 
+async def test_campaign_context_flags_same_technique_confirmed_by_a_different_origin(client, ingest_headers, monkeypatch):
+    """Segundo hop de correlação (análise de mercado seção 8.3): a MESMA
+    técnica MITRE já CONFIRMADA num incidente aberto de outra origem entra
+    como contexto pro Supervisor avaliar o evento novo — sinal de campanha,
+    não origem isolada."""
+    from app.services import rules_engine
+
+    async def _mock_matched(event, on_progress=None):
+        return {
+            "matched": True, "matched_skills": ["T1110"], "summary": "Confirmado.",
+            "recommendation": "Bloquear.", "groups": {"attack_defend": {"skills": ["T1110"]}},
+        }
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    first = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "SSHD brute force", "mitre": {"id": ["T1110"]}},
+        "data": {"srcip": "9.9.9.9", "dstip": "10.0.0.22", "dstport": "22", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(first.json()["id"])
+
+    captured: dict = {}
+
+    async def _capture(event, on_progress=None):
+        captured.update(event)
+        return {
+            "matched": True, "matched_skills": ["T1110"], "summary": "Confirmado.",
+            "recommendation": "Bloquear.", "groups": {"attack_defend": {"skills": ["T1110"]}},
+        }
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _capture)
+    second = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "SSHD brute force", "mitre": {"id": ["T1110"]}},
+        "data": {"srcip": "1.2.3.4", "dstip": "10.0.0.99", "dstport": "22", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(second.json()["id"])
+
+    assert "Padrão de campanha" in captured["incident_context"]
+    assert "T1110" in captured["incident_context"]
+
+
+async def test_campaign_context_flags_multiple_origins_targeting_the_same_destination(client, ingest_headers, monkeypatch):
+    """Segundo hop de correlação: o MESMO destino sendo mirado por várias
+    origens ao mesmo tempo entra como contexto pro Supervisor, mesmo sem
+    nenhuma técnica MITRE confirmada ainda em outro incidente."""
+    from app.services import rules_engine
+
+    async def _mock_unmatched(event, on_progress=None):
+        return {"matched": False, "matched_skills": [], "summary": "sem skill", "recommendation": None, "groups": {}}
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_unmatched)
+    first = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "Port scan"},
+        "data": {"srcip": "1.1.1.1", "dstip": "10.0.0.50", "dstport": "22", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(first.json()["id"])
+
+    captured: dict = {}
+
+    async def _capture(event, on_progress=None):
+        captured.update(event)
+        return {"matched": False, "matched_skills": [], "summary": "sem skill", "recommendation": None, "groups": {}}
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _capture)
+    second = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "Port scan"},
+        "data": {"srcip": "2.2.2.2", "dstip": "10.0.0.50", "dstport": "22", "protocol": "TCP"},
+    })
+    await rules_engine.run_rules_engine_for_event(second.json()["id"])
+
+    assert "outra(s) origem(ns) distinta(s)" in captured["incident_context"]
+    assert "10.0.0.50" in captured["incident_context"]
+
+
 @pytest.mark.skipif(not os.getenv("LIVE_RULES_ENGINE"), reason="LIVE_RULES_ENGINE não definido (precisa de Ollama real rodando)")
 async def test_live_analyze_event_end_to_end():
     from app.agents.graph import analyze_event

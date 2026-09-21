@@ -667,6 +667,58 @@ async def test_confusion_matrix_empty_without_any_review(client, auth_headers, i
     assert body["precision_pct"] is None
 
 
+async def test_asset_risk_endpoint_ranks_hosts_by_computed_risk(client, auth_headers, ingest_headers, monkeypatch):
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    matched_id = await _ingest_sample(client, ingest_headers)  # SSHD brute force, sem agent_hostname no payload
+    await rules_engine.run_rules_engine_for_event(matched_id)
+
+    body = (await client.get("/api/dashboard/asset-risk", headers=auth_headers)).json()
+    assert body["window_days"] == 30
+    assert len(body["items"]) >= 1
+    assert body["items"][0]["risk_score"] >= 0
+
+
+async def test_environment_seasonality_groups_by_tag_with_volume_grid_and_attack_types(
+    client, auth_headers, ingest_headers, monkeypatch,
+):
+    # _ingest_sample usa uma data fixa fora da janela de 7 dias da
+    # sazonalidade; aqui usamos "agora" (sem "timestamp" -> default) pra
+    # cair dentro da janela, mesmo padrão de test_risk_heatmap_shape.
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    created = await client.post("/api/ingest/wazuh", headers=ingest_headers, json={
+        "rule": {"level": 12, "description": "SSHD brute force", "mitre": {"id": ["T1110"]}},
+        "data": {"srcip": "185.220.101.8", "dstip": "10.0.0.22", "dstport": "22", "protocol": "TCP"},
+    })
+    matched_id = created.json()["id"]
+    await rules_engine.run_rules_engine_for_event(matched_id)
+
+    body = (await client.get("/api/dashboard/environment-seasonality", headers=auth_headers)).json()
+    assert len(body["days"]) == 7
+    assert len(body["environments"]) >= 1
+    env = body["environments"][0]
+    assert env["total_events"] >= 1
+    assert len(env["grid"]) == 7 and all(len(row) == 24 for row in env["grid"])
+    assert sum(sum(row) for row in env["grid"]) == env["total_events"]
+    assert len(env["top_attack_types"]) >= 1
+    assert env["top_attack_types"][0]["count"] >= 1
+
+
+async def test_environment_seasonality_buckets_untagged_events_instead_of_dropping_them(client, auth_headers):
+    from datetime import datetime, timezone
+
+    from app.db import SessionLocal
+    from app.models import Event
+
+    async with SessionLocal() as db:
+        now = datetime.now(timezone.utc)
+        db.add(Event(timestamp=now, received_at=now, source="generic", type="Sem tag", severity="info", tag=None))
+        await db.commit()
+
+    body = (await client.get("/api/dashboard/environment-seasonality", headers=auth_headers)).json()
+    tags = {e["tag"] for e in body["environments"]}
+    assert "Sem tag" in tags
+
+
 async def test_confusion_matrix_computes_precision_and_recall_from_analyst_review(client, auth_headers, ingest_headers):
     tp_id = await _ingest_sample(client, ingest_headers)
     fp_id = await _ingest_sample(client, ingest_headers)

@@ -58,3 +58,32 @@ async def test_verdict_never_changes_the_engines_own_status(client, auth_headers
     after = (await client.get(f"/api/events/{event_id}", headers=auth_headers)).json()
     assert after["rules_engine_status"] == before["rules_engine_status"]
     assert after["analyst_verdict"] == "false_positive"
+
+
+async def test_verdict_false_positive_demotes_a_promoted_learned_pattern(client, auth_headers, ingest_headers, monkeypatch):
+    """PATCH /{id}/verdict fecha o loop de aprendizado humano de ponta a
+    ponta: um `false_positive` pra uma skill já promovida em learning.py
+    reverte a promoção na hora (learning.apply_analyst_feedback), em vez de
+    esperar uma auditoria manual descobrir depois que a via rápida estava
+    errada."""
+    from app.db import SessionLocal
+    from app.services import learning, rules_engine
+
+    async def _mock_matched(event, on_progress=None):
+        return {"matched": True, "matched_skills": ["T1110"], "summary": "Força bruta reconhecida.", "groups": {}}
+
+    monkeypatch.setattr(rules_engine, "analyze_event", _mock_matched)
+    event_id = None
+    for _ in range(learning.PROMOTION_THRESHOLD):
+        event_id = await _ingest_sample(client, ingest_headers)
+        await rules_engine.run_rules_engine_for_event(event_id)
+
+    async with SessionLocal() as db:
+        assert await learning.lookup(db, "SSHD brute force") is not None
+
+    r = await client.patch(f"/api/events/{event_id}/verdict", headers=auth_headers, json={"verdict": "false_positive"})
+    assert r.status_code == 200
+    assert r.json()["learned_pattern_demoted"] is True
+
+    async with SessionLocal() as db:
+        assert await learning.lookup(db, "SSHD brute force") is None

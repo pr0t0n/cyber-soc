@@ -74,3 +74,64 @@ async def test_inconsistent_confirmations_reset_the_counter_instead_of_promoting
         pattern = await learning.lookup(db, "Encoded PowerShell execution")
         assert pattern is not None
         assert pattern.matched_skills == ["ATR-2026-00080"]
+
+
+async def test_analyst_false_positive_demotes_a_promoted_pattern():
+    """Fecha o loop que record_confirmation sozinho não fecha: até aqui, um
+    padrão só se confirmava através da própria IA — nunca reagia a um
+    humano revisando um evento."""
+    async with SessionLocal() as db:
+        for _ in range(learning.PROMOTION_THRESHOLD):
+            await learning.record_confirmation(db, "SSHD brute force", _VERDICT)
+        assert await learning.lookup(db, "SSHD brute force") is not None
+
+        demoted = await learning.apply_analyst_feedback(
+            db, pattern_key="SSHD brute force", matched_skills=["T1110"], verdict="false_positive",
+        )
+        assert demoted is True
+        assert await learning.lookup(db, "SSHD brute force") is None
+
+
+async def test_analyst_feedback_ignores_verdicts_other_than_false_positive():
+    async with SessionLocal() as db:
+        for _ in range(learning.PROMOTION_THRESHOLD):
+            await learning.record_confirmation(db, "SSHD brute force", _VERDICT)
+
+        for verdict in ("true_positive", "true_negative", "false_negative", None):
+            demoted = await learning.apply_analyst_feedback(
+                db, pattern_key="SSHD brute force", matched_skills=["T1110"], verdict=verdict,
+            )
+            assert demoted is False
+        assert await learning.lookup(db, "SSHD brute force") is not None
+
+
+async def test_analyst_feedback_does_not_demote_when_disputed_skill_does_not_match_the_pattern():
+    """Um falso positivo reportado pra uma skill DIFERENTE da que o padrão
+    promovido representa não é evidência contra ESTE padrão."""
+    async with SessionLocal() as db:
+        for _ in range(learning.PROMOTION_THRESHOLD):
+            await learning.record_confirmation(db, "SSHD brute force", _VERDICT)  # T1110
+
+        demoted = await learning.apply_analyst_feedback(
+            db, pattern_key="SSHD brute force", matched_skills=["T1595"], verdict="false_positive",
+        )
+        assert demoted is False
+        assert await learning.lookup(db, "SSHD brute force") is not None
+
+
+async def test_analyst_feedback_is_a_noop_when_pattern_was_never_promoted():
+    async with SessionLocal() as db:
+        await learning.record_confirmation(db, "SSHD brute force", _VERDICT)  # só 1 confirmação, não promovido
+
+        demoted = await learning.apply_analyst_feedback(
+            db, pattern_key="SSHD brute force", matched_skills=["T1110"], verdict="false_positive",
+        )
+        assert demoted is False
+
+
+async def test_analyst_feedback_is_a_noop_for_unknown_pattern_key():
+    async with SessionLocal() as db:
+        demoted = await learning.apply_analyst_feedback(
+            db, pattern_key="Tipo nunca visto", matched_skills=["T1110"], verdict="false_positive",
+        )
+        assert demoted is False

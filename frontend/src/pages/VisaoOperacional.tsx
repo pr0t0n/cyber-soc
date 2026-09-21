@@ -59,6 +59,30 @@ interface KpiData {
   workload_reduction_pct: number | null;
   data_sources: { source: string; total: number; relevant: number; relevant_pct: number | null }[];
 }
+interface AssetRiskItem {
+  kind: string;
+  identifier: string;
+  hostname: string | null;
+  ips: string[];
+  event_count: number;
+  confirmed_count: number;
+  techniques: string[];
+  attack_types: Record<string, number>;
+  has_open_incident: boolean;
+  risk_score: number;
+  first_seen_at: string | null;
+  last_seen_at: string | null;
+}
+interface SeasonalityEnvironment {
+  tag: string;
+  total_events: number;
+  grid: number[][];
+  top_attack_types: { category: string; count: number }[];
+}
+interface SeasonalityData {
+  days: string[];
+  environments: SeasonalityEnvironment[];
+}
 interface AnalysisMetrics {
   stability_pct: number | null;
   degraded_count: number;
@@ -144,6 +168,8 @@ export default function VisaoOperacional() {
   const [baseline, setBaseline] = useState<TrafficBaselineItem[] | null>(null);
   const [mtt, setMtt] = useState<MttMetrics | null>(null);
   const [kpis, setKpis] = useState<KpiData | null>(null);
+  const [assetRisk, setAssetRisk] = useState<{ window_days: number; items: AssetRiskItem[] } | null>(null);
+  const [seasonality, setSeasonality] = useState<SeasonalityData | null>(null);
   const [metrics, setMetrics] = useState<AnalysisMetrics | null>(null);
   const [watchlist, setWatchlist] = useState<WatchlistItem[] | null>(null);
   const [activity, setActivity] = useState<AgentActivityItem[] | null>(null);
@@ -156,6 +182,8 @@ export default function VisaoOperacional() {
       api.get<{ items: TrafficBaselineItem[] }>("/dashboard/traffic-baseline").then((r) => setBaseline(r.items));
       api.get<MttMetrics>("/dashboard/mtt-metrics").then(setMtt);
       api.get<KpiData>("/dashboard/kpis").then(setKpis);
+      api.get<{ window_days: number; items: AssetRiskItem[] }>("/dashboard/asset-risk").then(setAssetRisk);
+      api.get<SeasonalityData>("/dashboard/environment-seasonality").then(setSeasonality);
       api.get<AnalysisMetrics>("/dashboard/analysis-metrics").then(setMetrics);
       api.get<{ items: WatchlistItem[] }>("/dashboard/watchlist").then((r) => setWatchlist(r.items));
       api.get<{ items: AgentActivityItem[] }>("/dashboard/agent-activity").then((r) => setActivity(r.items));
@@ -236,6 +264,131 @@ export default function VisaoOperacional() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="glass-card rounded-xl overflow-hidden">
+        <div className="p-5 pb-0">
+          <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>Ativos — volume e tipos de ataque</p>
+          <p className="text-sm font-medium mb-4 mt-0.5" style={{ color: "var(--text)" }}>
+            Hostname/IP observados nos eventos dos últimos {assetRisk?.window_days ?? 30} dias, ordenados por quem mais
+            recebeu evento — sem cadastro manual de CMDB, só o que a plataforma já viu de verdade
+          </p>
+        </div>
+        {assetRisk && assetRisk.items.length === 0 && (
+          <p className="text-xs px-5 pb-5" style={{ color: "var(--text-muted)" }}>Nenhum ativo interno identificado ainda.</p>
+        )}
+        {assetRisk && assetRisk.items.length > 0 && (
+          <div className="overflow-x-auto max-h-[460px] overflow-y-auto">
+            <table className="w-full text-sm">
+              <thead style={{ background: "var(--surface-2)", position: "sticky", top: 0 }}>
+                <tr>
+                  {["Ativo", "Eventos", "Confirmados", "Tipos de ataque", "Risco", "Visto pela 1ª/última vez"].map((h) => (
+                    <th key={h} className="text-left px-4 py-2.5 font-medium text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {assetRisk.items.map((a) => (
+                  <tr key={`${a.kind}-${a.identifier}`} style={{ borderTop: "1px solid var(--border)" }}>
+                    <td className="px-4 py-2.5 text-xs max-w-[220px]">
+                      <p className="truncate font-medium" style={{ color: "var(--text)" }}>
+                        {a.hostname ?? a.identifier}
+                        {a.has_open_incident && (
+                          <span className="ml-1.5 text-[10px] font-medium" style={{ color: "#f43f5e" }}>· incidente aberto</span>
+                        )}
+                      </p>
+                      <p className="truncate" style={{ color: "var(--text-muted)" }}>
+                        {a.ips.filter((ip) => ip !== a.hostname).join(", ") || "—"}
+                      </p>
+                    </td>
+                    <td className="px-4 py-2.5 text-xs font-semibold" style={{ color: "var(--text)" }}>{a.event_count}</td>
+                    <td className="px-4 py-2.5 text-xs" style={{ color: a.confirmed_count > 0 ? "#f43f5e" : "var(--text-muted)" }}>{a.confirmed_count}</td>
+                    <td className="px-4 py-2.5 text-xs max-w-[280px]">
+                      <div className="flex flex-wrap gap-1">
+                        {Object.entries(a.attack_types).slice(0, 3).map(([category, count]) => (
+                          <span key={category} className="rounded-full px-2 py-0.5 text-[10px] font-medium" style={{ background: "rgba(148,163,184,0.15)", color: "var(--text-muted)" }}>
+                            {category} ({count})
+                          </span>
+                        ))}
+                        {Object.keys(a.attack_types).length > 3 && (
+                          <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>+{Object.keys(a.attack_types).length - 3}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2.5 text-xs">
+                      <span
+                        className="font-bold rounded-full px-2 py-0.5"
+                        style={{
+                          background: a.risk_score >= 70 ? "rgba(244,63,94,0.15)" : a.risk_score >= 40 ? "rgba(250,204,21,0.15)" : "rgba(52,211,153,0.15)",
+                          color: a.risk_score >= 70 ? "#f43f5e" : a.risk_score >= 40 ? "#facc15" : "#34d399",
+                        }}
+                      >
+                        {a.risk_score}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2.5 text-[10px]" style={{ color: "var(--text-muted)" }}>
+                      {a.first_seen_at ? new Date(a.first_seen_at).toLocaleDateString("pt-BR") : "—"}
+                      {" / "}
+                      {a.last_seen_at ? new Date(a.last_seen_at).toLocaleDateString("pt-BR") : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div className="glass-card rounded-xl p-5">
+        <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>Sazonalidade por ambiente</p>
+        <p className="text-sm font-medium mb-4 mt-0.5" style={{ color: "var(--text)" }}>
+          Quando cada ambiente (tag do conector) recebe mais eventos e quais tipos de ataque predominam — últimos 7 dias
+        </p>
+        {seasonality && seasonality.environments.length === 0 && (
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Sem eventos nos últimos 7 dias.</p>
+        )}
+        {seasonality && seasonality.environments.length > 0 && (
+          <div className="flex flex-col gap-5">
+            {seasonality.environments.map((env) => {
+              const maxCell = Math.max(1, ...env.grid.flat());
+              return (
+                <div key={env.tag}>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-semibold" style={{ color: "var(--text)" }}>
+                      {env.tag} <span className="font-normal" style={{ color: "var(--text-muted)" }}>· {env.total_events} evento(s)</span>
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap justify-end">
+                      {env.top_attack_types.map((t) => (
+                        <span key={t.category} className="rounded-full px-2 py-0.5 text-[10px] font-medium" style={{ background: "rgba(148,163,184,0.15)", color: "var(--text-muted)" }}>
+                          {t.category} ({t.count})
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <div className="flex flex-col gap-1 min-w-[520px]">
+                      {env.grid.map((row, i) => (
+                        <div key={i} className="flex items-center gap-1.5">
+                          <span className="w-8 text-[10px] text-right pr-1" style={{ color: "var(--text-muted)" }}>{seasonality.days[i]}</span>
+                          {row.map((v, j) => (
+                            <div
+                              key={j}
+                              title={`${seasonality.days[i]} ${j}h: ${v} evento(s)`}
+                              className="flex-1 h-3.5 rounded-sm"
+                              style={{ background: v === 0 ? "#131a2c" : `rgba(34,211,238,${(0.15 + (v / maxCell) * 0.75).toFixed(2)})` }}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">

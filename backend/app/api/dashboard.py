@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import Select, func, or_, select
@@ -7,6 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth.deps import current_user
 from ..db import get_db
 from ..models import Connector, Event, Incident, LearnedPattern, User
+from ..services.asm import list_exposed_assets
+from ..services.asset_risk import ASSET_RISK_WINDOW_DAYS, compute_asset_risk
 from ..services.mitre import MITRE_TACTICS, technique_tactic_pt
 from ..services.narrative import build_activity_timeline, build_incident_narratives, build_traffic_baseline_overview
 
@@ -594,6 +597,62 @@ async def confusion_matrix(tag: str | None = None, db: AsyncSession = Depends(ge
         "false_positive_rate_pct": _safe_pct(fp, fp + tn),
         "false_negative_rate_pct": _safe_pct(fn, fn + tp),
     }
+
+
+@router.get("/asset-risk")
+async def asset_risk(tag: str | None = None, db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
+    """Ativos (hostname/IP) observados nos eventos recebidos, ranqueados por
+    risco calculado do histórico real (services/asset_risk.py) — nunca um
+    cadastro manual de CMDB. Janela de 30 dias: um ativo silencioso há mais
+    tempo que isso sai do ranking sozinho, sem precisar de expiração manual."""
+    items = await compute_asset_risk(db, tag=tag)
+    return {"window_days": ASSET_RISK_WINDOW_DAYS, "items": items}
+
+
+@router.get("/exposed-assets")
+async def exposed_assets(db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
+    """ASM mínimo (services/asm.py): IPs públicos de destino observados nos
+    eventos recebidos + o que o Shodan já sabe sobre eles (portas/serviços
+    expostos), quando um conector Shodan estiver habilitado. Primeiro corte
+    de superfície de ataque reaproveitando a MESMA integração já usada
+    reativamente em threat_intel.py — não substitui uma ferramenta de ASM
+    completa (sem descoberta de subdomínio/certificado)."""
+    return await list_exposed_assets(db)
+
+
+@router.get("/environment-seasonality")
+async def environment_seasonality(db: AsyncSession = Depends(get_db), _: User = Depends(current_user)) -> dict:
+    """Padrão temporal (dia da semana x hora) de VOLUME de eventos por
+    ambiente (tag do conector) nos últimos 7 dias, com os tipos de ataque
+    predominantes de cada um — "sazonalidade" de verdade: QUANDO cada
+    ambiente é mais visado e POR QUE tipo de ataque, não só o risco médio
+    global (ver /risk-heatmap, que não separa por ambiente nem mede volume).
+    Eventos sem tag entram no balde "Sem tag" — nunca descartados em
+    silêncio."""
+    since = datetime.now(timezone.utc) - timedelta(days=7)
+    rows = (await db.execute(select(Event.tag, Event.timestamp, Event.mitre).where(Event.timestamp >= since))).all()
+
+    envs: dict[str, dict[str, Any]] = {}
+    for tag, ts, mitre in rows:
+        key = tag or "Sem tag"
+        env = envs.setdefault(key, {"total_events": 0, "grid": [[0] * 24 for _ in range(7)], "attack_types": {}})
+        aware = ts if ts.tzinfo else ts.replace(tzinfo=timezone.utc)
+        env["grid"][aware.weekday()][aware.hour] += 1
+        env["total_events"] += 1
+        category = technique_tactic_pt(mitre[0]) if mitre else "Sem técnica MITRE"
+        env["attack_types"][category] = env["attack_types"].get(category, 0) + 1
+
+    environments = []
+    for env_tag, env in sorted(envs.items(), key=lambda kv: kv[1]["total_events"], reverse=True):
+        top_types = sorted(env["attack_types"].items(), key=lambda kv: kv[1], reverse=True)[:5]
+        environments.append({
+            "tag": env_tag,
+            "total_events": env["total_events"],
+            "grid": env["grid"],
+            "top_attack_types": [{"category": c, "count": n} for c, n in top_types],
+        })
+
+    return {"days": ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"], "environments": environments}
 
 
 @router.get("/watchlist")

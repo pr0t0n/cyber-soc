@@ -12,7 +12,7 @@ from sqlalchemy import select
 from ..agents.graph import analyze_event
 from ..db import SessionLocal, advisory_lock
 from ..models import SEVERITIES, Event, Incident
-from . import correlation_rules, learning, skill_signature_match
+from . import correlation, correlation_rules, learning, skill_signature_match
 from .baseline import anomaly_reason, weekly_activity
 from .correlation import count_recent_events_from_ip, find_open_incident_id
 from .event_triage import (
@@ -122,6 +122,38 @@ async def _open_incident_context(db, src_ip: str | None, *, before: datetime) ->
     if skills:
         parts.append(f"Skill(s)/assinatura(s) já confirmada(s): {', '.join(sorted(skills))}.")
     return " ".join(parts)
+
+
+async def _campaign_context(db, event: Event, *, before: datetime) -> str | None:
+    """Segundo hop de correlação (L1->L2, análise de mercado seção 8.3):
+    diferente de `_open_incident_context` (que só olha a MESMA origem
+    dentro do MESMO incidente), isto olha PARA FORA — mesma técnica MITRE
+    já confirmada em OUTRO incidente aberto de origem diferente, ou o mesmo
+    destino sendo mirado por várias origens ao mesmo tempo. Nenhuma fonte
+    de dado nova, só `Event`/`Incident` já existentes com uma pergunta
+    diferente (`services/correlation.py`)."""
+    parts = []
+    matches = await correlation.find_technique_matches_in_other_open_incidents(
+        db, event.mitre or [], exclude_src_ip=event.src_ip, before=before,
+    )
+    if matches:
+        codes = sorted({code for code, _, _ in matches})
+        techniques = sorted({t for _, _, t in matches})
+        parts.append(
+            f"Padrão de campanha: a(s) técnica(s) MITRE {', '.join(techniques)} deste evento já está(ão) "
+            f"CONFIRMADA(S) em {len(codes)} outro(s) incidente(s) aberto(s) de origem diferente "
+            f"({', '.join(codes)}) — não é uma origem isolada."
+        )
+    other_origins = await correlation.count_distinct_origins_targeting(
+        db, event.dst_ip, exclude_src_ip=event.src_ip, before=before,
+    )
+    if other_origins:
+        parts.append(
+            f"Este mesmo destino ({event.dst_ip}) também está sendo alvo de {other_origins} outra(s) "
+            f"origem(ns) distinta(s) nos últimos {correlation.MULTI_ORIGIN_TARGET_WINDOW_MINUTES} minutos "
+            "— múltiplos atacantes mirando o mesmo ativo."
+        )
+    return " ".join(parts) if parts else None
 
 
 async def _open_or_fuse_incident(db, event: Event) -> None:
@@ -287,6 +319,8 @@ async def _run_rules_engine_for_event(event_id: int) -> None:
 
             event.correlated_count = await count_recent_events_from_ip(db, event.src_ip, before=event.received_at)
             incident_context = await _open_incident_context(db, event.src_ip, before=event.received_at)
+            campaign_context = await _campaign_context(db, event, before=event.received_at)
+            incident_context = " ".join(filter(None, [incident_context, campaign_context])) or None
 
             if is_compliance_noise(event.raw or {}):
                 # Via rápida: achado de compliance/inventário (SCA/rootcheck) —

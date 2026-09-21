@@ -64,6 +64,45 @@ async def record_confirmation(db: AsyncSession, pattern_key: str, verdict: dict[
     await db.commit()
 
 
+async def apply_analyst_feedback(db: AsyncSession, *, pattern_key: str, matched_skills: list[str], verdict: str | None) -> bool:
+    """Fecha o loop que `record_confirmation` sozinho não fecha: até aqui, um
+    padrão só se confirma através da própria IA concordando consigo mesma —
+    nunca reage a um humano revisando um evento (`Event.analyst_verdict`,
+    `PATCH /api/events/{id}/verdict`). Um analista marcando `false_positive`
+    pra um evento cuja skill/tipo já virou via rápida promovida é prova
+    direta de que aquela via rápida está errada — despromove na hora, em vez
+    de esperar uma auditoria manual descobrir depois (achado real: uma
+    auditoria retroativa já precisou corrigir 166 de 185 incidentes assim,
+    ver `analise-mercado-agent-soc-vs-capacidade-atual.md`).
+
+    Só reage a `false_positive` de propósito: `true_positive`/`true_negative`
+    já é o que o padrão promovido previa (nada a corrigir), e
+    `false_negative` (ameaça real que passou) não tem nenhum padrão
+    PROMOVIDO por trás pra despromover — é ausência de detecção, um problema
+    de cobertura, não de um padrão aprendido errado.
+
+    Retorna `True` quando de fato despromoveu algo (útil pro chamador logar/
+    expor na resposta da API)."""
+    if verdict != "false_positive":
+        return False
+    await advisory_lock(db, pattern_key)
+    row = (
+        await db.execute(select(LearnedPattern).where(LearnedPattern.pattern_key == pattern_key))
+    ).scalar_one_or_none()
+    if row is None or not row.promoted:
+        return False
+    # Só despromove se a skill que a revisão humana contesta é a MESMA que
+    # este padrão representa — um falso positivo reportado pra uma skill
+    # diferente da que o padrão promovido confirma não é evidência contra
+    # ESTE padrão específico.
+    if not (set(row.matched_skills or []) & set(matched_skills or [])):
+        return False
+    row.promoted = False
+    row.confirmations = 0
+    await db.commit()
+    return True
+
+
 async def lookup(db: AsyncSession, pattern_key: str) -> LearnedPattern | None:
     """Só retorna um padrão já PROMOVIDO (confirmações suficientes) — as
     primeiras `PROMOTION_THRESHOLD - 1` ocorrências de um tipo de alerta novo

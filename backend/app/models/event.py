@@ -70,6 +70,14 @@ class Event(Base):
     # o dashboard por cliente/tenant específico.
     tag: Mapped[str | None] = mapped_column(String(80), index=True, nullable=True)
 
+    # Hostname do ativo monitorado que gerou/relatou o evento (Wazuh
+    # `agent.name`, Elastic `host.name`/`agent.name`) — identidade mais
+    # confiável que IP sozinho pra registro de ativos (services/asset_risk.py):
+    # um host muda de IP via DHCP, mas o nome do agente é estável. `None`
+    # quando a fonte não relata (ex.: alerta relaiado sem contexto de agente
+    # local, ou ingest genérico sem esse campo).
+    agent_hostname: Mapped[str | None] = mapped_column(String(120), index=True, nullable=True)
+
     # Geolocalização do IP de origem (para o world map do dashboard).
     country: Mapped[str | None] = mapped_column(String(80), nullable=True)
     city: Mapped[str | None] = mapped_column(String(120), nullable=True)

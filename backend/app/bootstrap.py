@@ -11,6 +11,7 @@ from .config import settings
 from .db import SessionLocal
 from .models import Event, Skill, User
 from .services import skills_catalog
+from .services.asm import refresh_exposed_assets
 from .services.rag import backfill_embeddings
 from .services.rules_engine import run_rules_engine_for_event
 
@@ -118,6 +119,29 @@ async def _sweep_orphaned_events_forever() -> None:
             pass
 
 
+_ASM_SWEEP_INTERVAL_SECONDS = 6 * 3600.0
+"""Não precisa ser frequente: Shodan indexa a internet em dias/semanas, não
+minutos — reconsultar mais rápido que isso só queima cota de API sem
+nenhum dado novo pra mostrar. `refresh_exposed_assets` já pula IP com cache
+ainda válido (`settings.intel_cache_ttl_hours`), então rodar de novo é
+sempre seguro (idempotente), só caro à toa se rodar rápido demais."""
+
+
+async def _asm_sweep_forever() -> None:
+    """Mesmo padrão de `_sweep_orphaned_events_forever`: nunca atrasa o
+    startup, nunca derruba o processo por causa de uma falha de rede/API
+    externa."""
+    while True:
+        await asyncio.sleep(_ASM_SWEEP_INTERVAL_SECONDS)
+        try:
+            async with SessionLocal() as db:
+                checked = await refresh_exposed_assets(db)
+            if checked:
+                print(f"[bootstrap] ASM: {checked} IP(s) público(s) consultado(s) no Shodan.")
+        except Exception:  # noqa: BLE001 — nunca derruba o processo da API
+            pass
+
+
 async def _requeue_stuck_events(db: AsyncSession) -> int:
     """`BackgroundTasks` do FastAPI só existe na memória do processo que a
     agendou — um restart (deploy, crash, `docker compose up --build`) perde
@@ -151,3 +175,4 @@ async def bootstrap() -> None:
     if settings.rules_engine_enabled:
         asyncio.create_task(_backfill_embeddings_forever())
         asyncio.create_task(_sweep_orphaned_events_forever())
+        asyncio.create_task(_asm_sweep_forever())

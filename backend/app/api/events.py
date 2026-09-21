@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth.deps import current_user
 from ..db import get_db
 from ..models import Event, User
+from ..services import learning
 
 router = APIRouter(prefix="/api/events", tags=["events"])
 
@@ -133,7 +134,11 @@ async def update_analyst_verdict(
 ) -> dict:
     """Reclassificação humana pra matriz de confusão real — `null` limpa a
     revisão (volta pra "não revisado"), nunca altera o veredito do motor em
-    si (`rules_engine_status`)."""
+    si (`rules_engine_status`). Um `false_positive` também fecha o loop de
+    aprendizado (`learning.apply_analyst_feedback`): se o `type` deste
+    evento já virou via rápida promovida com a MESMA skill que a revisão
+    contesta, a promoção é revertida na hora — nunca espera uma auditoria
+    manual descobrir depois que a via rápida estava errada."""
     if body.verdict is not None and body.verdict not in ANALYST_VERDICTS:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, f"verdict inválido: {body.verdict}")
     event = await db.get(Event, event_id)
@@ -141,4 +146,7 @@ async def update_analyst_verdict(
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Evento não encontrado")
     event.analyst_verdict = body.verdict
     await db.commit()
-    return {"id": event.id, "analyst_verdict": event.analyst_verdict}
+    demoted = await learning.apply_analyst_feedback(
+        db, pattern_key=event.type, matched_skills=event.matched_skills or [], verdict=body.verdict,
+    )
+    return {"id": event.id, "analyst_verdict": event.analyst_verdict, "learned_pattern_demoted": demoted}

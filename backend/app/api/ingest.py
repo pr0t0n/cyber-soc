@@ -103,6 +103,7 @@ def _translate_wazuh(payload: dict[str, Any]) -> dict[str, Any]:
         "timestamp": ts,
         "type": rule.get("description") or "Evento Wazuh",
         "severity": _wazuh_severity(level),
+        "agent_hostname": (payload.get("agent") or {}).get("name"),
         "src_ip": data.get("srcip") or data.get("src_ip"),
         # NUNCA cai para `agent.get("ip")`: isso é o host que RELATOU o
         # evento, não um destino de tráfego — achado real (auditoria de
@@ -142,6 +143,9 @@ def _translate_elastic(payload: dict[str, Any]) -> dict[str, Any]:
         "timestamp": ts,
         "type": event.get("action") or source.get("message") or "Evento Elastic",
         "severity": severity_map.get(str(event.get("severity") or "").lower(), "info"),
+        # ECS: `host.name` é o padrão pra hostname do ativo monitorado;
+        # `agent.name` como reserva (nem todo documento ECS popula `host`).
+        "agent_hostname": (source.get("host") or {}).get("name") or (source.get("agent") or {}).get("name"),
         "src_ip": (source.get("source") or {}).get("ip"),
         "dst_ip": (source.get("destination") or {}).get("ip"),
         "src_port": str((source.get("source") or {}).get("port") or "") or None,
@@ -167,6 +171,7 @@ def _translate_generic(payload: dict[str, Any]) -> dict[str, Any]:
         "timestamp": ts,
         "type": payload.get("type") or "Evento",
         "severity": payload.get("severity") or "info",
+        "agent_hostname": payload.get("hostname"),
         "src_ip": payload.get("src_ip"),
         "dst_ip": payload.get("dst_ip"),
         "src_port": str(payload.get("src_port")) if payload.get("src_port") else None,
@@ -208,6 +213,7 @@ async def ingest(
         source=source,
         type=canonical["type"],
         severity=canonical["severity"],
+        agent_hostname=canonical.get("agent_hostname") or None,
         src_ip=canonical["src_ip"],
         dst_ip=canonical["dst_ip"],
         src_port=canonical["src_port"],
